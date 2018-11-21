@@ -1,0 +1,253 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.8.0"><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content="这里是介绍"><title>IO流基础知识 | 飞翔的企鹅</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/normalize/8.0.0/normalize.min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/1.0.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/1.0.0/grids-responsive-min.css"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">IO流基础知识</h1><a id="logo" href="/.">飞翔的企鹅</a><p class="description">欢迎访问</p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">IO流基础知识</h1><div class="post-meta">Nov 20, 2018</div><div class="post-content"><h3 id="目录介绍"><a href="#目录介绍" class="headerlink" title="目录介绍"></a>目录介绍</h3><ul>
+<li>1.IO的概述<ul>
+<li>1.1 IO流概述及其前奏</li>
+</ul>
+</li>
+<li>2.IO流整体介绍</li>
+<li>3.File文件类<ul>
+<li>3.1 File类的概述和方法介绍【掌握】</li>
+</ul>
+</li>
+<li>4.递归<ul>
+<li>4.1 递归概述和注意事项</li>
+</ul>
+</li>
+<li>5.IO流<ul>
+<li>5.1 IO流概述及其分类【掌握】</li>
+<li>5.2 输入流和输出流分类</li>
+<li>5.3 IO流基类概述和FileOutputStream的构造方法【掌握】</li>
+<li>5.4 FileOutputStream【掌握】</li>
+<li>5.5 FileInputStream【掌握】</li>
+</ul>
+</li>
+<li>6.IO流案例<ul>
+<li>6.1 字节流复制文本文件【字节流一次读写一个字节复制文本文件】</li>
+<li>6.2 字节流复制MP3【字节流一次读写一个字节复制MP3】</li>
+<li>6.3 FileInputStream读取数据一次一个字节数组</li>
+<li>6.4 FileInputStream读取数据的两种方式比较</li>
+<li>6.5 字节流复制文本文件【字节流一次读写一个字节数组复制文本文件】</li>
+<li>6.6 字节流复制MP3【字节流一次读写一个字节数组复制MP3】</li>
+</ul>
+</li>
+<li>7.Buffer缓冲数据流<ul>
+<li>7.1 BufferedOutputStream写出数据</li>
+<li>7.2 BufferedInputStream读取数据</li>
+<li>7.3 字节流四种方式复制MP3并测试效率<ul>
+<li>基本字节流一次读写一个字节</li>
+<li>基本字节流一次读写一个字节数组</li>
+<li>高效字节流一次读写一个字节</li>
+<li>高效字节流一次读写一个字节数组</li>
+</ul>
+</li>
+<li>7.4 总结</li>
+</ul>
+</li>
+</ul>
+<h3 id="1-IO的概述"><a href="#1-IO的概述" class="headerlink" title="1.IO的概述"></a>1.IO的概述</h3><ul>
+<li>1.1 IO流概述及其前奏<ul>
+<li>A:IO流概述<ul>
+<li>IO流用来处理设备之间的数据传输</li>
+<li>上传文件和下载文件</li>
+</ul>
+</li>
+<li>B:IO流前奏<ul>
+<li>讲解IO流之前为什么先讲解异常和File类呢?</li>
+<li>因为File表示的是IO流将来要操作的文件，所以我们需要学习File类。</li>
+<li>而常见操作文件无非就是上传文件和下载文件，在这个操作的过程中可能出现问题，</li>
+<li>出现问题后，我们需要对对应的代码进行处理。所以我们需要学习异常。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-IO流整体介绍"><a href="#2-IO流整体介绍" class="headerlink" title="2.IO流整体介绍"></a>2.IO流整体介绍</h3><h3 id="3-File文件类"><a href="#3-File文件类" class="headerlink" title="3.File文件类"></a>3.File文件类</h3><ul>
+<li><strong>3.1 File类的概述和方法介绍【掌握】</strong><ul>
+<li>A:File类的概述<ul>
+<li>文件和目录路径名的抽象表示形式</li>
+</ul>
+</li>
+<li>B:构造方法<ul>
+<li>File(String pathname)：                根据一个路径得到File对象</li>
+<li>File(String parent, String child):     根据一个目录和一个子文件/目录得到File对象</li>
+<li>File(File parent, String child):       根据一个父File对象和一个子文件/目录得到File对象</li>
+</ul>
+</li>
+<li>C:创建功能<ul>
+<li>public boolean createNewFile():         创建文件 如果存在这样的文件，就不创建了</li>
+<li>public boolean mkdir():                 创建文件夹 如果存在这样的文件夹，就不创建了</li>
+<li>public boolean mkdirs():                创建文件夹,如果父文件夹不存在，会帮你创建出来</li>
+<li>注意事项：如果你创建文件或者文件夹忘了写盘符路径，那么，默认在项目路径下。</li>
+</ul>
+</li>
+<li>D:删除功能<ul>
+<li>public boolean delete():        删除文件或者文件夹</li>
+<li>注意事项：Java中的删除不走回收站。要删除一个文件夹，请注意该文件夹内不能包含文件或者文件夹</li>
+</ul>
+</li>
+<li>E:重命名功能<ul>
+<li>public boolean renameTo(File dest):    把文件重命名为指定的文件路径</li>
+<li>注意事项：如果路径名相同，就是改名。如果路径名不同，就是改名并剪切。</li>
+</ul>
+</li>
+<li>F:判断功能<ul>
+<li>public boolean isDirectory():   判断是否是目录</li>
+<li>public boolean isFile():        判断是否是文件</li>
+<li>public boolean exists():        判断是否存在</li>
+<li>public boolean canRead():       判断是否可读</li>
+<li>public boolean canWrite():      判断是否可写</li>
+<li>public boolean isHidden():      判断是否隐藏</li>
+</ul>
+</li>
+<li>G:获取功能<ul>
+<li>public String getAbsolutePath()：    获取绝对路径</li>
+<li>public String getPath():             获取相对路径</li>
+<li>public String getName():             获取名称</li>
+<li>public long length():                获取长度。字节数</li>
+<li>public long lastModified():          获取最后一次的修改时间，毫秒值</li>
+<li>public String[] list():              获取指定目录下的所有文件或者文件夹的名称数组</li>
+<li>public File[] listFiles():           获取指定目录下的所有文件或者文件夹的File数组</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="4-递归"><a href="#4-递归" class="headerlink" title="4.递归"></a>4.递归</h3><ul>
+<li><strong>4.1 递归概述和注意事项</strong><ul>
+<li>递归概述:    方法定义中调用方法本身的现象</li>
+<li>递归注意事项    要有出口，否则就是死递归。次数不能太多，否则就内存溢出</li>
+<li>递归解决问题的思想及图解</li>
+<li>案例代码</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    recursion(<span class="number">5</span>) ;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 递归</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">recursion</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(n == <span class="number">0</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> ;</span><br><span class="line">    &#125;</span><br><span class="line">    System.out.println(n);</span><br><span class="line">    recursion(--n) ;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="5-IO流"><a href="#5-IO流" class="headerlink" title="5.IO流"></a>5.IO流</h3><ul>
+<li><strong>5.1 IO流概述及其分类【掌握】</strong><ul>
+<li>A:IO流概述<ul>
+<li>IO流用来处理设备之间的数据传输</li>
+<li>Java对数据的操作是通过流的方式</li>
+<li>Java用于操作流的对象都在IO包中</li>
+</ul>
+</li>
+<li>B:IO流分类<ul>
+<li>a:按照数据流向<ul>
+<li>输入流    读入数据</li>
+<li>输出流    写出数据</li>
+</ul>
+</li>
+<li>b:按照数据类型<ul>
+<li>字节流</li>
+<li>字符流</li>
+<li>什么情况下使用哪种流呢?</li>
+<li>如果数据所在的文件通过windows自带的记事本打开并能读懂里面的内容，就用字符流。其他用字节流。</li>
+<li>如果你什么都不知道，就用字节流</li>
+</ul>
+</li>
+<li>c:字节流和字符流<ul>
+<li>字节流   <ul>
+<li>字节输入流                InputStream            读</li>
+<li>字节输出流                OutputStream           写</li>
+</ul>
+</li>
+<li>字符流<ul>
+<li>字符输入流                Reader                 读</li>
+<li>字符输出流                Writer                 写</li>
+</ul>
+</li>
+<li>上面的4个流对象都是抽象类,我们不能直接使用,我们需要使用子类</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>5.2 输入流和输出流分类</strong></li>
+</ul>
+<ul>
+<li><strong>5.3 IO流基类概述和FileOutputStream的构造方法【掌握】</strong></li>
+<li>IO流基类概述<ul>
+<li>a:字节流的抽象基类：<ul>
+<li>InputStream ，OutputStream。</li>
+</ul>
+</li>
+<li>b:字符流的抽象基类：<ul>
+<li>Reader ， Writer。</li>
+<li>注：由这四个类派生出来的子类名称都是以其父类名作为子类名的后缀。</li>
+<li>如：InputStream的子类FileInputStream。</li>
+<li>如：Reader的子类FileReader。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>5.4 FileOutputStream【掌握】</strong></li>
+</ul>
+<ul>
+<li><p>A: 构造方法</p>
+<ul>
+<li>FileOutputStream(File file)</li>
+<li>FileOutputStream(String name)</li>
+<li>注意事项：创建字节输出流对象了做了几件事情?为什么一定要close()?<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">    FileOutputStream fos = <span class="keyword">new</span> FileOutputStream(<span class="string">"a.txt"</span>) ;</span><br><span class="line">    <span class="comment">// 上面的代码做了什么事情?</span></span><br><span class="line">    <span class="comment">// 1:调用系统资源,创建了一个a.txt文件</span></span><br><span class="line">    <span class="comment">// 2:创建一个fos对象</span></span><br><span class="line">    <span class="comment">// 3:把fos指向a.txt</span></span><br><span class="line">    String s = <span class="string">"hello, IO , 我来了"</span> ;</span><br><span class="line">    <span class="comment">// 把字符串转换成字节数组</span></span><br><span class="line">    <span class="keyword">byte</span>[] bytes = s.getBytes() ;</span><br><span class="line">    <span class="comment">// 调用方法写数据</span></span><br><span class="line">    fos.write(bytes) ;</span><br><span class="line">    <span class="comment">// 关闭流对象, 通知系统释放关于该文件的资源</span></span><br><span class="line">    fos.close() ;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>B: FileOutputStream的三个write()方法</p>
+<ul>
+<li>public void write(int b):写一个字节</li>
+<li>public void write(byte[] b):写一个字节数组</li>
+<li>public void write(byte[] b,int off,int len):写一个字节数组的一部分</li>
+<li>FileOutputStream写出数据实现换行和追加写入<ul>
+<li>实现数据的换行</li>
+<li>实现数据的追加写入<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">    <span class="comment">// public FileOutputStream(String name,  boolean append)</span></span><br><span class="line">    <span class="comment">// 表示追加写入</span></span><br><span class="line">    FileOutputStream fos = <span class="keyword">new</span> FileOutputStream(<span class="string">"c.txt"</span> , <span class="keyword">true</span>) ;       </span><br><span class="line">    <span class="comment">// 写数据</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> x = <span class="number">0</span> ; x &lt; <span class="number">5</span> ; x++) &#123;</span><br><span class="line">        <span class="keyword">byte</span>[] bytes = (<span class="string">"呵呵"</span> + x + <span class="string">"\r\n"</span>).getBytes() ;</span><br><span class="line">        fos.write(bytes) ;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 关闭资源</span></span><br><span class="line">    fos.close() ;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>5.5 FileInputStream【掌握】</strong></li>
+</ul>
+<ul>
+<li>FileInputStream读取数据一次一个字节<ul>
+<li>int read():一次读取一个字节</li>
+</ul>
+</li>
+</ul>
+<h3 id="6-IO流案例"><a href="#6-IO流案例" class="headerlink" title="6.IO流案例"></a>6.IO流案例</h3><h4 id="6-1-字节流复制文本文件【字节流一次读写一个字节复制文本文件】"><a href="#6-1-字节流复制文本文件【字节流一次读写一个字节复制文本文件】" class="headerlink" title="6.1 字节流复制文本文件【字节流一次读写一个字节复制文本文件】"></a>6.1 字节流复制文本文件【字节流一次读写一个字节复制文本文件】</h4><ul>
+<li>一次读取一个字节<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 复制文本文件:</span></span><br><span class="line"><span class="comment">     *         读和写</span></span><br><span class="line"><span class="comment">     *     分析:</span></span><br><span class="line"><span class="comment">     *         1: 创建两个对象一个是字节输入流对象,一个是字节输出流对象</span></span><br><span class="line"><span class="comment">     *         2: 一次读取一个字节,一次写一个字节</span></span><br><span class="line"><span class="comment">     *         3: 释放资源</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="comment">// 创建两个对象一个是字节输入流对象,一个是字节输出流对象</span></span><br><span class="line">    FileInputStream fis = <span class="keyword">new</span> FileInputStream(<span class="string">"FileOutputStreamDemo.java"</span>) ;</span><br><span class="line">    FileOutputStream fos = <span class="keyword">new</span> FileOutputStream(<span class="string">"copyFile.java"</span>) ;</span><br><span class="line">    <span class="comment">// 一次读取一个字节,一次写一个字节</span></span><br><span class="line">    <span class="keyword">int</span> by = <span class="number">0</span> ;</span><br><span class="line">    <span class="keyword">while</span>((by = fis.read()) != -<span class="number">1</span>)&#123;</span><br><span class="line">        fos.write(by) ;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 释放资源</span></span><br><span class="line">    fos.close() ;</span><br><span class="line">    fis.close() ;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="6-2-字节流复制MP3【字节流一次读写一个字节复制MP3】"><a href="#6-2-字节流复制MP3【字节流一次读写一个字节复制MP3】" class="headerlink" title="6.2 字节流复制MP3【字节流一次读写一个字节复制MP3】"></a>6.2 字节流复制MP3【字节流一次读写一个字节复制MP3】</h4><ul>
+<li>一次读取一个字节<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">    <span class="comment">// 需求: 使用字节流复制mp3文件</span></span><br><span class="line">    <span class="comment">// 创建字节输入流和字节输出流对象</span></span><br><span class="line">    FileInputStream fis = <span class="keyword">new</span> FileInputStream(<span class="string">"C:\\a.mp3"</span>) ;</span><br><span class="line">    FileOutputStream fos = <span class="keyword">new</span> FileOutputStream(<span class="string">"D:\\a.mp3"</span>) ;</span><br><span class="line">    <span class="comment">// 复制文件</span></span><br><span class="line">    <span class="keyword">int</span> by = <span class="number">0</span> ;</span><br><span class="line">    <span class="keyword">while</span>((by = fis.read()) != -<span class="number">1</span>)&#123;</span><br><span class="line">        fos.write(by) ;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 释放资源</span></span><br><span class="line">    fos.close() ;</span><br><span class="line">    fis.close() ;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="6-3-FileInputStream读取数据一次一个字节数组"><a href="#6-3-FileInputStream读取数据一次一个字节数组" class="headerlink" title="6.3 FileInputStream读取数据一次一个字节数组"></a>6.3 FileInputStream读取数据一次一个字节数组</h4><h4 id="6-4-FileInputStream读取数据的两种方式比较"><a href="#6-4-FileInputStream读取数据的两种方式比较" class="headerlink" title="6.4 FileInputStream读取数据的两种方式比较"></a>6.4 FileInputStream读取数据的两种方式比较</h4><h4 id="6-5-字节流复制文本文件【字节流一次读写一个字节数组复制文本文件】"><a href="#6-5-字节流复制文本文件【字节流一次读写一个字节数组复制文本文件】" class="headerlink" title="6.5 字节流复制文本文件【字节流一次读写一个字节数组复制文本文件】"></a>6.5 字节流复制文本文件【字节流一次读写一个字节数组复制文本文件】</h4><ul>
+<li>字节流一次读写一个字节数组<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 需求: 使用字节流复制文本文件,采用字节输入流的第二种读取数据的方式</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">    <span class="comment">// 创建字节输入流对象和字节输出流对象</span></span><br><span class="line">    FileInputStream fis = <span class="keyword">new</span> FileInputStream(<span class="string">"FileOutputStreamDemo.java"</span>) ;</span><br><span class="line">    FileOutputStream fos = <span class="keyword">new</span> FileOutputStream(<span class="string">"copyFile2.java"</span>) ;</span><br><span class="line">    <span class="comment">// 一次读取一个字节数组复制文件</span></span><br><span class="line">    <span class="keyword">byte</span>[] bytes = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">1024</span>] ;</span><br><span class="line">    <span class="comment">// 记录读取到的有效的字节个数</span></span><br><span class="line">    <span class="keyword">int</span> len = <span class="number">0</span> ;        </span><br><span class="line">    <span class="keyword">while</span>((len = fis.read(bytes)) != -<span class="number">1</span>)&#123;</span><br><span class="line">        fos.write(bytes, <span class="number">0</span>, len) ;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 释放资源</span></span><br><span class="line">    fos.close() ;</span><br><span class="line">    fis.close() ;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="6-6-字节流复制MP3【字节流一次读写一个字节数组复制MP3】"><a href="#6-6-字节流复制MP3【字节流一次读写一个字节数组复制MP3】" class="headerlink" title="6.6 字节流复制MP3【字节流一次读写一个字节数组复制MP3】"></a>6.6 字节流复制MP3【字节流一次读写一个字节数组复制MP3】</h4><ul>
+<li>一次读取一个字节数组<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 需求: 使用字节流复制mp3文件一次读取一个字节数组</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">    <span class="comment">// 创建对象</span></span><br><span class="line">    FileInputStream fis = <span class="keyword">new</span> FileInputStream(<span class="string">"C:\\a.mp3"</span>) ;</span><br><span class="line">    FileOutputStream fos = <span class="keyword">new</span> FileOutputStream(<span class="string">"D:\\a.mp3"</span>) ;</span><br><span class="line">    <span class="comment">// 一次读取一个字节数组复制文件</span></span><br><span class="line">    <span class="keyword">byte</span>[] bytes = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">1024</span>] ;</span><br><span class="line">    <span class="keyword">int</span> len = <span class="number">0</span> ;</span><br><span class="line">    <span class="keyword">while</span>((len = fis.read(bytes)) != -<span class="number">1</span>)&#123;</span><br><span class="line">        fos.write(bytes, <span class="number">0</span>, len) ;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 释放资源</span></span><br><span class="line">    fos.close() ;</span><br><span class="line">    fis.close() ;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="7-Buffer缓冲数据流"><a href="#7-Buffer缓冲数据流" class="headerlink" title="7.Buffer缓冲数据流"></a>7.Buffer缓冲数据流</h3><h4 id="7-1-BufferedOutputStream写出数据"><a href="#7-1-BufferedOutputStream写出数据" class="headerlink" title="7.1 BufferedOutputStream写出数据"></a>7.1 BufferedOutputStream写出数据</h4><ul>
+<li>代码如下所示：<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">    <span class="comment">// 创建FileOutputStream对象</span></span><br><span class="line">    <span class="comment">//FileOutputStream fos = new FileOutputStream("buf.txt") ;</span></span><br><span class="line">    <span class="comment">//BufferedOutputStream bof = new BufferedOutputStream(fos) ;</span></span><br><span class="line">    BufferedOutputStream bos = <span class="keyword">new</span> BufferedOutputStream(<span class="keyword">new</span> FileOutputStream(<span class="string">"buf.txt"</span>)) ;</span><br><span class="line">    <span class="comment">// 调用方法</span></span><br><span class="line">    bos.write(<span class="string">"哈哈,我来了"</span>.getBytes()) ;</span><br><span class="line">    <span class="comment">// 释放资源</span></span><br><span class="line">    bos.close() ;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="7-2-BufferedInputStream读取数据"><a href="#7-2-BufferedInputStream读取数据" class="headerlink" title="7.2 BufferedInputStream读取数据"></a>7.2 BufferedInputStream读取数据</h4><ul>
+<li>代码如下所示：<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">    BufferedInputStream bis = <span class="keyword">new</span> BufferedInputStream(<span class="keyword">new</span> FileInputStream(<span class="string">"e.txt"</span>)) ;</span><br><span class="line">    <span class="comment">// 一次读取一个字节</span></span><br><span class="line">    <span class="comment">//int by = 0 ;</span></span><br><span class="line">    <span class="comment">//while((by = bis.read()) != -1)&#123;</span></span><br><span class="line">    <span class="comment">//    System.out.print((char)by);</span></span><br><span class="line">    <span class="comment">//&#125;</span></span><br><span class="line">    <span class="comment">// 一次读取一个字节数组</span></span><br><span class="line">    <span class="keyword">byte</span>[] bytes = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">1024</span>] ;</span><br><span class="line">    <span class="keyword">int</span> len = <span class="number">0</span> ;</span><br><span class="line">    <span class="keyword">while</span>((len = bis.read(bytes)) != -<span class="number">1</span>)&#123;</span><br><span class="line">        System.out.print(<span class="keyword">new</span> String(bytes , <span class="number">0</span> , len));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 释放资源</span></span><br><span class="line">    bis.close() ;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="7-3-字节流四种方式复制MP3并测试效率"><a href="#7-3-字节流四种方式复制MP3并测试效率" class="headerlink" title="7.3 字节流四种方式复制MP3并测试效率"></a>7.3 字节流四种方式复制MP3并测试效率</h4><ul>
+<li>基本字节流一次读写一个字节</li>
+<li>基本字节流一次读写一个字节数组</li>
+<li>高效字节流一次读写一个字节</li>
+<li>高效字节流一次读写一个字节数组<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CopyFileDemo</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">        <span class="comment">// 获取开始时间</span></span><br><span class="line">        <span class="keyword">long</span> startTime = System.currentTimeMillis() ;</span><br><span class="line">        <span class="comment">// 复制文件</span></span><br><span class="line">        copyFile_4() ;</span><br><span class="line">        <span class="comment">// 获取结束时间</span></span><br><span class="line">        <span class="keyword">long</span> endTime = System.currentTimeMillis() ;</span><br><span class="line">        <span class="comment">// 输出</span></span><br><span class="line">        System.out.println(<span class="string">"复制文件使用的时间是:"</span> + (endTime - startTime) + <span class="string">"毫秒"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 高效流一次读取一个字节数组赋值文件</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> IOException</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">copyFile_4</span><span class="params">()</span> <span class="keyword">throws</span> IOException </span>&#123;       </span><br><span class="line">        <span class="comment">// 复制文件使用的时间是:50毫秒</span></span><br><span class="line">        <span class="comment">// 创建高效流对象</span></span><br><span class="line">        BufferedInputStream bis = <span class="keyword">new</span> BufferedInputStream(<span class="keyword">new</span> FileInputStream(<span class="string">"C:\\a.avi"</span>)) ;</span><br><span class="line">        BufferedOutputStream bos = <span class="keyword">new</span> BufferedOutputStream(<span class="keyword">new</span> FileOutputStream(<span class="string">"D:\\a.avi"</span>)) ;</span><br><span class="line">        <span class="comment">// 一次读取一个字节数组</span></span><br><span class="line">        <span class="keyword">byte</span>[] bytes = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">1024</span>] ;</span><br><span class="line">        <span class="keyword">int</span> len = <span class="number">0</span> ;</span><br><span class="line">        <span class="keyword">while</span>((len = bis.read(bytes)) != -<span class="number">1</span>)&#123;</span><br><span class="line">            bos.write(bytes, <span class="number">0</span>, len) ;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 释放资源</span></span><br><span class="line">        bos.close() ;</span><br><span class="line">        bis.close() ;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 高效流一次读取一个字节复制文件</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> IOException</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">copyFile_3</span><span class="params">()</span> <span class="keyword">throws</span> IOException </span>&#123;       </span><br><span class="line">        <span class="comment">// 复制文件使用的时间是:990毫秒</span></span><br><span class="line">        <span class="comment">// 创建高效流对象</span></span><br><span class="line">        BufferedInputStream bis = <span class="keyword">new</span> BufferedInputStream(<span class="keyword">new</span> FileInputStream(<span class="string">"C:\\a.avi"</span>)) ;</span><br><span class="line">        BufferedOutputStream bos = <span class="keyword">new</span> BufferedOutputStream(<span class="keyword">new</span> FileOutputStream(<span class="string">"D:\\a.avi"</span>)) ;</span><br><span class="line">        <span class="comment">// 一次读取一个字节</span></span><br><span class="line">        <span class="keyword">int</span> by = <span class="number">0</span> ;</span><br><span class="line">        <span class="keyword">while</span>((by = bis.read()) != -<span class="number">1</span>)&#123;</span><br><span class="line">            bos.write(by) ;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 释放资源</span></span><br><span class="line">        bos.close() ;</span><br><span class="line">        bis.close() ;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 基本流一次读取一个字节数组复制文件</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> IOException</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">copyFile_2</span><span class="params">()</span> <span class="keyword">throws</span> IOException </span>&#123;       </span><br><span class="line">        <span class="comment">// 复制文件使用的时间是:130毫秒</span></span><br><span class="line">        <span class="comment">// 创建对象</span></span><br><span class="line">        FileInputStream fis = <span class="keyword">new</span> FileInputStream(<span class="string">"C:\\a.avi"</span>) ;</span><br><span class="line">        FileOutputStream fos = <span class="keyword">new</span> FileOutputStream(<span class="string">"D:\\a.avi"</span>) ;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 一次读取一个字节数组</span></span><br><span class="line">        <span class="keyword">byte</span>[] bytes = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">1024</span>] ;</span><br><span class="line">        <span class="keyword">int</span> len = <span class="number">0</span> ;</span><br><span class="line">        <span class="keyword">while</span>((len = fis.read(bytes)) != -<span class="number">1</span>)&#123;</span><br><span class="line">            fos.write(bytes, <span class="number">0</span>, len) ;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 释放资源</span></span><br><span class="line">        fos.close() ;</span><br><span class="line">        fis.close() ;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 基本流一次读取一个字节复制文件</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> IOException</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">copyFile_1</span><span class="params">()</span> <span class="keyword">throws</span> IOException </span>&#123;   </span><br><span class="line">        <span class="comment">// 复制文件使用的时间是:88670毫秒</span></span><br><span class="line">        <span class="comment">// 创建对象</span></span><br><span class="line">        FileInputStream fis = <span class="keyword">new</span> FileInputStream(<span class="string">"C:\\a.avi"</span>) ;</span><br><span class="line">        FileOutputStream fos = <span class="keyword">new</span> FileOutputStream(<span class="string">"D:\\a.avi"</span>) ;</span><br><span class="line">        <span class="comment">// 一次读取一个字节</span></span><br><span class="line">        <span class="keyword">int</span> by = <span class="number">0</span> ;</span><br><span class="line">        <span class="keyword">while</span>((by = fis.read()) != -<span class="number">1</span>)&#123;</span><br><span class="line">            fos.write(by) ;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 释放资源</span></span><br><span class="line">        fos.close() ;</span><br><span class="line">        fis.close() ;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="7-4-总结"><a href="#7-4-总结" class="headerlink" title="7.4 总结"></a>7.4 总结</h4><pre><code>BufferedInputStream比FileInputStream多了一个缓冲区，执行read时先从缓冲区读取，当缓冲区数据读完时再把缓冲区填满。因此，当每次读取的数据量很小时，FileInputStream每次都是从硬盘读入，而BufferedInputStream
+</code></pre><p> 大部分是从缓冲区读入。读取内存速度比读取硬盘速度快得多，因此BufferedInputStream效率高。<br>    BufferedInputStream的默认缓冲区大小是8192字节。当每次读取数据量接近或远超这个值时，两者效率就没有明显差别了。BufferedOutputStream和FileOutputStream同理，差异更明显一些。</p>
+</div><div class="tags"><a href="/tags/io/">io</a></div><div class="post-nav"><a class="pre" href="/2018/11/20/java/iostream/ioStreamOther/">IO流其他</a><a class="next" href="/2018/11/19/java/base/07-javaBaseTypeCache/">07 基础类型缓存池概念</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"><input type="hidden" name="sitesearch" value="https://fly.popc.top"></form></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"><a href="/tags/鲁迅/" style="font-size: 15px;">鲁迅</a> <a href="/tags/java/" style="font-size: 15px;">java</a> <a href="/tags/数据结构/" style="font-size: 15px;">数据结构</a> <a href="/tags/网络编程/" style="font-size: 15px;">网络编程</a> <a href="/tags/反射/" style="font-size: 15px;">反射</a> <a href="/tags/多线程/" style="font-size: 15px;">多线程</a> <a href="/tags/io/" style="font-size: 15px;">io</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最近文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2018/11/21/java/network/03.TCP&UDP/">TCP和UDP详细介绍</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/11/21/java/network/02.networkProgram2/">网络编程基础知识02</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/11/21/java/network/01.networkProgram/">网络编程基础知识01</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/11/21/java/thread/07-threadDeadLock/">线程死锁</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/11/21/java/thread/06-closeThread/">Thread关闭方法</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/11/21/java/thread/05-synchronizeAndReentrantLock/">synchronize与ReentrantLock</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/11/21/java/thread/04-synchronize/">synchronize深入理解</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/11/21/java/thread/03-threadBackage/">多线程深入理解2</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/11/21/java/thread/02-threadDeep/">多线程深入理解</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/11/21/java/thread/01-threadBase/">多线程基础</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-external-link"> 友情链接</i></div><ul></ul><a href="http://www.example1.com/" title="site-name1" target="_blank">site-name1</a><ul></ul><a href="http://www.example2.com/" title="site-name2" target="_blank">site-name2</a><ul></ul><a href="http://www.example3.com/" title="site-name3" target="_blank">site-name3</a></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2018 <a href="/." rel="nofollow">飞翔的企鹅.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//cdn.bootcss.com/fancybox/3.3.5/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/fancybox/3.3.5/jquery.fancybox.min.css"><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>

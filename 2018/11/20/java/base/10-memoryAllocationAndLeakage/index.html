@@ -1,0 +1,235 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.8.0"><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content="这里是介绍"><title>java内存分配和泄露 | 飞翔的企鹅</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/normalize/8.0.0/normalize.min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/1.0.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/1.0.0/grids-responsive-min.css"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">java内存分配和泄露</h1><a id="logo" href="/.">飞翔的企鹅</a><p class="description">欢迎访问</p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">java内存分配和泄露</h1><div class="post-meta">Nov 20, 2018</div><div class="post-content"><p><strong>Java内存分配机制及内存泄漏</strong><br><strong>目录介绍</strong></p>
+<ul>
+<li><strong>1.JVM内存管理</strong></li>
+<li>1.1 JVM内存管理图</li>
+<li>1.2 Java采用GC进行内存管理。</li>
+<li><strong>2.JVM内存分配的几种策略</strong></li>
+<li>2.1 静态的</li>
+<li>2.2 栈式的</li>
+<li>2.3 堆式的</li>
+<li>2.4 堆和栈的区别</li>
+<li>2.5 得出结论</li>
+<li>2.6 举个例子</li>
+<li>2.7 调用 System.gc();进行内存回收</li>
+<li><strong>3.GC简单介绍</strong></li>
+<li>3.1 内存垃圾回收机制</li>
+<li>3.2 关于GC介绍</li>
+<li>3.3 如何监听GC过程</li>
+<li>3.4 GC过程与对象的引用类型关系</li>
+<li><strong>4.内存泄漏简单介绍</strong></li>
+<li>4.1 内存泄漏的定义</li>
+<li>4.2 内存泄漏与内存溢出的区别</li>
+<li>4.3 内存泄漏带来的影响</li>
+<li>4.4 典型内存泄漏案例</li>
+<li><strong>5.GC回收机制</strong></li>
+<li>5.1 GC回收机制</li>
+<li>5.2 内存分配</li>
+<li>5.3 垃圾回收思路及方法<ul>
+<li>检测垃圾的算法<ul>
+<li>引用计数法</li>
+<li>可达性分析算法</li>
+</ul>
+</li>
+<li>处理垃圾的算法<ul>
+<li>1.标记-清除（Mark-sweep）</li>
+<li>2.复制（Copying）</li>
+<li>3.标记-整理（Mark-Compact）</li>
+<li>4.分代收集算法(当今最常用的方法)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>5.4 如何对对象划分<ul>
+<li>将对象按其生命周期划分</li>
+<li>年轻代</li>
+<li>年老代</li>
+</ul>
+</li>
+<li>5.5  GC中对象的六种可触及状态</li>
+</ul>
+<h3 id="1-JVM内存管理"><a href="#1-JVM内存管理" class="headerlink" title="1.JVM内存管理"></a>1.JVM内存管理</h3><p><strong>1.1 JVM内存管理</strong><br><img src="/images/4432347-d11c55cea858b5e4.png" alt=""></p>
+<p><strong>1.2 Java采用GC进行内存管理。</strong></p>
+<ul>
+<li>Android虚拟机的垃圾回收采用的是根搜索算法。GC会从根节点（GC Roots）开始对heap进行遍历。到最后，部分没有直接或者间接引用到GC Roots的就是需要回收的垃圾，会被GC回收掉。而内存泄漏出现的原因就是存在了无效的引用，导致本来需要被GC的对象没有被回收掉。</li>
+<li>深入的JVM内存管理知识，推荐《深入理解Java虚拟机》。</li>
+</ul>
+<h3 id="2-JVM内存分配的几种策略。"><a href="#2-JVM内存分配的几种策略。" class="headerlink" title="2.JVM内存分配的几种策略。"></a>2.JVM内存分配的几种策略。</h3><p><strong>2.1 静态的</strong></p>
+<ul>
+<li>静态的存储区，内存在程序编译的时候就已经分配好了，这块内存在程序整个运行期间都一直存在<br>它主要存放静态数据、全局的static数据和一些常量。</li>
+</ul>
+<p><strong>2.2 栈式的</strong></p>
+<ul>
+<li>在执行方法时，方法一些内部变量的存储都可以放在栈上面创建，方法执行结束的时候这些存储单元就会自动被注释掉。栈 内存包括分配的运算速度很快，因为内在在处理器里面。当然容量有限，并且栈式一块连续的内存区域，大小是由操作系统决定的，他先进后出，进出完成不会产生碎片，运行效率高且稳定</li>
+</ul>
+<p><strong>2.3 堆式的</strong></p>
+<ul>
+<li>也叫动态内存 。我们通常使用new 来申请分配一个内存。这里也是我们讨论内存泄漏优化的关键存储区。GC会根据内存的使用情况，对堆内存里的垃圾内存进行回收。堆内存是一块不连续的内存区域，如果频繁地new/remove会造成大量的内存碎片，GC频繁的回收，导致内存抖动，这也会消耗我们应用的性能</li>
+</ul>
+<p><strong>2.4 堆和栈的区别</strong></p>
+<ul>
+<li>在函数中（说明是局部变量）定义的一些基本类型的变量和对象的引用变量都是在函数的栈内存中分配。</li>
+<li>当在一段代码块中定义一个变量时，java就在栈中为这个变量分配内存空间，当超过变量的作用域后，java会自动释放掉为该变量分配的内存空间，该内存空间可以立刻被另作他用。</li>
+<li>堆内存用于存放所有由new创建的对象（内容包括该对象其中的所有成员变量）和数组。在堆中分配的内存，由java虚拟机自动垃圾回收器来管理。</li>
+<li>在堆中产生了一个数组或者对象后，还可以在栈中定义一个特殊的变量，这个变量的取值等于数组或者对象在堆内存中的首地址，在栈中的这个特殊的变量就变成了数组或者对象的引用变量，以后就可以在程序中使用栈内存中的引用变量来访问堆中的数组或者对象，引用变量相当于为数组或者对象起的一个别名，或者代号。</li>
+</ul>
+<p><strong>2.5 得出结论</strong></p>
+<ul>
+<li>1.局部变量的基本数据类型和引用，存储于栈中，引用的对象实体存储于堆中。因为它们属于方法中的变量，生命周期随方法而结束。</li>
+<li>2.成员变量全部存储与堆中（包括基本数据类型，引用和引用的对象实体），因为它们属于类，类对象终究是要被new出来使用的。</li>
+<li>3.我们所说的内存泄露，只针对堆内存，他们存放的就是引用指向的对象实体。</li>
+</ul>
+<p><strong>2.6 举个例子</strong><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> class <span class="title">Sample</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> s1 = <span class="number">0</span>;</span><br><span class="line">    Sample mSample1 = <span class="keyword">new</span> Sample();</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">method</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> s2 = <span class="number">1</span>;</span><br><span class="line">        Sample mSample2 = <span class="keyword">new</span> Sample();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">Sample mSample3 = <span class="keyword">new</span> Sample();</span><br><span class="line">Sample 类的局部变量 s2 和引用变量 mSample2 都是存在于栈中，但 mSample2 指向的对象是存在于堆上的。</span><br><span class="line">mSample3 指向的对象实体存放在堆上，包括这个对象的所有成员变量 s1 和 mSample1，而它自己存在于栈中。</span><br></pre></td></tr></table></figure></p>
+<p><strong>2.7 调用 System.gc();进行内存回收</strong></p>
+<ul>
+<li>我们知道可以调用 System.gc();进行内存回收，但是GC不一定会执行。面对GC的机制，我们是否无能为力？其实我们可以通过声明一些引用标记来让GC更好对内存进行回收。</li>
+<li><img src="/images/443234711d8e58df3b16a042.png" alt=""></li>
+<li>小技巧</li>
+<li>成员变量全部存储在堆中（包括基本数据类型，引用及引用的对象实体），因为他们属于类，类对象最终还是要被new出来的</li>
+<li>局部变量的基本数据类型和引用存在栈中，应用的对象实体存储在堆中。因为它们属于方法当中的变量，生命周期会随着方法一起结束</li>
+</ul>
+<h3 id="3-GC工作原理"><a href="#3-GC工作原理" class="headerlink" title="3.GC工作原理"></a>3.GC工作原理</h3><p><strong>3.1 内存垃圾回收机制</strong></p>
+<ul>
+<li>是从程序的主要运行对象(如静态对象/寄存器/栈上指向的堆内存对象等)开始检查引用链，当遍历一遍后得到上述这些无法回收的对象和他们所引用的对象链，组成无法回收的对象集合，而其他孤立对象（集）就作为垃圾回收</li>
+<li>GC为了能够正确释放对象，必须监控每一个对象的运行状态，包括对象的申请、引用、被引用、赋值等，GC都需要进行监控。监视对象状态是为了更加准确地、及时地释放对象，而释放对象的根本原则就是该对象不再被引用。</li>
+</ul>
+<p><strong>3.2 关于GC介绍</strong></p>
+<ul>
+<li>有几个函数可以访问GC，例如运行GC的函数System.gc()，但是根据Java语言规范定义，该函数不保证JVM的垃圾收集器一定会执行。因为不同的JVM实现者可能使用不同的算法管理GC</li>
+<li>通常GC的线程的优先级别较低。JVM调用GC的策略也有很多种，有的是内存使用到达一定程度时，GC才开始工作，也有定时执行的，有的是平缓执行GC，有的是中断式执行GC。但通常来说，我们不需要关心这些。<br><strong>通过关键字 new 为每个对象申请内存空间 (基本类型除外)，所有的对象都在堆 (Heap)中分配空间</strong></li>
+</ul>
+<p><strong>3.3 如何监听GC过程</strong></p>
+<ul>
+<li>系统每进行一次GC操作时，都会在LogCat中打印一条日志，我们只要去分析这条日志就可以了，日志的基本格式如下<br><strong>D/dalvikvm: &lt;GC_Reason&gt; &lt;Amount_freed&gt;, &lt;Heap_stats&gt;,  &lt;Pause_time&gt;</strong></li>
+<li><p>第一部分GC_Reason，这个是触发这次GC操作的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">原因，一般情况下一共有以下几种触发GC操作的原因：</span><br><span class="line">- GC_CONCURRENT: 当我们应用程序的堆内存快要满的时候，系统会自动触发GC操作来释放内存。</span><br><span class="line">- GC_FOR_MALLOC: 当我们的应用程序需要分配更多内存，可是现有内存已经不足的时候，系统会进行GC操作来释放内存。</span><br><span class="line">- GC_HPROF_DUMP_HEAP: 当生成HPROF文件的时候，系统会进行GC操作，关于HPROF文件我们下面会讲到。</span><br><span class="line">- GC_EXPLICIT: 这种情况就是我们刚才提到过的，主动通知系统去进行GC操作，比如调用System.gc()方法来通知系统。或者在DDMS中，通过工具按钮也是可以显式地告诉系统进行GC操作的。</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>第二部分Amount_freed，表示系统通过这次GC操作释放了多少内存</p>
+</li>
+<li>第三部分Heap_stats中会显示当前内存的空闲比例以及使用情况（活动对象所占内存 / 当前程序总内存）</li>
+<li>第四部分Pause_time表示这次GC操作导致应用程序暂停的时间。关于这个暂停的时间，Android在2.3的版本当中进行过一次优化，在2.3之前GC操作是不能并发进行的，也就是系统正在进行GC，那么应用程序就只能阻塞住等待GC结束。虽说这个阻塞的过程并不会很长，也就是几百毫秒，但是用户在使用我们的程序时还是有可能会感觉到略微的卡顿。而自2.3之后，GC操作改成了并发的方式进行，就是说GC的过程中不会影响到应用程序的正常运行，但是在GC操作的开始和结束的时候会短暂阻塞一段时间，不过优化到这种程度，用户已经是完全无法察觉到了</li>
+</ul>
+<p><strong>3.4 GC过程与对象的引用类型关系</strong><br>Java对引用的分类Strong reference, SoftReference, WeakReference, PhatomReference</p>
+<p><img src="/images/4432347-46caa86083269dc9.png" alt=""></p>
+<ul>
+<li>软引用和弱引用</li>
+<li>在Android应用的开发中，为了防止内存溢出，在处理一些占用内存大而且声明周期较长的对象时候，可以尽量应用软引用和弱引用技术</li>
+<li>软/弱引用可以和一个引用队列（ReferenceQueue）联合使用，如果软引用所引用的对象被垃圾回收器回收，Java虚拟机就会把这个软引用加入到与之关联的引用队列中。</li>
+<li>利用这个队列可以得知被回收的软/弱引用的对象列表，从而为缓冲器清除已失效的软/弱引用。</li>
+<li>内存泄漏的原因：堆内存中的长生命周期的对象持有短生命周期对象的强/软引用，尽管短生命周期对象已经不再需要，但是因为长生命周期对象持有它的引用而导致不能被回收，这就是Java中内存泄露的根本原因</li>
+</ul>
+<h3 id="4-内存泄漏简单介绍"><a href="#4-内存泄漏简单介绍" class="headerlink" title="4.内存泄漏简单介绍"></a>4.内存泄漏简单介绍</h3><p><strong>4.1 内存泄漏的定义</strong><br>当一个对象已经不需要使用了，本该被回收时，而有另外一个正在使用的对象持有它的引用，从而导致了对象不能被GC回收。这种导致了本该被回收的对象不能被回收而停留在堆内存中，就产生了内存泄漏</p>
+<p><strong>4.2 内存泄漏与内存溢出的区别</strong></p>
+<ul>
+<li>内存泄漏（Memory Leak）<ul>
+<li>进程中某些对象已经没有使用的价值了，但是他们却还可以直接或间接地被引用到GC Root导致无法回收。当内存泄漏过多的时候，再加上应用本身占用的内存，日积月累最终就会导致内存溢出OOM</li>
+</ul>
+</li>
+<li>内存溢出（OOM）<ul>
+<li>当应用的heap资源超过了Dalvik虚拟机分配的内存就会内存溢出</li>
+</ul>
+</li>
+</ul>
+<p><strong>4.3 内存泄漏带来的影响</strong></p>
+<ul>
+<li>应用卡顿<ul>
+<li>泄漏的内存影响了GC的内存分配，过多的内存泄漏会影响应用的执行效率</li>
+</ul>
+</li>
+<li>应用异常（OOM）<ul>
+<li>过多的内存泄漏，最终会导致 Dalvik分配的内存，出现OOM</li>
+</ul>
+</li>
+</ul>
+<p><strong>4.4 典型内存泄漏案例</strong></p>
+<ul>
+<li><p>案例代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Vector v = <span class="keyword">new</span> Vector(<span class="number">10</span>);</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; <span class="number">100</span>; i++) &#123;</span><br><span class="line">    Object o = <span class="keyword">new</span> Object();</span><br><span class="line">    v.add(o);</span><br><span class="line">    o = <span class="keyword">null</span>; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>分析</p>
+<ul>
+<li>在这个例子中，我们循环申请Object对象，并将所申请的对象放入一个 Vector 中，如果我们仅仅释放引用本身，那么 Vector 仍然引用该对象，所以这个对象对 GC 来说是不可回收的。因此，如果对象加入到Vector 后，还必须从 Vector 中删除，最简单的方法就是将 Vector 对象设置为 null。</li>
+</ul>
+</li>
+</ul>
+<h3 id="5-GC回收机制"><a href="#5-GC回收机制" class="headerlink" title="5.GC回收机制"></a>5.GC回收机制</h3><h4 id="5-1-GC回收机制"><a href="#5-1-GC回收机制" class="headerlink" title="5.1 GC回收机制"></a>5.1 GC回收机制</h4><ul>
+<li>在了解回收机制之前，必须要了解内存<ul>
+<li>先思考三个问题<ul>
+<li>JVM是怎么分配内存的</li>
+<li>识别哪些内存是垃圾需要回收</li>
+<li>最后才是用什么方式回收</li>
+</ul>
+</li>
+<li>栈的内存管理是顺序分配的，而且定长，不存在内存回收问题；而堆 则是为java对象的实例随机分配内存，不定长度，所以存在内存分配和回收的问题</li>
+</ul>
+</li>
+</ul>
+<h4 id="5-2-内存分配"><a href="#5-2-内存分配" class="headerlink" title="5.2 内存分配"></a>5.2 内存分配</h4><ul>
+<li>Java虚拟机是先一次性分配一块较大的空间，然后每次new时都在该空间上进行分配和释放，减少了系统调用的次数，节省了一定的开销，这有点类似于内存池的概念；二是有了这块空间过后，如何进行分配和回收就跟GC机制有关了。</li>
+<li>java一般内存申请有两种：静态内存和动态内存 。很容易理解，编译时就能够确定的内存就是静态内存，即内存是固定的，系统一次性分配，比如int类型变量；动态内存分配就是在程序执行时才知道要分配的存储空间大小，比如java对象的内存空间。</li>
+</ul>
+<h4 id="5-3-垃圾回收思路及方法"><a href="#5-3-垃圾回收思路及方法" class="headerlink" title="5.3 垃圾回收思路及方法"></a>5.3 垃圾回收思路及方法</h4><ul>
+<li>垃圾收集器一般必须完成两件事：检测出垃圾；回收垃圾。怎么检测出垃圾？一般有以下几种方法：<ul>
+<li>检测垃圾的算法<ul>
+<li>a.引用计数法：<ul>
+<li>给一个对象添加引用计数器，每当有个地方引用它，计数器就加1；引用失效就减1。好了，问题来了，如果我有两个对象A和B，互相引用，除此之外，没有其他任何对象引用它们，实际上这两个对象已经无法访问，即是我们说的垃圾对象。但是互相引用，计数不为0，导致无法回收</li>
+</ul>
+</li>
+<li>b.可达性分析算法<ul>
+<li>以根集对象为起始点进行搜索，如果有对象不可达的话，即是垃圾对象。这里的根集一般包括java栈中引用的对象、方法区常良池中引用的对象，本地方法中引用的对象等</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>处理垃圾的算法<ul>
+<li>1.标记-清除（Mark-sweep）<ul>
+<li>算法和名字一样，分为两个阶段：标记和清除。标记所有需要回收的对象，然后统一回收。这是最基础的算法，后续的收集算法都是基于这个算法扩展的。</li>
+<li>不足：效率低；标记清除之后会产生大量碎片。</li>
+</ul>
+</li>
+<li>2.复制（Copying）<ul>
+<li>此算法把内存空间划为两个相等的区域，每次只使用其中一个区域。垃圾回收时，遍历当前使用区域，把正在使用中的对象复制到另外一个区域中。此算法每次只处理正在使用中的对象，因此复制成本比较小，同时复制过去以后还能进行相应的内存整理，不会出现“碎片”问题。当然，此算法的缺点也是很明显的，就是需要两倍内存空间。 </li>
+</ul>
+</li>
+<li>3.标记-整理（Mark-Compact）<ul>
+<li>此算法结合了“标记-清除”和“复制”两个算法的优点。也是分两阶段，第一阶段从根节点开始标记所有被引用对象，第二阶段遍历整个堆，把清除未标记对象并且把存活对象“压缩”到堆的其中一块，按顺序排放。此算法避免了“标记-清除”的碎片问题，同时也避免了“复制”算法的空间问题。 </li>
+</ul>
+</li>
+<li>4.分代收集算法(当今最常用的方法)<ul>
+<li>这是当前商业虚拟机常用的垃圾收集算法。分代的垃圾回收策略，是基于这样一个事实：不同的对象的生命周期是不一样的。因此，不同生命周期的对象可以采取不同的收集方式，以便提高回收效率。</li>
+<li>为什么要运用分代垃圾回收策略？在java程序运行的过程中，会产生大量的对象，因每个对象所能承担的职责不同所具有的功能不同所以也有着不一样的生命周期，有的对象生命周期较长，比如Http请求中的Session对象，线程，Socket连接等；有的对象生命周期较短，比如String对象，由于其不变类的特性，有的在使用一次后即可回收。试想，在不进行对象存活时间区分的情况下，每次垃圾回收都是对整个堆空间进行回收，那么消耗的时间相对会很长，而且对于存活时间较长的对象进行的扫描工作等都是徒劳。因此就需要引入分治的思想，所谓分治的思想就是因地制宜，将对象进行代的划分，把不同生命周期的对象放在不同的代上使用不同的垃圾回收方式。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="5-4-如何对对象划分"><a href="#5-4-如何对对象划分" class="headerlink" title="5.4 如何对对象划分"></a>5.4 如何对对象划分</h4><ul>
+<li>将对象按其生命周期划分<ul>
+<li>年轻代(Young Generation)</li>
+<li>年老代(Old Generation)</li>
+<li>持久代(Permanent Generation)</li>
+<li>其中持久代主要存放的是类信息，所以与java对象的回收关系不大，与回收息息相关的是年轻代和年老代。</li>
+<li>年轻代<ul>
+<li>是所有新对象产生的地方。</li>
+<li>年轻代被分为3个部分——Enden区和两个Survivor区（From和to）</li>
+<li>当Eden区被对象填满时，就会执行Minor GC。并把所有存活下来的对象转移到其中一个survivor区（假设为from区）。Minor GC同样会检查存活下来的对象，并把它们转移到另一个survivor区（假设为to区）。这样在一段时间内，总会有一个空的survivor区。经过多次GC周期后，仍然存活下来的对象会被转移到年老代内存空间。通常这是在年轻代有资格提升到年老代前通过设定年龄阈值来完成的。需要注意，Survivor的两个区是对称的，没先后关系，from和to是相对的。</li>
+</ul>
+</li>
+<li>年老代<ul>
+<li>在年轻代中经历了N次回收后仍然没有被清除的对象，就会被放到年老代中，可以说他们都是久经沙场而不亡的一代，都是生命周期较长的对象。对于年老代和永久代，就不能再采用像年轻代中那样搬移腾挪的回收算法，因为那些对于这些回收战场上的老兵来说是小儿科。这时候MajsorGC会清理些老年代垃圾，通常会在老年代内存被占满时将会触发Full GC,回收整个堆内存。</li>
+<li>持久代：用于存放静态文件，比如java类、方法等。持久代对垃圾回收没有显著的影响。 </li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="5-5-GC中对象的六种可触及状态"><a href="#5-5-GC中对象的六种可触及状态" class="headerlink" title="5.5  GC中对象的六种可触及状态"></a>5.5  GC中对象的六种可触及状态</h4><ul>
+<li>1.强可触及：对象可以从根结点不通过任何引用对象搜索到</li>
+<li>2.软可触及：对象不是强可触及的，但是可以从根结点开始通过一个或多个（未被清除的）软引用对象触及</li>
+<li>3.弱可触及：对象既不是强可触及也不是软可触及的，但是从根结点开始</li>
+<li>4.可复活的：对象既不是强可触及、软可触及，也不是弱可触及，但是仍然可能通过执行某些终结方法复活到这几种状态之一</li>
+<li>5.影子可触及：不上以上任何可触及状态，也不能通过终结方法复活，并且它可以从根结点开始通过一个或多个影子引用对象触及（影子引用不会被垃圾收集器清除，由程序明确地清除）</li>
+<li>6.不可触及：就是已经准备回收的状态</li>
+</ul>
+</div><div class="tags"><a href="/tags/java/">java</a></div><div class="post-nav"><a class="pre" href="/2018/11/20/java/base/09-HashAndHashCode/">03.Hash和HashCode深入理解</a><a class="next" href="/2018/11/20/java/base/08-classLoader/">类加载机制</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"><input type="hidden" name="sitesearch" value="https://fly.popc.top"></form></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"><a href="/tags/鲁迅/" style="font-size: 15px;">鲁迅</a> <a href="/tags/java/" style="font-size: 15px;">java</a> <a href="/tags/数据结构/" style="font-size: 15px;">数据结构</a> <a href="/tags/网络编程/" style="font-size: 15px;">网络编程</a> <a href="/tags/反射/" style="font-size: 15px;">反射</a> <a href="/tags/多线程/" style="font-size: 15px;">多线程</a> <a href="/tags/io/" style="font-size: 15px;">io</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最近文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2018/11/21/java/network/03.TCP&UDP/">TCP和UDP详细介绍</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/11/21/java/network/02.networkProgram2/">网络编程基础知识02</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/11/21/java/network/01.networkProgram/">网络编程基础知识01</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/11/21/java/thread/07-threadDeadLock/">线程死锁</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/11/21/java/thread/06-closeThread/">Thread关闭方法</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/11/21/java/thread/05-synchronizeAndReentrantLock/">synchronize与ReentrantLock</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/11/21/java/thread/04-synchronize/">synchronize深入理解</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/11/21/java/thread/03-threadBackage/">多线程深入理解2</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/11/21/java/thread/02-threadDeep/">多线程深入理解</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/11/21/java/thread/01-threadBase/">多线程基础</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-external-link"> 友情链接</i></div><ul></ul><a href="http://www.example1.com/" title="site-name1" target="_blank">site-name1</a><ul></ul><a href="http://www.example2.com/" title="site-name2" target="_blank">site-name2</a><ul></ul><a href="http://www.example3.com/" title="site-name3" target="_blank">site-name3</a></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2018 <a href="/." rel="nofollow">飞翔的企鹅.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//cdn.bootcss.com/fancybox/3.3.5/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/fancybox/3.3.5/jquery.fancybox.min.css"><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>
