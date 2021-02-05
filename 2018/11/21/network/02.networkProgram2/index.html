@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>网络编程基础知识02 | 飞翔的企鹅</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="目录介绍 1.计算机网络体系结构 2.Http相关知识点 2.1 无连接与无状态 2.2 HTTP的缓存机制 2.3 短连接与长连接 2.4 缓存   3.Https相关知识点 3.1 HTTPS为什么安全 3.2 HTTPS问题答疑 3.3 客户端如何验证证书合法性   4.HTTP协议Keep-Alive模式 4.1 什么是Keep-Alive模式 4.2 启用Keep-Alive的优点 4.">
+<meta name="keywords" content="网络编程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="网络编程基础知识02">
+<meta property="og:url" content="https://blog.okjvm.com/2018/11/21/network/02.networkProgram2/index.html">
+<meta property="og:site_name" content="飞翔的企鹅">
+<meta property="og:description" content="目录介绍 1.计算机网络体系结构 2.Http相关知识点 2.1 无连接与无状态 2.2 HTTP的缓存机制 2.3 短连接与长连接 2.4 缓存   3.Https相关知识点 3.1 HTTPS为什么安全 3.2 HTTPS问题答疑 3.3 客户端如何验证证书合法性   4.HTTP协议Keep-Alive模式 4.1 什么是Keep-Alive模式 4.2 启用Keep-Alive的优点 4.">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-03-17T12:43:21.403Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="网络编程基础知识02">
+<meta name="twitter:description" content="目录介绍 1.计算机网络体系结构 2.Http相关知识点 2.1 无连接与无状态 2.2 HTTP的缓存机制 2.3 短连接与长连接 2.4 缓存   3.Https相关知识点 3.1 HTTPS为什么安全 3.2 HTTPS问题答疑 3.3 客户端如何验证证书合法性   4.HTTP协议Keep-Alive模式 4.1 什么是Keep-Alive模式 4.2 启用Keep-Alive的优点 4.">
+  
+    <link rel="alternate" href="/atom.xml" title="飞翔的企鹅" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  
+    
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    
+    <div id="header-inner" class="inner">
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://blog.okjvm.com"></form>
+      </div>
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+      </nav>
+      
+    </div>
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">飞翔的企鹅</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">欢迎访问</a>
+        </h2>
+      
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-network/02.networkProgram2" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/11/21/network/02.networkProgram2/" class="article-date">
+  <time datetime="2018-11-21T11:54:54.000Z" itemprop="datePublished">2018-11-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      网络编程基础知识02
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- Table of Contents -->
+        
+        <h4 id="目录介绍"><a href="#目录介绍" class="headerlink" title="目录介绍"></a>目录介绍</h4><ul>
+<li>1.计算机网络体系结构</li>
+<li>2.Http相关知识点<ul>
+<li>2.1 无连接与无状态</li>
+<li>2.2 HTTP的缓存机制</li>
+<li>2.3 短连接与长连接</li>
+<li>2.4 缓存</li>
+</ul>
+</li>
+<li>3.Https相关知识点<ul>
+<li>3.1 HTTPS为什么安全</li>
+<li>3.2 HTTPS问题答疑</li>
+<li>3.3 客户端如何验证证书合法性</li>
+</ul>
+</li>
+<li>4.HTTP协议Keep-Alive模式<ul>
+<li>4.1 什么是Keep-Alive模式</li>
+<li>4.2 启用Keep-Alive的优点</li>
+<li>4.3 Keep-Alive方式下如何判断消息内容/长度的大小？</li>
+</ul>
+</li>
+<li>5.url特性<ul>
+<li>5.1 拼接url链接字符串工具类</li>
+<li>5.2 获取Uri对象的各种属性</li>
+</ul>
+</li>
+<li>6.其他知识点<ul>
+<li>6.1 URL编码</li>
+<li>6.2 Http 2.0</li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+<h3 id="1-网络体系结构"><a href="#1-网络体系结构" class="headerlink" title="1.网络体系结构"></a>1.网络体系结构</h3><ul>
+<li><p>经常看到的计算机网络体系的分层结构，理清这个还是有必要的，防止对HTTP和TCP两个根本不在同一层的协议纠缠不清。根据不同的参考模型，分层结构有几个不同的版本，如OSI模型以及TCP/IP模型，下面就以比较经常看到的的5层结构为例</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">应用层：HTTP、FTP、DNS、SMTP等</span><br><span class="line">运输层：TCP、UDP</span><br><span class="line">网络层：IP等</span><br><span class="line">数据链路层：ARP等</span><br><span class="line">物理层：网络跳线</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>五层的体系结构至上往下，最终可以实现端对端之间的数据传输与通信，那么他们各自负责一些什么，最终如何实现端对端之间的通信呢？</p>
+<ul>
+<li>1.应用层：如http协议，它实际上是定义了如何包装和解析数据，应用层是http协议的话，则会按照协议规定包装数据，如按照请求行、请求头、请求体包装，包装好数据后将数据传至运输层。</li>
+<li>2.运输层：运输层有TCP和UDP两种协议，分别对应可靠的运输和不可靠的运输，如TCP因为要提供可靠的传输，所以内部要解决如何建立连接、如何保证传输是可靠的不丢数据、如何调节流量控制和拥塞控制。关于这一层，我们平常一般都是和Socket打交道，Socket是一组封装的编程调用接口，通过它，我们就能操作TCP、UDP进行连接的建立等。我们平常使用Socket进行连接建立的时候，一般都要指定端口号,所以这一层指定了把数据送到对应的端口号。</li>
+<li>3.网络层：这一层IP协议，以及一些路由选择协议等等，所以这一层的指定了数据要传输到哪个IP地址。中间涉及到一些最优线路，路由选择算法等等。</li>
+<li>4.数据链路层：印象比较深的就是ARP协议，负责把IP地址解析为MAC地址，即硬件地址，这样就找到了对应的唯一的机器。</li>
+<li>5.物理层：这一层就是最底层了，提供二进制流传输服务，也就是也就是真正开始通过传输介质（有线、无线）开始进行数据的传输了。</li>
+</ul>
+</li>
+<li>所以通过上面五层的各司其职，实现物理传输介质–MAC地址–IP地址–端口号–获取到数据根据应用层协议解析数据最终实现了网络通信和数据传输。</li>
+</ul>
+<h3 id="2-HTTP相关知识点"><a href="#2-HTTP相关知识点" class="headerlink" title="2.HTTP相关知识点"></a>2.HTTP相关知识点</h3><h4 id="2-1-无连接与无状态"><a href="#2-1-无连接与无状态" class="headerlink" title="2.1 无连接与无状态"></a>2.1 无连接与无状态</h4><ul>
+<li>无连接并不是说不需要连接，http协议只是一个应用层协议，最终还是要靠运输层的如tcp协议向上提供的服务进行连接。</li>
+<li>无连接的含义是：<strong>http约定了每次连接只处理一个请求，一次请求完成后就断开连接</strong>，这样主要是为了缓解服务器的压力，减小连接对服务器资源的占用。我的理解是，建立连接实际上是运输层的事，面向应用层的http来说的话，它就是无连接的，因为上层对下层无感知。</li>
+<li>无状态的指：每个请求之间都是独立的，对于之前的请求事务没有记忆的能力。所以就出现了像Cookie这种，用来保存一些状态的东西。</li>
+</ul>
+<h4 id="2-2-HTTP的缓存机制"><a href="#2-2-HTTP的缓存机制" class="headerlink" title="2.2 HTTP的缓存机制"></a>2.2 HTTP的缓存机制</h4><ul>
+<li><strong>2.2.1 HTTP的缓存主要利用header里的两个字段来控制：</strong></li>
+<li><p><strong>Cache-control主要包含以及几个字段：</strong></p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">private:则只有客户端可以缓存</span><br><span class="line">public:客户端和代理服务器都可以缓存</span><br><span class="line">max-age:缓存的过期时间</span><br><span class="line">no-cache:需要使用对比缓存来验证缓存数据</span><br><span class="line">no-store:所有内存都不会进行缓存</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>实际上就是在这里面设置了一个缓存策略，由服务端第一次通过header下发给客户端，可以看到：</p>
+</li>
+<li>max-age即缓存过期的时间，则之后再次请求，如果没有超过缓存失效的时间则可以直接使用缓存。</li>
+<li>no-cache:表示需要使用对比缓存来验证缓存数据，如果这个字段是打开的，则就算max-age缓存没有失效，则还是需要发起一次请求向服务端确认一下资源是否有更新，是否需要重新请求数据，至于怎么做对比缓存，就是下面要说的Etag的作用。如果服务端确认资源没有更新，则返回304，取本地缓存即可，如果有更新，则返回最新的资源。</li>
+<li><p>no-store:这个字段打开，则不会进行缓存，也不会取缓存。</p>
+</li>
+<li><p><strong>2.2.2 ETag:即用来进行对比缓存，Etag是服务端资源的一个标识码</strong></p>
+</li>
+<li>当客户端发送第一次请求时服务端会下发当前请求资源的标识码Etag，下次再请求时，客户端则会通过header里的If-None-Match将这个标识码Etag带上，服务端将客户端传来的Etag与最新的资源Etag做对比，如果一样，则表示资源没有更新，返回304。</li>
+<li>通过Cache-control和Etag的配合来实现Http的缓存机制。</li>
+</ul>
+<h4 id="2-3-短连接与长连接"><a href="#2-3-短连接与长连接" class="headerlink" title="2.3 短连接与长连接"></a>2.3 短连接与长连接</h4><ul>
+<li>当浏览器访问一个包含多张图片的HTML页面时，除了请求访问HTML页面资源，还会请求图片资源。如果每进行一次HTTP通信就要新建一个TCP连接，那么开销会很大。</li>
+<li>长连接只需要建立一次TCP连接就能进行多次HTTP通信。</li>
+<li>从HTTP/1.1开始默认是长连接的，如果要断开连接，需要由客户端或者服务器端提出断开，使用 <code>Connection:close</code>；</li>
+<li>在HTTP/1.1之前默认是短连接的，如果需要使用长连接，则使用 <code>Connection:Keep-Alive</code>。</li>
+</ul>
+<h4 id="2-4-缓存"><a href="#2-4-缓存" class="headerlink" title="2.4 缓存"></a>2.4 缓存</h4><ul>
+<li>2.4.1 优点<ul>
+<li>缓解服务器压力。</li>
+<li>降低客户端获取资源的延迟：缓存通常位于内存中，读取缓存的速度更快。并且缓存在地理位置上也有可能比源服务器来得近，例如浏览器缓存。</li>
+</ul>
+</li>
+<li>2.4.2 实现方法<ul>
+<li>让代理服务器进行缓存；</li>
+<li>让客户端浏览器进行缓存。</li>
+</ul>
+</li>
+<li>2.4.3 Cache-Control<ul>
+<li>HTTP/1.1 通过 Cache-Control 首部字段来控制缓存。</li>
+</ul>
+</li>
+<li><p>2.4.4 禁止进行缓存</p>
+<ul>
+<li>no-store 指令规定不能对请求或响应的任何一部分进行缓存。<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Cache-Control: no-store</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>2.4.5 强制确认缓存</p>
+<ul>
+<li>no-cache 指令规定缓存服务器需要先向源服务器验证缓存资源的有效性，只有当缓存资源有效才将能使用该缓存对客户端的请求进行响应。<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Cache-Control: no-cache</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>2.4.6  私有缓存和公共缓存</p>
+<ul>
+<li><p>private 指令规定了将资源作为私有缓存，只能被单独用户所使用，一般存储在用户浏览器中。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Cache-Control: private</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>public 指令规定了将资源作为公共缓存，可以被多个用户所使用，一般存储在代理服务器中。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Cache-Control: public</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>2.4.7 缓存过期机制</p>
+<ul>
+<li>max-age指令出现在请求报文中，并且缓存资源的缓存时间小于该指令指定的时间，那么就能接受该缓存。</li>
+<li><p>max-age指令出现在响应报文中，表示缓存资源在缓存服务器中保存的时间。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Cache-Control: max-age=31536000</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Expires首部字段也可以用于告知缓存服务器该资源什么时候会过期。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Expires: Wed, 04 Jul 2012 08:26:05 GMT</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在HTTP/1.1中，会优先处理max-age指令。</p>
+</li>
+<li>在HTTP/1.0中，max-age指令会被忽略掉。</li>
+</ul>
+</li>
+<li><p>2.4.8 缓存验证</p>
+<ul>
+<li><p>需要先了解ETag首部字段的含义，它是资源的唯一标识。URL不能唯一表示资源，例如 <a href="http://www.google.com/" target="_blank" rel="noopener">http://www.google.com/</a> 有中文和英文两个资源，只有 ETag 才能对这两个资源进行唯一标识。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ETag: "82e22293907ce725faf67773957acd12"</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>可以将缓存资源的ETag值放入If-None-Match 首部，服务器收到该请求后，判断缓存资源的 ETag 值和资源的最新ETag值是否一致，如果一致则表示缓存资源有效，返回 304 Not Modified。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">If-None-Match: "82e22293907ce725faf67773957acd12"</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Last-Modified首部字段也可以用于缓存验证，它包含在源服务器发送的响应报文中，指示源服务器对资源的最后修改时间。但是它是一种弱校验器，因为只能精确到一秒，所以它通常作为 ETag 的备用方案。如果响应首部字段里含有这个信息，客户端可以在后续的请求中带上 If-Modified-Since 来验证缓存。服务器只在所请求的资源在给定的日期时间之后对内容进行过修改的情况下才会将资源返回，状态码为 200 OK。如果请求的资源从那时起未经修改，那么返回一个不带有消息主体的 304 Not Modified 响应。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Last-Modified: Wed, 21 Oct 2015 07:28:00 GMT</span><br><span class="line">If-Modified-Since: Wed, 21 Oct 2015 07:28:00 GMT</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-HTTPS相关知识点"><a href="#3-HTTPS相关知识点" class="headerlink" title="3.HTTPS相关知识点"></a>3.HTTPS相关知识点</h3><h4 id="3-1-HTTPS为什么安全"><a href="#3-1-HTTPS为什么安全" class="headerlink" title="3.1 HTTPS为什么安全"></a>3.1 HTTPS为什么安全</h4><ul>
+<li><strong>3.1.1 HTTPS=HTTP+SSL</strong></li>
+<li>之所以能保证安全主要的原理就是利用了非对称加密算法，平常用的对称加密算法之所以不安全，是因为双方是用统一的密匙进行加密解密的，只要双方任意一方泄漏了密匙，那么其他人就可以利用密匙解密数据。</li>
+<li><p>非对称加密算法之所以能实现安全传输的核心精华就是：公钥加密的信息只能用私钥解开，私钥加密的信息只能被公钥解开。</p>
+</li>
+<li><p><strong>3.1.2 非对称加密算法为什么安全</strong></p>
+</li>
+<li>简述非对称加密算法为什么安全：</li>
+<li>服务端申请CA机构颁发的证书，则获取到了证书的公钥和私钥，私钥只有服务器端自己知道，而公钥可以告知其他人，如可以把公钥传给客户端，这样客户端通过服务端传来的公钥来加密自己传输的数据，而服务端利用私钥就可以解密这个数据了。由于客户端这个用公钥加密的数据只有私钥能解密，而这个私钥只有服务端有，所以数据传输就安全了。</li>
+<li>上面只是简单说了一下非对称加密算法是如何保证数据安全的，实际上Https的工作过程远比这要复杂</li>
+</ul>
+<h4 id="3-2-HTTPS问题答疑"><a href="#3-2-HTTPS问题答疑" class="headerlink" title="3.2 HTTPS问题答疑"></a>3.2 HTTPS问题答疑</h4><ul>
+<li><strong>问题1：客户端如何验证服务器证书的合法性的问题？</strong></li>
+<li>一个是客户端还需要验证服务端传来的CA证书的合法性、有效性，因为存在传输过程CA证书被人调包的风险,涉及到客户端如何验证服务器证书的合法性的问题，保证通信双方的身份合法。</li>
+<li><strong>问题2：非对称算法虽然保证了数据的安全，但是效率相对于对称算法来说比较差，如何来优化，实现既保证了数据的安全，又提高了效率。</strong></li>
+</ul>
+<h4 id="3-3-客户端如何验证证书合法性"><a href="#3-3-客户端如何验证证书合法性" class="headerlink" title="3.3 客户端如何验证证书合法性"></a>3.3 客户端如何验证证书合法性</h4><h3 id="4-HTTP协议Keep-Alive模式"><a href="#4-HTTP协议Keep-Alive模式" class="headerlink" title="4.HTTP协议Keep-Alive模式"></a>4.HTTP协议Keep-Alive模式</h3><h4 id="4-1-什么是Keep-Alive模式"><a href="#4-1-什么是Keep-Alive模式" class="headerlink" title="4.1 什么是Keep-Alive模式"></a>4.1 什么是Keep-Alive模式</h4><ul>
+<li>我们知道HTTP协议采用“请求-应答”模式，当使用普通模式，即非KeepAlive模式时，每个请求/应答客户和服务器都要新建一个连接，完成之后立即断开连接（HTTP协议为无连接的协议）；当使用Keep-Alive模式（又称持久连接、连接重用）时，Keep-Alive功能使客户端到服务器端的连接持续有效，当出现对服务器的后继请求时，Keep-Alive功能避免了建立或者重新建立连接。</li>
+<li>http 1.0中默认是关闭的，需要在http头加入”Connection: Keep-Alive”，才能启用Keep-Alive；http 1.1中默认启用Keep-Alive，如果加入”Connection: close “，才关闭。目前大部分浏览器都是用http1.1协议，也就是说默认都会发起Keep-Alive的连接请求了，所以是否能完成一个完整的Keep- Alive连接就看服务器设置情况。</li>
+</ul>
+<h4 id="4-2-启用Keep-Alive的优点"><a href="#4-2-启用Keep-Alive的优点" class="headerlink" title="4.2 启用Keep-Alive的优点"></a>4.2 启用Keep-Alive的优点</h4><ul>
+<li>启用Keep-Alive模式肯定更高效，性能更高。因为避免了建立/释放连接的开销。</li>
+</ul>
+<h4 id="4-3-Keep-Alive方式下如何判断消息内容-长度的大小？"><a href="#4-3-Keep-Alive方式下如何判断消息内容-长度的大小？" class="headerlink" title="4.3 Keep-Alive方式下如何判断消息内容/长度的大小？"></a>4.3 Keep-Alive方式下如何判断消息内容/长度的大小？</h4><ul>
+<li>Keep-Alive模式，客户端如何判断请求所得到的响应数据已经接收完成（或者说如何知道服务器已经发生完了数据）？我们已经知道了，Keep-Alive模式发送玩数据HTTP服务器不会自动断开连接，所有不能再使用返回EOF（-1）来判断（当然你一定要这样使用也没有办法，可 以想象那效率是何等的低）！下面我介绍两种来判断方法。</li>
+<li>4.3.1 使用消息首部字段Conent-Length<ul>
+<li>Conent-Length表示实体内容长度，客户端（服务器）可以根据这个值来判断数据是否接收完成。但是如果消息中没有Conent-Length，那该如何来判断呢？又在什么情况下会没有Conent-Length呢？请继续往下看</li>
+</ul>
+</li>
+<li>4.3.2 使用消息首部字段Transfer-Encoding<ul>
+<li>当客户端向服务器请求一个静态页面或者一张图片时，服务器可以很清楚的知道内容大小，然后通过Content-length消息首部字段告诉客户端 需要接收多少数据。但是如果是动态页面等时，服务器是不可能预先知道内容大小，这时就可以使用Transfer-Encoding：chunk模式来传输 数据了。即如果要一边产生数据，一边发给客户端，服务器就需要使用<code>Transfer-Encoding: chunked</code>这样的方式来代替Content-Length。</li>
+<li>chunk编码将数据分成一块一块的发生。Chunked编码将使用若干个Chunk串连而成，由一个标明长度为0的chunk标示结束。每个Chunk分为头部和正文两部分，头部内容指定正文的字符总数（十六进制的数字）和数量单位（一般不写），正文部分就是指定长度的实际内容，两部分之间用回车换行(CRLF) 隔开。在最后一个长度为0的Chunk中的内容是称为footer的内容，是一些附加的Header信息（通常可以直接忽略）。</li>
+</ul>
+</li>
+</ul>
+<h3 id="5-URL特性"><a href="#5-URL特性" class="headerlink" title="5.URL特性"></a>5.URL特性</h3><h4 id="5-1-拼接URL链接字符串工具类"><a href="#5-1-拼接URL链接字符串工具类" class="headerlink" title="5.1 拼接URL链接字符串工具类"></a>5.1 拼接URL链接字符串工具类</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 拼接字符串</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> url url</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> map map集合</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">getUrl</span><span class="params">(String url, HashMap&lt;String, String&gt; map)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(TextUtils.isEmpty(url))&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//解析一个url</span></span><br><span class="line">    Uri uri = Uri.parse(url);</span><br><span class="line">    Uri.Builder builder = uri.buildUpon();</span><br><span class="line">    <span class="keyword">if</span> (map != <span class="keyword">null</span> &amp;&amp; map.size() &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="comment">//使用迭代器进行遍历</span></span><br><span class="line">        <span class="keyword">for</span> (Object o : map.entrySet()) &#123;</span><br><span class="line">            Map.Entry entry = (Map.Entry) o;</span><br><span class="line">            String key = (String) entry.getKey();</span><br><span class="line">            String value = (String) entry.getValue();</span><br><span class="line">            <span class="comment">//对键和值进行编码，然后将参数追加到查询字符串中。</span></span><br><span class="line">            builder.appendQueryParameter(key, value);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> builder.toString();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="5-2-获取URI对象的各种属性"><a href="#5-2-获取URI对象的各种属性" class="headerlink" title="5.2 获取URI对象的各种属性"></a>5.2 获取URI对象的各种属性</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//解析一个url</span></span><br><span class="line">Uri uri = Uri.parse(url);</span><br><span class="line"><span class="comment">// 完整的url信息</span></span><br><span class="line">String urlStr = uri.toString();</span><br><span class="line">Log.e( <span class="string">"UrlUtils"</span>,<span class="string">"url: "</span> + urlStr);</span><br><span class="line"><span class="comment">// scheme部分</span></span><br><span class="line">String scheme = uri.getScheme();</span><br><span class="line">Log.e( <span class="string">"UrlUtils"</span>,<span class="string">"scheme: "</span> + scheme);</span><br><span class="line"><span class="comment">// host部分</span></span><br><span class="line">String host = uri.getHost();</span><br><span class="line">Log.e( <span class="string">"UrlUtils"</span>,<span class="string">"host: "</span> + host);</span><br><span class="line"><span class="comment">//port部分</span></span><br><span class="line"><span class="keyword">int</span> port = uri.getPort();</span><br><span class="line">Log.e( <span class="string">"UrlUtils"</span>,<span class="string">"port: "</span> + port);</span><br><span class="line"><span class="comment">// 访问路劲</span></span><br><span class="line">String path = uri.getPath();</span><br><span class="line">Log.e( <span class="string">"UrlUtils"</span>,<span class="string">"path: "</span> + path);</span><br><span class="line">List&lt;String&gt; pathSegments = uri.getPathSegments();</span><br><span class="line">Log.e( <span class="string">"UrlUtils"</span>,<span class="string">"pathSegments: "</span> + pathSegments.toString());</span><br><span class="line"><span class="comment">// Query部分</span></span><br><span class="line">String query = uri.getQuery();</span><br><span class="line">Log.e( <span class="string">"UrlUtils"</span>,<span class="string">"query: "</span> + query);</span><br><span class="line"><span class="comment">//获取此URI的解码权限部分。对于服务器地址，权限的结构如下：Examples: "google.com", "bob@google.com:80"</span></span><br><span class="line">String authority = uri.getAuthority();</span><br><span class="line">Log.e( <span class="string">"UrlUtils"</span>,<span class="string">"authority: "</span> + authority);</span><br><span class="line"><span class="comment">//从权限获取已解码的用户信息。例如，如果权限为“任何人@google.com”，此方法将返回“任何人”。</span></span><br><span class="line">String userInfo = uri.getUserInfo();</span><br><span class="line">Log.e( <span class="string">"UrlUtils"</span>,<span class="string">"userInfo: "</span> + userInfo);</span><br><span class="line"></span><br><span class="line"><span class="comment">//UrlUtils: url: https://m.dev.haowumc.com/app/financialManagement</span></span><br><span class="line"><span class="comment">//UrlUtils: scheme: https</span></span><br><span class="line"><span class="comment">//UrlUtils: host: m.dev.haowumc.com</span></span><br><span class="line"><span class="comment">//UrlUtils: port: -1</span></span><br><span class="line"><span class="comment">//UrlUtils: path: /app/financialManagement</span></span><br><span class="line"><span class="comment">//UrlUtils: pathSegments: [app, financialManagement]</span></span><br><span class="line"><span class="comment">//UrlUtils: query: null</span></span><br><span class="line"><span class="comment">//UrlUtils: authority: m.dev.haowumc.com</span></span><br><span class="line"><span class="comment">//UrlUtils: userInfo: null</span></span><br></pre></td></tr></table></figure>
+<h3 id="6-其他知识点"><a href="#6-其他知识点" class="headerlink" title="6.其他知识点"></a>6.其他知识点</h3><h4 id="6-1-URL编码"><a href="#6-1-URL编码" class="headerlink" title="6.1 URL编码"></a>6.1 URL编码</h4><ul>
+<li>http协议中请求的url不支持中文和特殊字符(如&amp;?)，所以需要对url进行编码和解码，编码使用的是URLEncoder，解码使用的是URLDecoder；</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//进行url编码</span></span><br><span class="line">URLEncoder.encode(url)</span><br><span class="line"><span class="comment">//进行url解码</span></span><br><span class="line">URLDecoder.decode(encodeUrl)</span><br></pre></td></tr></table></figure>
+<h4 id="6-2-HTTP2-0"><a href="#6-2-HTTP2-0" class="headerlink" title="6.2 HTTP2.0"></a>6.2 HTTP2.0</h4><ul>
+<li>Okhttp支持配置使用http2.0协议</li>
+<li>Http2.0相对于Http1.x来说提升是巨大的，主要有以下几点：</li>
+<li>二进制格式:http1.x是文本协议，而http2.0是二进制以帧为基本单位，是一个二进制协议，一帧中除了包含数据外同时还包含该帧的标识：StreamIdentifier，即标识了该帧属于哪个request,使得网络传输变得十分灵活。多路复用:一个很大的改进，原先http1.x一个连接一个请求的情况有比较大的局限性，也引发了很多问题，如建立多个连接的消耗以及效率问题。</li>
+<li>http1.x为了解决效率问题，可能会尽量多的发起并发的请求去加载资源，然而浏览器对于同一域名下的并发请求有限制，()而优化的手段一般是将请求的资源放到不同的域名下来突破这种限制。</li>
+<li>而http2.0支持的多路复用可以很好的解决这个问题，多个请求共用一个TCP连接，多个请求可以同时在这个TCP连接上并发，一个是解决了建立多个TCP连接的消耗问题，一个也解决了效率的问题。</li>
+<li>那么是什么原理支撑多个请求可以在一个TCP连接上并发呢？基本原理就是上面的二进制分帧，因为每一帧都有一个身份标识，所以多个请求的不同帧可以并发的无序发送出去，在服务端会根据每一帧的身份标识，将其整理到对应的request中。</li>
+<li>header头部压缩:主要是通过压缩header来减少请求的大小，减少流量消耗，提高效率。因为之前存在一个问题是，每次请求都要带上header，而这个header中的数据通常是一层不变的，支持服务端推送。</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.okjvm.com/2018/11/21/network/02.networkProgram2/" data-id="ckkrzb8xe001scv2a4n51qyhm" class="article-share-link">分享</a>
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/网络编程/">网络编程</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+ <script src="/jquery/jquery.min.js"></script>
+  <div id="random_posts">
+    <h2>推荐文章</h2>
+    <div class="random_posts_ul">
+      <script>
+          var random_count =4
+          var site = {BASE_URI:'/'};
+          function load_random_posts(obj) {
+              var arr=site.posts;
+              if (!obj) return;
+              // var count = $(obj).attr('data-count') || 6;
+              for (var i, tmp, n = arr.length; n; i = Math.floor(Math.random() * n), tmp = arr[--n], arr[n] = arr[i], arr[i] = tmp);
+              arr = arr.slice(0, random_count);
+              var html = '<ul>';
+            
+              for(var j=0;j<arr.length;j++){
+                var item=arr[j];
+                html += '<li><strong>' + 
+                item.date + ':&nbsp;&nbsp;<a href="' + (site.BASE_URI+item.uri) + '">' + 
+                (item.title || item.uri) + '</a></strong>';
+                if(item.excerpt){
+                  html +='<div class="post-excerpt">'+item.excerpt+'</div>';
+                }
+                html +='</li>';
+                
+              }
+              $(obj).html(html + '</ul>');
+          }
+          $('.random_posts_ul').each(function () {
+              var c = this;
+              if (!site.posts || !site.posts.length){
+                  $.getJSON(site.BASE_URI + 'js/posts.js',function(json){site.posts = json;load_random_posts(c)});
+              } 
+               else{
+                load_random_posts(c);
+              }
+          });
+      </script>
+    </div>
+  </div>
+
+    
+<nav id="article-nav">
+  
+    <a href="/2018/11/21/network/03.tcpAgrementPart1/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          TCP和UDP详细介绍
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/11/21/network/01.networkProgram/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">网络编程基础知识01</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+ 
+     
+  <div class="comments" id="comments">
+    
+     
+       
+       
+      
+      
+  </div>
+ 
+  
+
+</section>
+           
+    <aside id="sidebar">
+  
+    
+
+  
+    
+    <div class="widget-wrap">
+    
+      <div class="widget" id="toc-widget-fixed">
+      
+        <strong class="toc-title">文章目录</strong>
+        <div class="toc-widget-list">
+              <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#目录介绍"><span class="toc-number">1.</span> <span class="toc-text">目录介绍</span></a></li></ol><li class="toc-item toc-level-3"><a class="toc-link" href="#1-网络体系结构"><span class="toc-number"></span> <span class="toc-text">1.网络体系结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-HTTP相关知识点"><span class="toc-number"></span> <span class="toc-text">2.HTTP相关知识点</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-无连接与无状态"><span class="toc-number">1.</span> <span class="toc-text">2.1 无连接与无状态</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-HTTP的缓存机制"><span class="toc-number">2.</span> <span class="toc-text">2.2 HTTP的缓存机制</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-3-短连接与长连接"><span class="toc-number">3.</span> <span class="toc-text">2.3 短连接与长连接</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-4-缓存"><span class="toc-number">4.</span> <span class="toc-text">2.4 缓存</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-HTTPS相关知识点"><span class="toc-number"></span> <span class="toc-text">3.HTTPS相关知识点</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-HTTPS为什么安全"><span class="toc-number">1.</span> <span class="toc-text">3.1 HTTPS为什么安全</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-2-HTTPS问题答疑"><span class="toc-number">2.</span> <span class="toc-text">3.2 HTTPS问题答疑</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-3-客户端如何验证证书合法性"><span class="toc-number">3.</span> <span class="toc-text">3.3 客户端如何验证证书合法性</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-HTTP协议Keep-Alive模式"><span class="toc-number"></span> <span class="toc-text">4.HTTP协议Keep-Alive模式</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#4-1-什么是Keep-Alive模式"><span class="toc-number">1.</span> <span class="toc-text">4.1 什么是Keep-Alive模式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-启用Keep-Alive的优点"><span class="toc-number">2.</span> <span class="toc-text">4.2 启用Keep-Alive的优点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-3-Keep-Alive方式下如何判断消息内容-长度的大小？"><span class="toc-number">3.</span> <span class="toc-text">4.3 Keep-Alive方式下如何判断消息内容/长度的大小？</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-URL特性"><span class="toc-number"></span> <span class="toc-text">5.URL特性</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#5-1-拼接URL链接字符串工具类"><span class="toc-number">1.</span> <span class="toc-text">5.1 拼接URL链接字符串工具类</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-2-获取URI对象的各种属性"><span class="toc-number">2.</span> <span class="toc-text">5.2 获取URI对象的各种属性</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-其他知识点"><span class="toc-number"></span> <span class="toc-text">6.其他知识点</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#6-1-URL编码"><span class="toc-number">1.</span> <span class="toc-text">6.1 URL编码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-2-HTTP2-0"><span class="toc-number">2.</span> <span class="toc-text">6.2 HTTP2.0</span></a></li></ol>
+          </li></div>
+      </div>
+    </div>
+
+  
+    
+
+  
+    
+  
+    
+  
+    
+
+  
+    
+  
+    <!--微信公众号二维码-->
+
+
+  
+</aside>
+
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-left">
+      &copy; 2014 - 2021 popc&nbsp;|&nbsp;
+      主题 <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
+    </div>
+     <div id="footer-right">
+      联系方式&nbsp;|&nbsp;cc5853235@gmail.com
+    </div>
+  </div>
+</footer>
+ <script src="/jquery/jquery.min.js"></script>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+</nav>
+    <img class="back-to-top-btn" src="/images/fly-to-top.png">
+<script>
+// Elevator script included on the page, already.
+window.onload = function() {
+  var elevator = new Elevator({
+    selector:'.back-to-top-btn',
+    element: document.querySelector('.back-to-top-btn'),
+    duration: 1000 // milliseconds
+  });
+}
+</script>
+      
+
+  
+
+  
+
+
+
+
+
+
+
+<!-- author:forvoid begin -->
+<!-- author:forvoid begin -->
+
+<!-- author:forvoid end -->
+
+<!-- author:forvoid end -->
+
+
+
+ <script src="/js/is.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/elevator.js"></script>
+  </div>
+</body>
+</html>

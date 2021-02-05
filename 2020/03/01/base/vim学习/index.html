@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>vim学习 | 飞翔的企鹅</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="键盘的选择 肌肉的记忆；使用ctrl快捷键来完成编辑、删除工作，用以完成快速的编辑。 Vim 快速移动大法 h 往左移动 j 往下移动 k 往上移动 l 往后移动  在单词之间移动是我们浏览操作中最常使用的命令。w/W移动到下一个word/WORD开头。e/E下一个word/WORD尾b/B移动到上一个word/WORD开头。通常可以常用上w/b; 行间搜索移动同一行快速移动的方式其实是搜索一个字">
+<meta name="keywords" content="vim">
+<meta property="og:type" content="article">
+<meta property="og:title" content="vim学习">
+<meta property="og:url" content="https://blog.okjvm.com/2020/03/01/base/vim学习/index.html">
+<meta property="og:site_name" content="飞翔的企鹅">
+<meta property="og:description" content="键盘的选择 肌肉的记忆；使用ctrl快捷键来完成编辑、删除工作，用以完成快速的编辑。 Vim 快速移动大法 h 往左移动 j 往下移动 k 往上移动 l 往后移动  在单词之间移动是我们浏览操作中最常使用的命令。w/W移动到下一个word/WORD开头。e/E下一个word/WORD尾b/B移动到上一个word/WORD开头。通常可以常用上w/b; 行间搜索移动同一行快速移动的方式其实是搜索一个字">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-03-03T05:49:13.071Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="vim学习">
+<meta name="twitter:description" content="键盘的选择 肌肉的记忆；使用ctrl快捷键来完成编辑、删除工作，用以完成快速的编辑。 Vim 快速移动大法 h 往左移动 j 往下移动 k 往上移动 l 往后移动  在单词之间移动是我们浏览操作中最常使用的命令。w/W移动到下一个word/WORD开头。e/E下一个word/WORD尾b/B移动到上一个word/WORD开头。通常可以常用上w/b; 行间搜索移动同一行快速移动的方式其实是搜索一个字">
+  
+    <link rel="alternate" href="/atom.xml" title="飞翔的企鹅" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  
+    
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    
+    <div id="header-inner" class="inner">
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://blog.okjvm.com"></form>
+      </div>
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+      </nav>
+      
+    </div>
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">飞翔的企鹅</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">欢迎访问</a>
+        </h2>
+      
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-base/vim学习" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/03/01/base/vim学习/" class="article-date">
+  <time datetime="2020-03-01T10:58:53.000Z" itemprop="datePublished">2020-03-01</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      vim学习
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- Table of Contents -->
+        
+        <p>键盘的选择 肌肉的记忆；<br>使用ctrl快捷键来完成编辑、删除工作，用以完成快速的编辑。</p>
+<h4 id="Vim-快速移动大法"><a href="#Vim-快速移动大法" class="headerlink" title="Vim 快速移动大法"></a>Vim 快速移动大法</h4><ol>
+<li>h 往左移动</li>
+<li>j 往下移动</li>
+<li>k 往上移动</li>
+<li>l 往后移动</li>
+</ol>
+<h6 id="在单词之间移动是我们浏览操作中最常使用的命令。"><a href="#在单词之间移动是我们浏览操作中最常使用的命令。" class="headerlink" title="在单词之间移动是我们浏览操作中最常使用的命令。"></a>在单词之间移动是我们浏览操作中最常使用的命令。</h6><p>w/W移动到下一个word/WORD开头。e/E下一个word/WORD尾<br>b/B移动到上一个word/WORD开头。通常可以常用上w/b;</p>
+<h6 id="行间搜索移动"><a href="#行间搜索移动" class="headerlink" title="行间搜索移动"></a>行间搜索移动</h6><p>同一行快速移动的方式其实是搜索一个字符并且移动到该字符 （同一行搜索生效）</p>
+<ol>
+<li>使用f{char}可以移动到char字符上，t移动到char的前一个字符</li>
+<li>如果第一次搜索到不是自己想要的，可以使用分号或者逗号(;,)继续搜索该行。</li>
+</ol>
+<h6 id="Vim水平移动"><a href="#Vim水平移动" class="headerlink" title="Vim水平移动"></a>Vim水平移动</h6><ol>
+<li>0移动到行首第一个字符，^移动到第一个非空白字符；</li>
+<li>$移动到行尾，g_移动到行尾非空白字符;</li>
+</ol>
+<h6 id="Vim垂直移动"><a href="#Vim垂直移动" class="headerlink" title="Vim垂直移动"></a>Vim垂直移动</h6><p>HML (head/middle/lower)  跳转到屏幕的开头、中间、结尾；</p>
+<p>翻页 ctrl+u . ctrl+f </p>
+<h4 id="Vim增删改查"><a href="#Vim增删改查" class="headerlink" title="Vim增删改查"></a>Vim增删改查</h4><ol>
+<li>插入模式进行编辑 a/i/o 进入插入模式；</li>
+<li>使用x来删除一个字符，u来回退一个字符；</li>
+<li>使用dd 来删除整行，使用dt[?]某个结尾的将删除知道某个结尾的字符之间的。</li>
+<li>删除x/d配合数字  比如2x,删除两个字符  2dd删除两行； 数字+命令表示多次执行命令；</li>
+<li>v/V选中,可以配合x/d来选中删除.</li>
+</ol>
+<h4 id="Vim快速修改"><a href="#Vim快速修改" class="headerlink" title="Vim快速修改"></a>Vim快速修改</h4><ol>
+<li>常用的有三个，r (replace) c (change), s(substitute)</li>
+<li>normal模式下使用r可以替换一个字符，s替换并进入插入模式</li>
+<li>使用c配合文本对象，我们可以快速进行修改<br>r : 比如normal下， hello world. 光标在h身上， 我们想把h替换成a ,可以ra<br>s : 删除字符，并进入插入模式下<br>c : 常用， 配合文本修改， ct; 和d命令差不多， 可以配合多个命令来用， cw 删除一个单词；</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.okjvm.com/2020/03/01/base/vim学习/" data-id="ckkrzb8w8000hcv2akw3nfm4w" class="article-share-link">分享</a>
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/vim/">vim</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+ <script src="/jquery/jquery.min.js"></script>
+  <div id="random_posts">
+    <h2>推荐文章</h2>
+    <div class="random_posts_ul">
+      <script>
+          var random_count =4
+          var site = {BASE_URI:'/'};
+          function load_random_posts(obj) {
+              var arr=site.posts;
+              if (!obj) return;
+              // var count = $(obj).attr('data-count') || 6;
+              for (var i, tmp, n = arr.length; n; i = Math.floor(Math.random() * n), tmp = arr[--n], arr[n] = arr[i], arr[i] = tmp);
+              arr = arr.slice(0, random_count);
+              var html = '<ul>';
+            
+              for(var j=0;j<arr.length;j++){
+                var item=arr[j];
+                html += '<li><strong>' + 
+                item.date + ':&nbsp;&nbsp;<a href="' + (site.BASE_URI+item.uri) + '">' + 
+                (item.title || item.uri) + '</a></strong>';
+                if(item.excerpt){
+                  html +='<div class="post-excerpt">'+item.excerpt+'</div>';
+                }
+                html +='</li>';
+                
+              }
+              $(obj).html(html + '</ul>');
+          }
+          $('.random_posts_ul').each(function () {
+              var c = this;
+              if (!site.posts || !site.posts.length){
+                  $.getJSON(site.BASE_URI + 'js/posts.js',function(json){site.posts = json;load_random_posts(c)});
+              } 
+               else{
+                load_random_posts(c);
+              }
+          });
+      </script>
+    </div>
+  </div>
+
+    
+<nav id="article-nav">
+  
+    <a href="/2021/02/05/送你一朵小红花/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          送你一朵小红花
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/02/23/前端往事/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">前端往事</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+ 
+     
+  <div class="comments" id="comments">
+    
+     
+       
+       
+      
+      
+  </div>
+ 
+  
+
+</section>
+           
+    <aside id="sidebar">
+  
+    
+
+  
+    
+    <div class="widget-wrap">
+    
+      <div class="widget" id="toc-widget-fixed">
+      
+        <strong class="toc-title">文章目录</strong>
+        <div class="toc-widget-list">
+              <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#Vim-快速移动大法"><span class="toc-number">1.</span> <span class="toc-text">Vim 快速移动大法</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#在单词之间移动是我们浏览操作中最常使用的命令。"><span class="toc-number">1.0.1.</span> <span class="toc-text">在单词之间移动是我们浏览操作中最常使用的命令。</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#行间搜索移动"><span class="toc-number">1.0.2.</span> <span class="toc-text">行间搜索移动</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#Vim水平移动"><span class="toc-number">1.0.3.</span> <span class="toc-text">Vim水平移动</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#Vim垂直移动"><span class="toc-number">1.0.4.</span> <span class="toc-text">Vim垂直移动</span></a></li></ol></li></ol><li class="toc-item toc-level-4"><a class="toc-link" href="#Vim增删改查"><span class="toc-number">2.</span> <span class="toc-text">Vim增删改查</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Vim快速修改"><span class="toc-number">3.</span> <span class="toc-text">Vim快速修改</span></a></li>
+          </div>
+      </div>
+    </div>
+
+  
+    
+
+  
+    
+  
+    
+  
+    
+
+  
+    
+  
+    <!--微信公众号二维码-->
+
+
+  
+</aside>
+
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-left">
+      &copy; 2014 - 2021 popc&nbsp;|&nbsp;
+      主题 <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
+    </div>
+     <div id="footer-right">
+      联系方式&nbsp;|&nbsp;cc5853235@gmail.com
+    </div>
+  </div>
+</footer>
+ <script src="/jquery/jquery.min.js"></script>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+</nav>
+    <img class="back-to-top-btn" src="/images/fly-to-top.png">
+<script>
+// Elevator script included on the page, already.
+window.onload = function() {
+  var elevator = new Elevator({
+    selector:'.back-to-top-btn',
+    element: document.querySelector('.back-to-top-btn'),
+    duration: 1000 // milliseconds
+  });
+}
+</script>
+      
+
+  
+
+  
+
+
+
+
+
+
+
+<!-- author:forvoid begin -->
+<!-- author:forvoid begin -->
+
+<!-- author:forvoid end -->
+
+<!-- author:forvoid end -->
+
+
+
+ <script src="/js/is.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/elevator.js"></script>
+  </div>
+</body>
+</html>

@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>线程死锁 | 飞翔的企鹅</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="目录介绍 1.代码模拟产生死锁 1.1 代码描述 1.2 产生死锁代码 1.3 死锁发生的场景   2.Java中导致死锁的原因 2.1 造成死锁原因 2.2 死锁的危害   3.出现死锁需要满足条件 3.1 死锁问题条件 3.2 如何预防死锁   4.死锁诊断步骤 4.1 如何定位死锁   5.死锁修复解决方案 5.1 死锁修复方案">
+<meta name="keywords" content="多线程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="线程死锁">
+<meta property="og:url" content="https://blog.okjvm.com/2018/11/16/java/thread/07-threadDeadLock/index.html">
+<meta property="og:site_name" content="飞翔的企鹅">
+<meta property="og:description" content="目录介绍 1.代码模拟产生死锁 1.1 代码描述 1.2 产生死锁代码 1.3 死锁发生的场景   2.Java中导致死锁的原因 2.1 造成死锁原因 2.2 死锁的危害   3.出现死锁需要满足条件 3.1 死锁问题条件 3.2 如何预防死锁   4.死锁诊断步骤 4.1 如何定位死锁   5.死锁修复解决方案 5.1 死锁修复方案">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://blog.okjvm.com/images/1432347-7cec2c49929f7586.png">
+<meta property="og:updated_time" content="2019-03-17T12:45:23.658Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="线程死锁">
+<meta name="twitter:description" content="目录介绍 1.代码模拟产生死锁 1.1 代码描述 1.2 产生死锁代码 1.3 死锁发生的场景   2.Java中导致死锁的原因 2.1 造成死锁原因 2.2 死锁的危害   3.出现死锁需要满足条件 3.1 死锁问题条件 3.2 如何预防死锁   4.死锁诊断步骤 4.1 如何定位死锁   5.死锁修复解决方案 5.1 死锁修复方案">
+<meta name="twitter:image" content="https://blog.okjvm.com/images/1432347-7cec2c49929f7586.png">
+  
+    <link rel="alternate" href="/atom.xml" title="飞翔的企鹅" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  
+    
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    
+    <div id="header-inner" class="inner">
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://blog.okjvm.com"></form>
+      </div>
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+      </nav>
+      
+    </div>
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">飞翔的企鹅</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">欢迎访问</a>
+        </h2>
+      
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-java/thread/07-threadDeadLock" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/11/16/java/thread/07-threadDeadLock/" class="article-date">
+  <time datetime="2018-11-16T09:55:00.000Z" itemprop="datePublished">2018-11-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      线程死锁
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- Table of Contents -->
+        
+        <h4 id="目录介绍"><a href="#目录介绍" class="headerlink" title="目录介绍"></a>目录介绍</h4><ul>
+<li>1.代码模拟产生死锁<ul>
+<li>1.1 代码描述</li>
+<li>1.2 产生死锁代码</li>
+<li>1.3 死锁发生的场景</li>
+</ul>
+</li>
+<li>2.Java中导致死锁的原因<ul>
+<li>2.1 造成死锁原因</li>
+<li>2.2 死锁的危害</li>
+</ul>
+</li>
+<li>3.出现死锁需要满足条件<ul>
+<li>3.1 死锁问题条件</li>
+<li>3.2 如何预防死锁</li>
+</ul>
+</li>
+<li>4.死锁诊断步骤<ul>
+<li>4.1 如何定位死锁</li>
+</ul>
+</li>
+<li>5.死锁修复解决方案<ul>
+<li>5.1 死锁修复方案</li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+<h3 id="首先思考问题"><a href="#首先思考问题" class="headerlink" title="首先思考问题"></a>首先思考问题</h3><ul>
+<li>死锁的概念和产生死锁的根本原因是什么？死锁的预防策略中资源有序分配策略是什么。</li>
+<li>理解产生死锁的必要条件–以下四个条件同时具备：互斥条件、不可抢占条件、占有且申请条件、循环等待条件。这几个条件之间有什么关系。</li>
+<li>死锁的检测及恢复的思想。死锁是如何解决和避免的。结合具体案例分析一下思路？</li>
+<li>Android实际开发中是否有遇到过死锁，在什么情景下遇到的，当时是怎么排查问题并且解决的？</li>
+</ul>
+<h3 id="1-代码模拟产生死锁"><a href="#1-代码模拟产生死锁" class="headerlink" title="1.代码模拟产生死锁"></a>1.代码模拟产生死锁</h3><h4 id="1-1-代码描述"><a href="#1-1-代码描述" class="headerlink" title="1.1 代码描述"></a>1.1 代码描述</h4><ul>
+<li>启动两个线程，设置两个线程监听对象obj1 、obj2。<ul>
+<li>线程1启动的时候，先获取obj1锁，暂停1秒，然后获取obj2锁。</li>
+<li>线程2启动时，先获取obj2，再获取obj1。</li>
+</ul>
+</li>
+<li>当线程2启动的时候获取obj2成功，然后去获取obj1的时候，obj1被线程1占用，此时就等待。线程1秒后去获取obj2，此时obj2锁被线程2握着，产生死锁，互相无法获取。</li>
+</ul>
+<h4 id="1-2-产生死锁代码"><a href="#1-2-产生死锁代码" class="headerlink" title="1.2 产生死锁代码"></a>1.2 产生死锁代码</h4><ul>
+<li><p>代码如下所示</p>
+<ul>
+<li>这种方法将直接导致死锁<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> Object obj1 = <span class="keyword">new</span> Object();</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> Object obj2 = <span class="keyword">new</span> Object();</span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">test1</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">new</span> Thread()&#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">synchronized</span> (obj1)&#123;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    System.out.println(<span class="string">"yc---Thread1 obj1"</span>);</span><br><span class="line">                    Thread.sleep(<span class="number">1000</span>);</span><br><span class="line">                &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">synchronized</span> (obj2)&#123;</span><br><span class="line">                    System.out.println(<span class="string">"yc---Thread1 obj2"</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;.start();</span><br><span class="line">    <span class="keyword">new</span> Thread()&#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">synchronized</span> (obj2)&#123;</span><br><span class="line">                System.out.println(<span class="string">"yc---Thread2 obj2"</span>);</span><br><span class="line">                <span class="keyword">synchronized</span> (obj1)&#123;</span><br><span class="line">                    System.out.println(<span class="string">"yc---Thread2 obj1"</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;.start();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>接下来去掉上面代码中的Thread.sleep(1000)代码</p>
+<ul>
+<li>注意去掉了这行代码后，开始时可以正常打印日志，多次触发test1()方法后，发现最终也会出现死锁问题。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> Object obj1 = <span class="keyword">new</span> Object();</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> Object obj2 = <span class="keyword">new</span> Object();</span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">test1</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">new</span> Thread()&#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">synchronized</span> (obj1)&#123;</span><br><span class="line">                System.out.println(<span class="string">"yc---Thread1 obj1"</span>);</span><br><span class="line">                <span class="keyword">synchronized</span> (obj2)&#123;</span><br><span class="line">                    System.out.println(<span class="string">"yc---Thread1 obj2"</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;.start();</span><br><span class="line">    <span class="keyword">new</span> Thread()&#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">synchronized</span> (obj2)&#123;</span><br><span class="line">                System.out.println(<span class="string">"yc---Thread2 obj2"</span>);</span><br><span class="line">                <span class="keyword">synchronized</span> (obj1)&#123;</span><br><span class="line">                    System.out.println(<span class="string">"yc---Thread2 obj1"</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;.start();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="1-3-死锁发生的场景"><a href="#1-3-死锁发生的场景" class="headerlink" title="1.3 死锁发生的场景"></a>1.3 死锁发生的场景</h4><ul>
+<li>死锁不仅仅是在线程之间会发生，存在资源独占的进程之间同样也可能出现死锁。大多是聚焦在多线程场景中的死锁，指两个或多个线程之间，由于互相持有对方需要的锁，而永久处于阻塞的状态。</li>
+</ul>
+<h3 id="2-Java中导致死锁的原因"><a href="#2-Java中导致死锁的原因" class="headerlink" title="2.Java中导致死锁的原因"></a>2.Java中导致死锁的原因</h3><h4 id="2-1-造成死锁原因"><a href="#2-1-造成死锁原因" class="headerlink" title="2.1 造成死锁原因"></a>2.1 造成死锁原因</h4><ul>
+<li>在申请锁时发生了交叉闭环申请。即线程在获得了锁1并且没有释放的情况下去申请锁2，这时，另一个线程已经获得了锁2，在释放锁2之前又要先获得锁1，因此闭环发生，陷入死锁循环。<ul>
+<li><img src="/images/1432347-7cec2c49929f7586.png" alt=""></li>
+</ul>
+</li>
+</ul>
+<h4 id="2-2-死锁的危害"><a href="#2-2-死锁的危害" class="headerlink" title="2.2 死锁的危害"></a>2.2 死锁的危害</h4><ul>
+<li>从上面死锁代码案例可以知道，当发生死锁的时候，导致彼此一直处于等待之中，而导致代码无法执行下去。只能重启，后果比较严重！</li>
+<li>在死锁时，线程间相互等待资源，而又不释放自身的资源，导致无穷无尽的等待，其结果是系统任务永远无法执行完成。系统发生死锁现象不仅浪费大量的系统资源，甚至导致整个系统崩溃，带来灾难性后果。</li>
+</ul>
+<h3 id="3-出现死锁需要满足条件"><a href="#3-出现死锁需要满足条件" class="headerlink" title="3.出现死锁需要满足条件"></a>3.出现死锁需要满足条件</h3><h4 id="3-1-死锁问题条件"><a href="#3-1-死锁问题条件" class="headerlink" title="3.1 死锁问题条件"></a>3.1 死锁问题条件</h4><ul>
+<li><ol>
+<li>互斥条件：一个资源每次只能被一个线程使用。</li>
+</ol>
+</li>
+<li><ol start="2">
+<li>请求与保持条件：一个进程因请求资源而阻塞时，对已获得的资源保持不放。</li>
+</ol>
+</li>
+<li><ol start="3">
+<li>不剥夺条件：进程已获得的资源，在未使用完之前，不能强行剥夺。</li>
+</ol>
+</li>
+<li><ol start="4">
+<li>循环等待条件：若干进程之间形成一种头尾相接的循环等待资源关系。</li>
+</ol>
+</li>
+</ul>
+<h4 id="3-2-如何预防死锁"><a href="#3-2-如何预防死锁" class="headerlink" title="3.2 如何预防死锁"></a>3.2 如何预防死锁</h4><ul>
+<li>死锁发生时的四个必要条件，只要破坏这四个必要条件中的任意一个条件，死锁就不会发生。这就为我们解决死锁问题提供了可能。一般地，解决死锁的方法分为死锁的预防，避免，检测[定位死锁的位置]与恢复三种（注意：死锁的检测与恢复是一个方法）。<br>锁的预防是保证系统不进入死锁状态的一种策略。它的基本思想是要求进程申请资源时遵循某种协议，从而打破产生死锁的四个必要条件中的一个或几个，保证系统不会进入死锁状态。<ul>
+<li>打破互斥条件。即允许进程同时访问某些资源。但是，有的资源是不允许被同时访问的，像打印机等等，这是由资源本身的属性所决定的。所以，这种办法并无实用价值。</li>
+<li>打破不可抢占条件。即允许进程强行从占有者那里夺取某些资源。就是说，当一个进程已占有了某些资源，它又申请新的资源，但不能立即被满足时，它必须释放所占有的全部资源，以后再重新申请。它所释放的资源可以分配给其它进程。这就相当于该进程占有的资源被隐蔽地强占了。这种预防死锁的方法实现起来困难，会降低系统性能。    </li>
+<li>打破占有且申请条件。可以实行资源预先分配策略。即进程在运行前一次性地向系统申请它所需要的全部资源。如果某个进程所需的全部资源得不到满足，则不分配任何资源，此进程暂不运行。只有当系统能够满足当前进程的全部资源需求时，才一次性地将所申请的资源全部分配给该进程。由于运行的进程已占有了它所需的全部资源，所以不会发生占有资源又申请资源的现象，因此不会发生死锁。但是，这种策略也有如下缺点：<ul>
+<li>在许多情况下，一个进程在执行之前不可能知道它所需要的全部资源。这是由于进程在执行时是动态的，不可预测的；</li>
+<li>资源利用率低。无论所分资源何时用到，一个进程只有在占有所需的全部资源后才能执行。即使有些资源最后才被该进程用到一次，但该进程在生存期间却一直占有它们，造成长期占着不用的状况。这显然是一种极大的资源浪费；</li>
+<li>降低了进程的并发性。因为资源有限，又加上存在浪费，能分配到所需全部资源的进程个数就必然少了。</li>
+</ul>
+</li>
+<li>打破循环等待条件，实行资源有序分配策略。采用这种策略，即把资源事先分类编号，按号分配，使进程在申请，占用资源时不会形成环路。所有进程对资源的请求必须严格按资源序号递增的顺序提出。进程占用了小号资源，才能申请大号资源，就不会产生环路，从而预防了死锁。这种策略与前面的策略相比，资源的利用率和系统吞吐量都有很大提高，但是也存在以下缺点：<ul>
+<li>限制了进程对资源的请求，同时给系统中所有资源合理编号也是件困难事，并增加了系统开销；</li>
+<li>为了遵循按编号申请的次序，暂不使用的资源也需要提前申请，从而增加了进程对资源的占用时间。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="4-死锁诊断步骤"><a href="#4-死锁诊断步骤" class="headerlink" title="4.死锁诊断步骤"></a>4.死锁诊断步骤</h3><h4 id="4-1-如何定位死锁"><a href="#4-1-如何定位死锁" class="headerlink" title="4.1 如何定位死锁"></a>4.1 如何定位死锁</h4><ul>
+<li>定位死锁最常用的工具就是利用jstack等工具获取线程栈，然后定位相互之间的依赖关系，进而找到死锁。如果是比较明显的死锁，往往jstack工具就能直接定位，类似JConsole甚至可以在图形界面进行有限的死锁检测。</li>
+<li>如果程序运行时发生了死锁，绝大多数情况下都是无法在线解决的，只能重启、修正程序本身问题。所以，代码开发阶段相互审查，或者利用工具进行预防性排查，也是很重要的。<ul>
+<li>1.首先，可以使用 jps 或者系统的 ps 命令、任务管理器等工具，确定进程 ID。</li>
+<li>2.调用 jstack 获取线程栈：jstack your-pid</li>
+<li>3.然后看看日志，思考怎么用studio将日志打印出来呢？</li>
+</ul>
+</li>
+</ul>
+<h3 id="5-死锁修复解决方案"><a href="#5-死锁修复解决方案" class="headerlink" title="5.死锁修复解决方案"></a>5.死锁修复解决方案</h3><h4 id="5-1-死锁修复方案"><a href="#5-1-死锁修复方案" class="headerlink" title="5.1 死锁修复方案"></a>5.1 死锁修复方案</h4><ul>
+<li>如果在死锁检查时发现了死锁情况，那么就要努力消除死锁，使系统从死锁状态中恢复过来。消除死锁的几种方式：<ul>
+<li><ol>
+<li>最简单、最常用的方法就是进行系统的重新启动，不过这种方法代价很大，它意味着在这之前所有的进程已经完成的计算工作都将付之东流，包括参与死锁的那些进程，以及未参与死锁的进程；</li>
+</ol>
+</li>
+<li><ol start="2">
+<li>撤消进程，剥夺资源。终止参与死锁的进程，收回它们占有的资源，从而解除死锁。这时又分两种情况：一次性撤消参与死锁的全部进程，剥夺全部资源；或者逐步撤消参与死锁的进程，逐步收回死锁进程占有的资源。一般来说，选择逐步撤消的进程时要按照一定的原则进行，目的是撤消那些代价最小的进程，比如按进程的优先级确定进程的代价；考虑进程运行时的代价和与此进程相关的外部作业的代价等因素；</li>
+</ol>
+</li>
+<li><ol start="3">
+<li>进程回退策略，即让参与死锁的进程回退到没有发生死锁前某一点处，并由此点处继续执行，以求再次执行时不再发生死锁。虽然这是个较理想的办法，但是操作起来系统开销极大，要有堆栈这样的机构记录进程的每一步变化，以便今后的回退，有时这是无法做到的。</li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.okjvm.com/2018/11/16/java/thread/07-threadDeadLock/" data-id="ckkrzb8ya0037cv2a00soj9w7" class="article-share-link">分享</a>
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/多线程/">多线程</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+ <script src="/jquery/jquery.min.js"></script>
+  <div id="random_posts">
+    <h2>推荐文章</h2>
+    <div class="random_posts_ul">
+      <script>
+          var random_count =4
+          var site = {BASE_URI:'/'};
+          function load_random_posts(obj) {
+              var arr=site.posts;
+              if (!obj) return;
+              // var count = $(obj).attr('data-count') || 6;
+              for (var i, tmp, n = arr.length; n; i = Math.floor(Math.random() * n), tmp = arr[--n], arr[n] = arr[i], arr[i] = tmp);
+              arr = arr.slice(0, random_count);
+              var html = '<ul>';
+            
+              for(var j=0;j<arr.length;j++){
+                var item=arr[j];
+                html += '<li><strong>' + 
+                item.date + ':&nbsp;&nbsp;<a href="' + (site.BASE_URI+item.uri) + '">' + 
+                (item.title || item.uri) + '</a></strong>';
+                if(item.excerpt){
+                  html +='<div class="post-excerpt">'+item.excerpt+'</div>';
+                }
+                html +='</li>';
+                
+              }
+              $(obj).html(html + '</ul>');
+          }
+          $('.random_posts_ul').each(function () {
+              var c = this;
+              if (!site.posts || !site.posts.length){
+                  $.getJSON(site.BASE_URI + 'js/posts.js',function(json){site.posts = json;load_random_posts(c)});
+              } 
+               else{
+                load_random_posts(c);
+              }
+          });
+      </script>
+    </div>
+  </div>
+
+    
+<nav id="article-nav">
+  
+    <a href="/2018/11/20/java/iostream/ioStreamBase/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          IO流基础知识
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/11/15/java/thread/06-closeThread/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">Thread关闭方法</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+ 
+     
+  <div class="comments" id="comments">
+    
+     
+       
+       
+      
+      
+  </div>
+ 
+  
+
+</section>
+           
+    <aside id="sidebar">
+  
+    
+
+  
+    
+    <div class="widget-wrap">
+    
+      <div class="widget" id="toc-widget-fixed">
+      
+        <strong class="toc-title">文章目录</strong>
+        <div class="toc-widget-list">
+              <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#目录介绍"><span class="toc-number">1.</span> <span class="toc-text">目录介绍</span></a></li></ol><li class="toc-item toc-level-3"><a class="toc-link" href="#首先思考问题"><span class="toc-number"></span> <span class="toc-text">首先思考问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-代码模拟产生死锁"><span class="toc-number"></span> <span class="toc-text">1.代码模拟产生死锁</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-1-代码描述"><span class="toc-number">1.</span> <span class="toc-text">1.1 代码描述</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-2-产生死锁代码"><span class="toc-number">2.</span> <span class="toc-text">1.2 产生死锁代码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-3-死锁发生的场景"><span class="toc-number">3.</span> <span class="toc-text">1.3 死锁发生的场景</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-Java中导致死锁的原因"><span class="toc-number"></span> <span class="toc-text">2.Java中导致死锁的原因</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-造成死锁原因"><span class="toc-number">1.</span> <span class="toc-text">2.1 造成死锁原因</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-死锁的危害"><span class="toc-number">2.</span> <span class="toc-text">2.2 死锁的危害</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-出现死锁需要满足条件"><span class="toc-number"></span> <span class="toc-text">3.出现死锁需要满足条件</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-死锁问题条件"><span class="toc-number">1.</span> <span class="toc-text">3.1 死锁问题条件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-2-如何预防死锁"><span class="toc-number">2.</span> <span class="toc-text">3.2 如何预防死锁</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-死锁诊断步骤"><span class="toc-number"></span> <span class="toc-text">4.死锁诊断步骤</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#4-1-如何定位死锁"><span class="toc-number">1.</span> <span class="toc-text">4.1 如何定位死锁</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-死锁修复解决方案"><span class="toc-number"></span> <span class="toc-text">5.死锁修复解决方案</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#5-1-死锁修复方案"><span class="toc-number">1.</span> <span class="toc-text">5.1 死锁修复方案</span></a></li></ol>
+          </li></div>
+      </div>
+    </div>
+
+  
+    
+
+  
+    
+  
+    
+  
+    
+
+  
+    
+  
+    <!--微信公众号二维码-->
+
+
+  
+</aside>
+
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-left">
+      &copy; 2014 - 2021 popc&nbsp;|&nbsp;
+      主题 <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
+    </div>
+     <div id="footer-right">
+      联系方式&nbsp;|&nbsp;cc5853235@gmail.com
+    </div>
+  </div>
+</footer>
+ <script src="/jquery/jquery.min.js"></script>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+</nav>
+    <img class="back-to-top-btn" src="/images/fly-to-top.png">
+<script>
+// Elevator script included on the page, already.
+window.onload = function() {
+  var elevator = new Elevator({
+    selector:'.back-to-top-btn',
+    element: document.querySelector('.back-to-top-btn'),
+    duration: 1000 // milliseconds
+  });
+}
+</script>
+      
+
+  
+
+  
+
+
+
+
+
+
+
+<!-- author:forvoid begin -->
+<!-- author:forvoid begin -->
+
+<!-- author:forvoid end -->
+
+<!-- author:forvoid end -->
+
+
+
+ <script src="/js/is.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/elevator.js"></script>
+  </div>
+</body>
+</html>

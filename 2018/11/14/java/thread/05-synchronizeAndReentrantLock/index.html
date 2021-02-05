@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>synchronize与ReentrantLock | 飞翔的企鹅</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="目录介绍 1.Synchronize和ReentrantLock区别 1.1 相似点 1.2 区别 1.3 什么是线程安全问题？如何理解 1.4 线程安全需要保证几个基本特性   2.Synchronize在编译时如何实现锁机制 3.ReentrantLock使用方法 4.ReentrantLock锁机制测试案例分析 4.1 代码案例分析 4.2 什么时候选择用ReentrantLock 4.3">
+<meta name="keywords" content="多线程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="synchronize与ReentrantLock">
+<meta property="og:url" content="https://blog.okjvm.com/2018/11/14/java/thread/05-synchronizeAndReentrantLock/index.html">
+<meta property="og:site_name" content="飞翔的企鹅">
+<meta property="og:description" content="目录介绍 1.Synchronize和ReentrantLock区别 1.1 相似点 1.2 区别 1.3 什么是线程安全问题？如何理解 1.4 线程安全需要保证几个基本特性   2.Synchronize在编译时如何实现锁机制 3.ReentrantLock使用方法 4.ReentrantLock锁机制测试案例分析 4.1 代码案例分析 4.2 什么时候选择用ReentrantLock 4.3">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-03-17T12:45:13.781Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="synchronize与ReentrantLock">
+<meta name="twitter:description" content="目录介绍 1.Synchronize和ReentrantLock区别 1.1 相似点 1.2 区别 1.3 什么是线程安全问题？如何理解 1.4 线程安全需要保证几个基本特性   2.Synchronize在编译时如何实现锁机制 3.ReentrantLock使用方法 4.ReentrantLock锁机制测试案例分析 4.1 代码案例分析 4.2 什么时候选择用ReentrantLock 4.3">
+  
+    <link rel="alternate" href="/atom.xml" title="飞翔的企鹅" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  
+    
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    
+    <div id="header-inner" class="inner">
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://blog.okjvm.com"></form>
+      </div>
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+      </nav>
+      
+    </div>
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">飞翔的企鹅</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">欢迎访问</a>
+        </h2>
+      
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-java/thread/05-synchronizeAndReentrantLock" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/11/14/java/thread/05-synchronizeAndReentrantLock/" class="article-date">
+  <time datetime="2018-11-14T09:54:58.000Z" itemprop="datePublished">2018-11-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      synchronize与ReentrantLock
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- Table of Contents -->
+        
+        <h4 id="目录介绍"><a href="#目录介绍" class="headerlink" title="目录介绍"></a>目录介绍</h4><ul>
+<li>1.Synchronize和ReentrantLock区别<ul>
+<li>1.1 相似点</li>
+<li>1.2 区别</li>
+<li>1.3 什么是线程安全问题？如何理解</li>
+<li>1.4 线程安全需要保证几个基本特性</li>
+</ul>
+</li>
+<li>2.Synchronize在编译时如何实现锁机制</li>
+<li>3.ReentrantLock使用方法</li>
+<li>4.ReentrantLock锁机制测试案例分析<ul>
+<li>4.1 代码案例分析</li>
+<li>4.2 什么时候选择用ReentrantLock</li>
+<li>4.3 公平锁和非公平锁有何区别</li>
+</ul>
+</li>
+<li>5.问答测试题<ul>
+<li>5.1 ReentrantLock和synchronized使用分析</li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+<h3 id="1-Synchronize和ReentrantLock区别"><a href="#1-Synchronize和ReentrantLock区别" class="headerlink" title="1.Synchronize和ReentrantLock区别"></a>1.Synchronize和ReentrantLock区别</h3><h4 id="1-1-相似点："><a href="#1-1-相似点：" class="headerlink" title="1.1 相似点："></a>1.1 相似点：</h4><ul>
+<li>这两种同步方式有很多相似之处，它们都是加锁方式同步，而且都是阻塞式的同步，也就是说当如果一个线程获得了对象锁，进入了同步块，其他访问该同步块的线程都必须阻塞在同步块外面等待，而进行线程阻塞和唤醒的代价是比较高的（操作系统需要在用户态与内核态之间来回切换，代价很高，不过可以通过对锁优化进行改善）。</li>
+</ul>
+<h4 id="1-2-区别："><a href="#1-2-区别：" class="headerlink" title="1.2 区别："></a>1.2 区别：</h4><h5 id="1-2-1-API层面"><a href="#1-2-1-API层面" class="headerlink" title="1.2.1 API层面"></a>1.2.1 API层面</h5><ul>
+<li>这两种方式最大区别就是对于Synchronized来说，它是java语言的关键字，是原生语法层面的互斥，需要jvm实现。而ReentrantLock它是JDK 1.5之后提供的API层面的互斥锁，需要lock()和unlock()方法配合try/finally语句块来完成。</li>
+<li><p>synchronized既可以修饰方法，也可以修饰代码块。 </p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//synchronized修饰一个方法时，这个方法叫同步方法。</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span> </span>&#123;</span><br><span class="line"><span class="comment">//方法体``</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">synchronized</span>（Object） &#123;</span><br><span class="line"><span class="comment">//括号中表示需要锁的对象.</span></span><br><span class="line"><span class="comment">//线程执行的时候会对Object上锁</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>ReentrantLock使用</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> ReentrantLock lock = <span class="keyword">new</span> ReentrantLock();</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    lock.lock();</span><br><span class="line">    <span class="keyword">try</span>&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">5</span>;i++)&#123;</span><br><span class="line">            System.out.println(Thread.currentThread().getName()+<span class="string">":"</span>+i);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;<span class="keyword">finally</span>&#123;</span><br><span class="line">        lock.unlock();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h5 id="1-2-2-等待可中断"><a href="#1-2-2-等待可中断" class="headerlink" title="1.2.2 等待可中断"></a>1.2.2 等待可中断</h5><ul>
+<li>等待可中断是指当持有锁的线程长期不释放锁的时候，正在等待的线程可以选择放弃等待，改为处理其他事情。可等待特性对处理执行时间非常长的同步快很有帮助。</li>
+<li>具体来说，假如业务代码中有两个线程，Thread1 Thread2。假设 Thread1 获取了对象object的锁，Thread2将等待Thread1释放object的锁。<ul>
+<li>使用synchronized。如果Thread1不释放，Thread2将一直等待，不能被中断。synchronized也可以说是Java提供的原子性内置锁机制。内部锁扮演了互斥锁（mutual exclusion lock ，mutex）的角色，一个线程引用锁的时候，别的线程阻塞等待。</li>
+<li>使用ReentrantLock。如果Thread1不释放，Thread2等待了很长时间以后，可以中断等待，转而去做别的事情。</li>
+</ul>
+</li>
+</ul>
+<h5 id="1-2-3-公平锁"><a href="#1-2-3-公平锁" class="headerlink" title="1.2.3 公平锁"></a>1.2.3 公平锁</h5><ul>
+<li>公平锁是指多个线程在等待同一个锁时，必须按照申请的时间顺序来依次获得锁；而非公平锁则不能保证这一点。非公平锁在锁被释放时，任何一个等待锁的线程都有机会获得锁。</li>
+<li>synchronized的锁是非公平锁，ReentrantLock默认情况下也是非公平锁，但可以通过带布尔值的构造函数要求使用公平锁。<ul>
+<li>ReentrantLock 构造器的一个参数是boolean值，它允许您选择想要一个公平（fair）锁，还是一个不公平（unfair）锁。公平锁：使线程按照请求锁的顺序依次获得锁, 但是有成本;不公平锁：则允许讨价还价.     </li>
+</ul>
+</li>
+</ul>
+<h5 id="1-2-4-锁绑定多个条件"><a href="#1-2-4-锁绑定多个条件" class="headerlink" title="1.2.4 锁绑定多个条件"></a>1.2.4 锁绑定多个条件</h5><ul>
+<li>ReentrantLock可以同时绑定多个Condition对象，只需多次调用newCondition方法即可。</li>
+<li>synchronized中，锁对象的wait()和notify()或notifyAll()方法可以实现一个隐含的条件。但如果要和多于一个的条件关联的时候，就不得不额外添加一个锁。</li>
+</ul>
+<h4 id="1-3-什么是线程安全问题？如何理解"><a href="#1-3-什么是线程安全问题？如何理解" class="headerlink" title="1.3 什么是线程安全问题？如何理解"></a>1.3 什么是线程安全问题？如何理解</h4><ul>
+<li>如果你的代码所在的进程中有多个线程在同时运行，而这些线程可能会同时运行这段代码。如果每次运行结果和单线程运行的结果是一样的，而且其他的变量的值也和预期的是一样的，就是线程安全的，或者说:一个类或者程序所提供的接口对于线程来说是原子操作或者多个线程之间的切换不会导致该接口的执行结果存在二义性,也就是说我们不用考虑同步的问题 。</li>
+</ul>
+<h4 id="1-4-线程安全需要保证几个基本特性"><a href="#1-4-线程安全需要保证几个基本特性" class="headerlink" title="1.4 线程安全需要保证几个基本特性"></a>1.4 线程安全需要保证几个基本特性</h4><ul>
+<li>1、原子性，简单说就是相关操作不会中途被其他线程干扰，一般通过同步机制实现。</li>
+<li>2、可见性，是一个线程修改了某个共享变量，其状态能够立即被其他线程知晓，通常被解释为将线程本地状态反映到主内存上，volatile 就是负责保证可见性的。</li>
+<li>3、有序性，是保证线程内串行语义，避免指令重排等。</li>
+</ul>
+<h3 id="2-Synchronize在编译时如何实现锁机制"><a href="#2-Synchronize在编译时如何实现锁机制" class="headerlink" title="2.Synchronize在编译时如何实现锁机制"></a>2.Synchronize在编译时如何实现锁机制</h3><ul>
+<li>Synchronized经过编译，会在同步块的前后分别形成monitor enter和monitor exit这个两个字节码指令。在执行monitor enter指令时，首先要尝试获取对象锁。如果这个对象没被锁定，或者当前线程已经拥有了那个对象锁，把锁的计算器加1，相应的，在执行monitor exit指令时会将锁计算器就减1，当计算器为0时，锁就被释放了。如果获取对象锁失败，那当前线程就要阻塞，直到对象锁被另一个线程释放为止。</li>
+</ul>
+<h3 id="3-ReentrantLock使用方法"><a href="#3-ReentrantLock使用方法" class="headerlink" title="3.ReentrantLock使用方法"></a>3.ReentrantLock使用方法</h3><ul>
+<li>ReentrantLock是java.util.concurrent包下提供的一套互斥锁，相比Synchronized，ReentrantLock类提供了一些高级功能，主要有以下3项：<ul>
+<li>1.等待可中断，持有锁的线程长期不释放的时候，正在等待的线程可以选择放弃等待，这相当于Synchronized来说可以避免出现死锁的情况。</li>
+<li>2.公平锁，多个线程等待同一个锁时，必须按照申请锁的时间顺序获得锁，Synchronized锁非公平锁，ReentrantLock默认的构造函数是创建的非公平锁，可以通过参数true设为公平锁，但公平锁表现的性能不是很好。</li>
+<li>3.锁绑定多个条件，一个ReentrantLock对象可以同时绑定对个对象。</li>
+</ul>
+</li>
+<li><p>使用方法代码如下</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> ReentrantLock lock = <span class="keyword">new</span> ReentrantLock();</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    lock.lock();</span><br><span class="line">    <span class="keyword">try</span>&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">5</span>;i++)&#123;</span><br><span class="line">            System.out.println(Thread.currentThread().getName()+<span class="string">":"</span>+i);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;<span class="keyword">finally</span>&#123;</span><br><span class="line">        lock.unlock();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>注意问题：为保证锁释放，每一个 lock() 动作，建议都立即对应一都立即对应一个 try-catch-finally</p>
+</li>
+</ul>
+<h3 id="4-ReentrantLock锁机制测试案例分析"><a href="#4-ReentrantLock锁机制测试案例分析" class="headerlink" title="4.ReentrantLock锁机制测试案例分析"></a>4.ReentrantLock锁机制测试案例分析</h3><h4 id="4-1-代码案例分析"><a href="#4-1-代码案例分析" class="headerlink" title="4.1 代码案例分析"></a>4.1 代码案例分析</h4><ul>
+<li>代码如下所示  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">test2</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Runnable t1 = <span class="keyword">new</span> MyThread();</span><br><span class="line">    <span class="keyword">new</span> Thread(t1,<span class="string">"t1"</span>).start();</span><br><span class="line">    <span class="keyword">new</span> Thread(t1,<span class="string">"t2"</span>).start();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyThread</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> ReentrantLock lock = <span class="keyword">new</span> ReentrantLock();</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        lock.lock();</span><br><span class="line">        <span class="keyword">try</span>&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">5</span>;i++)&#123;</span><br><span class="line">                System.out.println(Thread.currentThread().getName()+<span class="string">":"</span>+i);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;<span class="keyword">finally</span>&#123;</span><br><span class="line">            lock.unlock();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="4-2-什么时候选择用ReentrantLock"><a href="#4-2-什么时候选择用ReentrantLock" class="headerlink" title="4.2 什么时候选择用ReentrantLock"></a>4.2 什么时候选择用ReentrantLock</h4><ul>
+<li>适用场景：时间锁等候、可中断锁等候、无块结构锁、多个条件变量或者锁投票 </li>
+<li>在确实需要一些 synchronized所没有的特性的时候，比如时间锁等候、可中断锁等候、无块结构锁、多个条件变量或者锁投票。 ReentrantLock 还具有可伸缩性的好处，应当在高度争用的情况下使用它，但是请记住，大多数 synchronized 块几乎从来没有出现过争用，所以可以把高度争用放在一边。我建议用 synchronized 开发，直到确实证明 synchronized 不合适，而不要仅仅是假设如果使用 ReentrantLock “性能会更好”。请记住，这些是供高级用户使用的高级工具。（而且，真正的高级用户喜欢选择能够找到的最简单工具，直到他们认为简单的工具不适用为止。）。一如既往，首先要把事情做好，然后再考虑是不是有必要做得更快。 </li>
+<li>使用场景代码展示【摘自ThreadPoolExecutor类，这个类中很多地方用到了这个锁。自己可以查看】：  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Rolls back the worker thread creation.</span></span><br><span class="line"><span class="comment"> * - removes worker from workers, if present</span></span><br><span class="line"><span class="comment"> * - decrements worker count</span></span><br><span class="line"><span class="comment"> * - rechecks for termination, in case the existence of this</span></span><br><span class="line"><span class="comment"> *   worker was holding up termination</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">addWorkerFailed</span><span class="params">(Worker w)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">final</span> ReentrantLock mainLock = <span class="keyword">this</span>.mainLock;</span><br><span class="line">    mainLock.lock();</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (w != <span class="keyword">null</span>)</span><br><span class="line">            workers.remove(w);</span><br><span class="line">        decrementWorkerCount();</span><br><span class="line">        tryTerminate();</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        mainLock.unlock();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="4-3-公平锁和非公平锁有何区别"><a href="#4-3-公平锁和非公平锁有何区别" class="headerlink" title="4.3 公平锁和非公平锁有何区别"></a>4.3 公平锁和非公平锁有何区别</h4><ul>
+<li>公平性是指在竞争场景中，当公平性为真时，会倾向于将锁赋予等待时间最久的线程。公平性是减少线程“饥饿”（个别线程长期等待锁，但始终无法获取）情况发生的一个办法。<ul>
+<li>1、公平锁能保证：老的线程排队使用锁，新线程仍然排队使用锁。</li>
+<li>2、非公平锁保证：老的线程排队使用锁；但是无法保证新线程抢占已经在排队的线程的锁。</li>
+<li>看下面代码案例所示：可以得出结论，公平锁指的是哪个线程先运行，那就可以先得到锁。非公平锁是不管线程是否是先运行，新的线程都有可能抢占已经在排队的线程的锁。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">test3</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Service service = <span class="keyword">new</span> Service();</span><br><span class="line">    ThreadClass tcArray[] = <span class="keyword">new</span> ThreadClass[<span class="number">10</span>];</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">10</span>;i++)&#123;</span><br><span class="line">        tcArray[i] = <span class="keyword">new</span> ThreadClass(service);</span><br><span class="line">        tcArray[i].start();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Service</span> </span>&#123;</span><br><span class="line">    ReentrantLock lock = <span class="keyword">new</span> ReentrantLock(<span class="keyword">true</span>);</span><br><span class="line">    <span class="comment">//ReentrantLock lock = new ReentrantLock(false);</span></span><br><span class="line">    Service() &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">getThreadName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(Thread.currentThread().getName() + <span class="string">" 已经被锁定"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ThreadClass</span> <span class="keyword">extends</span> <span class="title">Thread</span></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Service service;</span><br><span class="line">    ThreadClass(Service service) &#123;</span><br><span class="line">        <span class="keyword">this</span>.service = service;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span></span>&#123;</span><br><span class="line">        System.out.println(Thread.currentThread().getName() + <span class="string">" 抢到了锁"</span>);</span><br><span class="line">        service.lock.lock();</span><br><span class="line">        service.getThreadName();</span><br><span class="line">        service.lock.unlock();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="5-问答测试题"><a href="#5-问答测试题" class="headerlink" title="5.问答测试题"></a>5.问答测试题</h3><h4 id="5-1-ReentrantLock和synchronized使用分析"><a href="#5-1-ReentrantLock和synchronized使用分析" class="headerlink" title="5.1 ReentrantLock和synchronized使用分析"></a>5.1 ReentrantLock和synchronized使用分析</h4><ul>
+<li>ReentrantLock是Lock的实现类，是一个互斥的同步器，在多线程高竞争条件下，ReentrantLock比synchronized有更加优异的性能表现。</li>
+<li>1 用法比较<ul>
+<li>Lock使用起来比较灵活，但是必须有释放锁的配合动作</li>
+<li>Lock必须手动获取与释放锁，而synchronized不需要手动释放和开启锁</li>
+<li>Lock只适用于代码块锁，而synchronized可用于修饰方法、代码块等</li>
+</ul>
+</li>
+<li>2 特性比较<ul>
+<li>ReentrantLock的优势体现在：<ul>
+<li>具备尝试非阻塞地获取锁的特性：当前线程尝试获取锁，如果这一时刻锁没有被其他线程获取到，则成功获取并持有锁</li>
+<li>能被中断地获取锁的特性：与synchronized不同，获取到锁的线程能够响应中断，当获取到锁的线程被中断时，中断异常将会被抛出，同时锁会被释放</li>
+<li>超时获取锁的特性：在指定的时间范围内获取锁；如果截止时间到了仍然无法获取锁，则返回</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>3 注意事项<ul>
+<li>在使用ReentrantLock类的时，一定要注意三点：<ul>
+<li>在finally中释放锁，目的是保证在获取锁之后，最终能够被释放</li>
+<li>不要将获取锁的过程写在try块内，因为如果在获取锁时发生了异常，异常抛出的同时，也会导致锁无故被释放。</li>
+<li>ReentrantLock提供了一个newCondition的方法，以便用户在同一锁的情况下可以根据不同的情况执行等待或唤醒的动作。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.okjvm.com/2018/11/14/java/thread/05-synchronizeAndReentrantLock/" data-id="ckkrzb8y90035cv2ax7ka0hjc" class="article-share-link">分享</a>
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/多线程/">多线程</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+ <script src="/jquery/jquery.min.js"></script>
+  <div id="random_posts">
+    <h2>推荐文章</h2>
+    <div class="random_posts_ul">
+      <script>
+          var random_count =4
+          var site = {BASE_URI:'/'};
+          function load_random_posts(obj) {
+              var arr=site.posts;
+              if (!obj) return;
+              // var count = $(obj).attr('data-count') || 6;
+              for (var i, tmp, n = arr.length; n; i = Math.floor(Math.random() * n), tmp = arr[--n], arr[n] = arr[i], arr[i] = tmp);
+              arr = arr.slice(0, random_count);
+              var html = '<ul>';
+            
+              for(var j=0;j<arr.length;j++){
+                var item=arr[j];
+                html += '<li><strong>' + 
+                item.date + ':&nbsp;&nbsp;<a href="' + (site.BASE_URI+item.uri) + '">' + 
+                (item.title || item.uri) + '</a></strong>';
+                if(item.excerpt){
+                  html +='<div class="post-excerpt">'+item.excerpt+'</div>';
+                }
+                html +='</li>';
+                
+              }
+              $(obj).html(html + '</ul>');
+          }
+          $('.random_posts_ul').each(function () {
+              var c = this;
+              if (!site.posts || !site.posts.length){
+                  $.getJSON(site.BASE_URI + 'js/posts.js',function(json){site.posts = json;load_random_posts(c)});
+              } 
+               else{
+                load_random_posts(c);
+              }
+          });
+      </script>
+    </div>
+  </div>
+
+    
+<nav id="article-nav">
+  
+    <a href="/2018/11/15/java/thread/06-closeThread/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          Thread关闭方法
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/11/11/java/thread/04-synchronize/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">synchronize深入理解</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+ 
+     
+  <div class="comments" id="comments">
+    
+     
+       
+       
+      
+      
+  </div>
+ 
+  
+
+</section>
+           
+    <aside id="sidebar">
+  
+    
+
+  
+    
+    <div class="widget-wrap">
+    
+      <div class="widget" id="toc-widget-fixed">
+      
+        <strong class="toc-title">文章目录</strong>
+        <div class="toc-widget-list">
+              <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#目录介绍"><span class="toc-number">1.</span> <span class="toc-text">目录介绍</span></a></li></ol><li class="toc-item toc-level-3"><a class="toc-link" href="#1-Synchronize和ReentrantLock区别"><span class="toc-number"></span> <span class="toc-text">1.Synchronize和ReentrantLock区别</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-1-相似点："><span class="toc-number">1.</span> <span class="toc-text">1.1 相似点：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-2-区别："><span class="toc-number">2.</span> <span class="toc-text">1.2 区别：</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-2-1-API层面"><span class="toc-number">2.1.</span> <span class="toc-text">1.2.1 API层面</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#1-2-2-等待可中断"><span class="toc-number">2.2.</span> <span class="toc-text">1.2.2 等待可中断</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#1-2-3-公平锁"><span class="toc-number">2.3.</span> <span class="toc-text">1.2.3 公平锁</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#1-2-4-锁绑定多个条件"><span class="toc-number">2.4.</span> <span class="toc-text">1.2.4 锁绑定多个条件</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-3-什么是线程安全问题？如何理解"><span class="toc-number">3.</span> <span class="toc-text">1.3 什么是线程安全问题？如何理解</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-4-线程安全需要保证几个基本特性"><span class="toc-number">4.</span> <span class="toc-text">1.4 线程安全需要保证几个基本特性</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-Synchronize在编译时如何实现锁机制"><span class="toc-number"></span> <span class="toc-text">2.Synchronize在编译时如何实现锁机制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-ReentrantLock使用方法"><span class="toc-number"></span> <span class="toc-text">3.ReentrantLock使用方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-ReentrantLock锁机制测试案例分析"><span class="toc-number"></span> <span class="toc-text">4.ReentrantLock锁机制测试案例分析</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#4-1-代码案例分析"><span class="toc-number">1.</span> <span class="toc-text">4.1 代码案例分析</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-什么时候选择用ReentrantLock"><span class="toc-number">2.</span> <span class="toc-text">4.2 什么时候选择用ReentrantLock</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-3-公平锁和非公平锁有何区别"><span class="toc-number">3.</span> <span class="toc-text">4.3 公平锁和非公平锁有何区别</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-问答测试题"><span class="toc-number"></span> <span class="toc-text">5.问答测试题</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#5-1-ReentrantLock和synchronized使用分析"><span class="toc-number">1.</span> <span class="toc-text">5.1 ReentrantLock和synchronized使用分析</span></a></li></ol>
+          </li></div>
+      </div>
+    </div>
+
+  
+    
+
+  
+    
+  
+    
+  
+    
+
+  
+    
+  
+    <!--微信公众号二维码-->
+
+
+  
+</aside>
+
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-left">
+      &copy; 2014 - 2021 popc&nbsp;|&nbsp;
+      主题 <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
+    </div>
+     <div id="footer-right">
+      联系方式&nbsp;|&nbsp;cc5853235@gmail.com
+    </div>
+  </div>
+</footer>
+ <script src="/jquery/jquery.min.js"></script>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+</nav>
+    <img class="back-to-top-btn" src="/images/fly-to-top.png">
+<script>
+// Elevator script included on the page, already.
+window.onload = function() {
+  var elevator = new Elevator({
+    selector:'.back-to-top-btn',
+    element: document.querySelector('.back-to-top-btn'),
+    duration: 1000 // milliseconds
+  });
+}
+</script>
+      
+
+  
+
+  
+
+
+
+
+
+
+
+<!-- author:forvoid begin -->
+<!-- author:forvoid begin -->
+
+<!-- author:forvoid end -->
+
+<!-- author:forvoid end -->
+
+
+
+ <script src="/js/is.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/elevator.js"></script>
+  </div>
+</body>
+</html>

@@ -1,4 +1,103 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.8.0"><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content="这里是介绍"><title>IO流基础知识 | 飞翔的企鹅</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/normalize/8.0.0/normalize.min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/1.0.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/1.0.0/grids-responsive-min.css"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">IO流基础知识</h1><a id="logo" href="/.">飞翔的企鹅</a><p class="description">欢迎访问</p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">IO流基础知识</h1><div class="post-meta">Nov 20, 2018</div><div class="post-content"><h3 id="目录介绍"><a href="#目录介绍" class="headerlink" title="目录介绍"></a>目录介绍</h3><ul>
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>IO流基础知识 | 飞翔的企鹅</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="目录介绍 1.IO的概述 1.1 IO流概述及其前奏   2.IO流整体介绍 3.File文件类 3.1 File类的概述和方法介绍【掌握】   4.递归 4.1 递归概述和注意事项   5.IO流 5.1 IO流概述及其分类【掌握】 5.2 输入流和输出流分类 5.3 IO流基类概述和FileOutputStream的构造方法【掌握】 5.4 FileOutputStream【掌握】 5.5 F">
+<meta name="keywords" content="io">
+<meta property="og:type" content="article">
+<meta property="og:title" content="IO流基础知识">
+<meta property="og:url" content="https://blog.okjvm.com/2018/11/20/java/iostream/ioStreamBase/index.html">
+<meta property="og:site_name" content="飞翔的企鹅">
+<meta property="og:description" content="目录介绍 1.IO的概述 1.1 IO流概述及其前奏   2.IO流整体介绍 3.File文件类 3.1 File类的概述和方法介绍【掌握】   4.递归 4.1 递归概述和注意事项   5.IO流 5.1 IO流概述及其分类【掌握】 5.2 输入流和输出流分类 5.3 IO流基类概述和FileOutputStream的构造方法【掌握】 5.4 FileOutputStream【掌握】 5.5 F">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-03-17T12:43:55.722Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="IO流基础知识">
+<meta name="twitter:description" content="目录介绍 1.IO的概述 1.1 IO流概述及其前奏   2.IO流整体介绍 3.File文件类 3.1 File类的概述和方法介绍【掌握】   4.递归 4.1 递归概述和注意事项   5.IO流 5.1 IO流概述及其分类【掌握】 5.2 输入流和输出流分类 5.3 IO流基类概述和FileOutputStream的构造方法【掌握】 5.4 FileOutputStream【掌握】 5.5 F">
+  
+    <link rel="alternate" href="/atom.xml" title="飞翔的企鹅" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  
+    
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    
+    <div id="header-inner" class="inner">
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://blog.okjvm.com"></form>
+      </div>
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+      </nav>
+      
+    </div>
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">飞翔的企鹅</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">欢迎访问</a>
+        </h2>
+      
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-java/iostream/ioStreamBase" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/11/20/java/iostream/ioStreamBase/" class="article-date">
+  <time datetime="2018-11-20T02:59:58.000Z" itemprop="datePublished">2018-11-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      IO流基础知识
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- Table of Contents -->
+        
+        <h3 id="目录介绍"><a href="#目录介绍" class="headerlink" title="目录介绍"></a>目录介绍</h3><ul>
 <li>1.IO的概述<ul>
 <li>1.1 IO流概述及其前奏</li>
 </ul>
@@ -43,6 +142,7 @@
 </ul>
 </li>
 </ul>
+<a id="more"></a>
 <h3 id="1-IO的概述"><a href="#1-IO的概述" class="headerlink" title="1.IO的概述"></a>1.IO的概述</h3><ul>
 <li>1.1 IO流概述及其前奏<ul>
 <li>A:IO流概述<ul>
@@ -250,4 +350,199 @@
 </ul>
 <h4 id="7-4-总结"><a href="#7-4-总结" class="headerlink" title="7.4 总结"></a>7.4 总结</h4><pre><code>BufferedInputStream比FileInputStream多了一个缓冲区，执行read时先从缓冲区读取，当缓冲区数据读完时再把缓冲区填满。因此，当每次读取的数据量很小时，FileInputStream每次都是从硬盘读入，而BufferedInputStream
 </code></pre><p> 大部分是从缓冲区读入。读取内存速度比读取硬盘速度快得多，因此BufferedInputStream效率高。<br>    BufferedInputStream的默认缓冲区大小是8192字节。当每次读取数据量接近或远超这个值时，两者效率就没有明显差别了。BufferedOutputStream和FileOutputStream同理，差异更明显一些。</p>
-</div><div class="tags"><a href="/tags/io/">io</a></div><div class="post-nav"><a class="pre" href="/2018/11/20/java/iostream/ioStreamOther/">IO流其他</a><a class="next" href="/2018/11/19/java/base/07-javaBaseTypeCache/">07 基础类型缓存池概念</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"><input type="hidden" name="sitesearch" value="https://fly.popc.top"></form></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"><a href="/tags/鲁迅/" style="font-size: 15px;">鲁迅</a> <a href="/tags/java/" style="font-size: 15px;">java</a> <a href="/tags/数据结构/" style="font-size: 15px;">数据结构</a> <a href="/tags/网络编程/" style="font-size: 15px;">网络编程</a> <a href="/tags/反射/" style="font-size: 15px;">反射</a> <a href="/tags/多线程/" style="font-size: 15px;">多线程</a> <a href="/tags/io/" style="font-size: 15px;">io</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最近文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2018/11/21/java/network/03.TCP&UDP/">TCP和UDP详细介绍</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/11/21/java/network/02.networkProgram2/">网络编程基础知识02</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/11/21/java/network/01.networkProgram/">网络编程基础知识01</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/11/21/java/thread/07-threadDeadLock/">线程死锁</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/11/21/java/thread/06-closeThread/">Thread关闭方法</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/11/21/java/thread/05-synchronizeAndReentrantLock/">synchronize与ReentrantLock</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/11/21/java/thread/04-synchronize/">synchronize深入理解</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/11/21/java/thread/03-threadBackage/">多线程深入理解2</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/11/21/java/thread/02-threadDeep/">多线程深入理解</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/11/21/java/thread/01-threadBase/">多线程基础</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-external-link"> 友情链接</i></div><ul></ul><a href="http://www.example1.com/" title="site-name1" target="_blank">site-name1</a><ul></ul><a href="http://www.example2.com/" title="site-name2" target="_blank">site-name2</a><ul></ul><a href="http://www.example3.com/" title="site-name3" target="_blank">site-name3</a></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2018 <a href="/." rel="nofollow">飞翔的企鹅.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//cdn.bootcss.com/fancybox/3.3.5/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/fancybox/3.3.5/jquery.fancybox.min.css"><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.okjvm.com/2018/11/20/java/iostream/ioStreamBase/" data-id="ckkrzb8yi003fcv2ami60sd02" class="article-share-link">分享</a>
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/io/">io</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+ <script src="/jquery/jquery.min.js"></script>
+  <div id="random_posts">
+    <h2>推荐文章</h2>
+    <div class="random_posts_ul">
+      <script>
+          var random_count =4
+          var site = {BASE_URI:'/'};
+          function load_random_posts(obj) {
+              var arr=site.posts;
+              if (!obj) return;
+              // var count = $(obj).attr('data-count') || 6;
+              for (var i, tmp, n = arr.length; n; i = Math.floor(Math.random() * n), tmp = arr[--n], arr[n] = arr[i], arr[i] = tmp);
+              arr = arr.slice(0, random_count);
+              var html = '<ul>';
+            
+              for(var j=0;j<arr.length;j++){
+                var item=arr[j];
+                html += '<li><strong>' + 
+                item.date + ':&nbsp;&nbsp;<a href="' + (site.BASE_URI+item.uri) + '">' + 
+                (item.title || item.uri) + '</a></strong>';
+                if(item.excerpt){
+                  html +='<div class="post-excerpt">'+item.excerpt+'</div>';
+                }
+                html +='</li>';
+                
+              }
+              $(obj).html(html + '</ul>');
+          }
+          $('.random_posts_ul').each(function () {
+              var c = this;
+              if (!site.posts || !site.posts.length){
+                  $.getJSON(site.BASE_URI + 'js/posts.js',function(json){site.posts = json;load_random_posts(c)});
+              } 
+               else{
+                load_random_posts(c);
+              }
+          });
+      </script>
+    </div>
+  </div>
+
+    
+<nav id="article-nav">
+  
+    <a href="/2018/11/20/java/iostream/ioStreamOther/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          IO流其他
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/11/16/java/thread/07-threadDeadLock/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">线程死锁</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+ 
+     
+  <div class="comments" id="comments">
+    
+     
+       
+       
+      
+      
+  </div>
+ 
+  
+
+</section>
+           
+    <aside id="sidebar">
+  
+    
+
+  
+    
+    <div class="widget-wrap">
+    
+      <div class="widget" id="toc-widget-fixed">
+      
+        <strong class="toc-title">文章目录</strong>
+        <div class="toc-widget-list">
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#目录介绍"><span class="toc-number">1.</span> <span class="toc-text">目录介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-IO的概述"><span class="toc-number">2.</span> <span class="toc-text">1.IO的概述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-IO流整体介绍"><span class="toc-number">3.</span> <span class="toc-text">2.IO流整体介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-File文件类"><span class="toc-number">4.</span> <span class="toc-text">3.File文件类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-递归"><span class="toc-number">5.</span> <span class="toc-text">4.递归</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-IO流"><span class="toc-number">6.</span> <span class="toc-text">5.IO流</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-IO流案例"><span class="toc-number">7.</span> <span class="toc-text">6.IO流案例</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#6-1-字节流复制文本文件【字节流一次读写一个字节复制文本文件】"><span class="toc-number">7.1.</span> <span class="toc-text">6.1 字节流复制文本文件【字节流一次读写一个字节复制文本文件】</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-2-字节流复制MP3【字节流一次读写一个字节复制MP3】"><span class="toc-number">7.2.</span> <span class="toc-text">6.2 字节流复制MP3【字节流一次读写一个字节复制MP3】</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-3-FileInputStream读取数据一次一个字节数组"><span class="toc-number">7.3.</span> <span class="toc-text">6.3 FileInputStream读取数据一次一个字节数组</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-4-FileInputStream读取数据的两种方式比较"><span class="toc-number">7.4.</span> <span class="toc-text">6.4 FileInputStream读取数据的两种方式比较</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-5-字节流复制文本文件【字节流一次读写一个字节数组复制文本文件】"><span class="toc-number">7.5.</span> <span class="toc-text">6.5 字节流复制文本文件【字节流一次读写一个字节数组复制文本文件】</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-6-字节流复制MP3【字节流一次读写一个字节数组复制MP3】"><span class="toc-number">7.6.</span> <span class="toc-text">6.6 字节流复制MP3【字节流一次读写一个字节数组复制MP3】</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-Buffer缓冲数据流"><span class="toc-number">8.</span> <span class="toc-text">7.Buffer缓冲数据流</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#7-1-BufferedOutputStream写出数据"><span class="toc-number">8.1.</span> <span class="toc-text">7.1 BufferedOutputStream写出数据</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#7-2-BufferedInputStream读取数据"><span class="toc-number">8.2.</span> <span class="toc-text">7.2 BufferedInputStream读取数据</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#7-3-字节流四种方式复制MP3并测试效率"><span class="toc-number">8.3.</span> <span class="toc-text">7.3 字节流四种方式复制MP3并测试效率</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#7-4-总结"><span class="toc-number">8.4.</span> <span class="toc-text">7.4 总结</span></a></li></ol></li></ol>
+          </div>
+      </div>
+    </div>
+
+  
+    
+
+  
+    
+  
+    
+  
+    
+
+  
+    
+  
+    <!--微信公众号二维码-->
+
+
+  
+</aside>
+
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-left">
+      &copy; 2014 - 2021 popc&nbsp;|&nbsp;
+      主题 <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
+    </div>
+     <div id="footer-right">
+      联系方式&nbsp;|&nbsp;cc5853235@gmail.com
+    </div>
+  </div>
+</footer>
+ <script src="/jquery/jquery.min.js"></script>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+</nav>
+    <img class="back-to-top-btn" src="/images/fly-to-top.png">
+<script>
+// Elevator script included on the page, already.
+window.onload = function() {
+  var elevator = new Elevator({
+    selector:'.back-to-top-btn',
+    element: document.querySelector('.back-to-top-btn'),
+    duration: 1000 // milliseconds
+  });
+}
+</script>
+      
+
+  
+
+  
+
+
+
+
+
+
+
+<!-- author:forvoid begin -->
+<!-- author:forvoid begin -->
+
+<!-- author:forvoid end -->
+
+<!-- author:forvoid end -->
+
+
+
+ <script src="/js/is.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/elevator.js"></script>
+  </div>
+</body>
+</html>

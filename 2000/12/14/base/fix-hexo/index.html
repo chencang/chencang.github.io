@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>fix hexo | 飞翔的企鹅</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="解决fs.SyncWriteStream报错问题在执行hexo命令的时候，总会显示如下报错: (node:14887) [DEP0061] DeprecationWarning: fs.SyncWriteStream is deprecated.">
+<meta name="keywords" content="hexo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="fix hexo">
+<meta property="og:url" content="https://blog.okjvm.com/2000/12/14/base/fix-hexo/index.html">
+<meta property="og:site_name" content="飞翔的企鹅">
+<meta property="og:description" content="解决fs.SyncWriteStream报错问题在执行hexo命令的时候，总会显示如下报错: (node:14887) [DEP0061] DeprecationWarning: fs.SyncWriteStream is deprecated.">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-03-17T15:21:30.382Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="fix hexo">
+<meta name="twitter:description" content="解决fs.SyncWriteStream报错问题在执行hexo命令的时候，总会显示如下报错: (node:14887) [DEP0061] DeprecationWarning: fs.SyncWriteStream is deprecated.">
+  
+    <link rel="alternate" href="/atom.xml" title="飞翔的企鹅" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  
+    
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    
+    <div id="header-inner" class="inner">
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://blog.okjvm.com"></form>
+      </div>
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+      </nav>
+      
+    </div>
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">飞翔的企鹅</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">欢迎访问</a>
+        </h2>
+      
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-base/fix-hexo" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2000/12/14/base/fix-hexo/" class="article-date">
+  <time datetime="2000-12-14T02:41:07.000Z" itemprop="datePublished">2000-12-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      fix hexo
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- Table of Contents -->
+        
+        <ol>
+<li>解决fs.SyncWriteStream报错问题<br>在执行hexo命令的时候，总会显示如下报错:<blockquote>
+<p>(node:14887) [DEP0061] DeprecationWarning: fs.SyncWriteStream is deprecated.</p>
+</blockquote>
+</li>
+</ol>
+<a id="more"></a>
+<p>从报错信息来看是因为fs.SyncWriteStream is deprecated，node.js从8.0开始已经弃用了fs.SyncWriteStream方法.记得上回安装mongdodb的时候，更新过node所以猜想，应该是上回更新node的时候， 导致hexo不可用的。考虑到本次出现了这个问题，应该是我们node_modules中某个插件调用了这个方法，通过查看Hexo作者GitHub对应的项目，在issue中看到有人提到这个问题，在hexo项目中其中有一个hexo-fs的插件调用了这个方法，所以需要更新hexo-fs插件，更新方法如下：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-fs --save</span><br></pre></td></tr></table></figure></p>
+<p>当然通过查询发现也有博主是这样解决的<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-fs --save</span><br><span class="line">npm install hexo-deployer-git@0.3.1 --save</span><br><span class="line">npm install hexo-renderer-ejs@0.3.1 --save</span><br><span class="line">npm install hexo-server@0.2.2 --save</span><br></pre></td></tr></table></figure></p>
+<p>但是我通过上面两个命令后依然无法解决， 所以只能自己调试处理了。<br>执行命令<code>hexo clean --debug</code>结果如下所示：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">02:26:42.071 DEBUG Hexo version: 3.8.0</span><br><span class="line">02:26:42.072 DEBUG Working directory: ~/manualProject/blog/</span><br><span class="line">02:26:42.240 DEBUG Config loaded: ~/manualProject/blog/_config.yml</span><br><span class="line">02:26:42.309 DEBUG Plugin loaded: hexo-admin</span><br><span class="line">(node:14949) [DEP0061] DeprecationWarning: fs.SyncWriteStream is deprecated.</span><br><span class="line">02:26:42.316 DEBUG Plugin loaded: hexo-generator-archive</span><br><span class="line">02:26:42.354 DEBUG Plugin loaded: hexo-deployer-git</span><br><span class="line">02:26:42.359 DEBUG Plugin loaded: hexo-generator-category</span><br><span class="line">...</span><br></pre></td></tr></table></figure></p>
+<p>可以看到是插件hexo-admin导致的，只能卸载或者修改这个插件了,先试图修改一下。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">grep -irn <span class="string">"SyncWriteStream"</span>  node_modules/hexo-admin/  </span><br><span class="line"></span><br><span class="line">hexo-admin//node_modules/hexo-fs/lib/fs.js:718:exports.SyncWriteStream = fs.SyncWriteStream;</span><br></pre></td></tr></table></figure></p>
+<p>定位到了hexo-admin//node_modules/hexo-fs/lib/fs.js，在718行。<br>注释掉<code>//exports.SyncWriteStream = fs.SyncWriteStream;</code>.最后问题顺利解决！</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.okjvm.com/2000/12/14/base/fix-hexo/" data-id="ckkrzb8w5000ccv2awponv0xa" class="article-share-link">分享</a>
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hexo/">hexo</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+ <script src="/jquery/jquery.min.js"></script>
+  <div id="random_posts">
+    <h2>推荐文章</h2>
+    <div class="random_posts_ul">
+      <script>
+          var random_count =4
+          var site = {BASE_URI:'/'};
+          function load_random_posts(obj) {
+              var arr=site.posts;
+              if (!obj) return;
+              // var count = $(obj).attr('data-count') || 6;
+              for (var i, tmp, n = arr.length; n; i = Math.floor(Math.random() * n), tmp = arr[--n], arr[n] = arr[i], arr[i] = tmp);
+              arr = arr.slice(0, random_count);
+              var html = '<ul>';
+            
+              for(var j=0;j<arr.length;j++){
+                var item=arr[j];
+                html += '<li><strong>' + 
+                item.date + ':&nbsp;&nbsp;<a href="' + (site.BASE_URI+item.uri) + '">' + 
+                (item.title || item.uri) + '</a></strong>';
+                if(item.excerpt){
+                  html +='<div class="post-excerpt">'+item.excerpt+'</div>';
+                }
+                html +='</li>';
+                
+              }
+              $(obj).html(html + '</ul>');
+          }
+          $('.random_posts_ul').each(function () {
+              var c = this;
+              if (!site.posts || !site.posts.length){
+                  $.getJSON(site.BASE_URI + 'js/posts.js',function(json){site.posts = json;load_random_posts(c)});
+              } 
+               else{
+                load_random_posts(c);
+              }
+          });
+      </script>
+    </div>
+  </div>
+
+    
+<nav id="article-nav">
+  
+    <a href="/2017/11/20/java/reflex/reflexInfo/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          反射介绍
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2000/11/27/network/07.ppt草稿/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">PPT草稿大纲</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+ 
+     
+  <div class="comments" id="comments">
+    
+     
+       
+       
+      
+      
+  </div>
+ 
+  
+
+</section>
+           
+    <aside id="sidebar">
+  
+    
+
+  
+    
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title recent-posts">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/02/05/送你一朵小红花/">送你一朵小红花</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/01/base/vim学习/">vim学习</a>
+          </li>
+        
+          <li>
+            <a href="/2020/02/23/前端往事/">前端往事</a>
+          </li>
+        
+          <li>
+            <a href="/2020/02/10/散文/鲁迅名句摘要/">鲁迅名句摘要</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/18/network/c10k问题/">C10K问题由来</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+    
+
+  
+    
+  
+    <!--微信公众号二维码-->
+
+
+  
+</aside>
+
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-left">
+      &copy; 2014 - 2021 popc&nbsp;|&nbsp;
+      主题 <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
+    </div>
+     <div id="footer-right">
+      联系方式&nbsp;|&nbsp;cc5853235@gmail.com
+    </div>
+  </div>
+</footer>
+ <script src="/jquery/jquery.min.js"></script>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+</nav>
+    <img class="back-to-top-btn" src="/images/fly-to-top.png">
+<script>
+// Elevator script included on the page, already.
+window.onload = function() {
+  var elevator = new Elevator({
+    selector:'.back-to-top-btn',
+    element: document.querySelector('.back-to-top-btn'),
+    duration: 1000 // milliseconds
+  });
+}
+</script>
+      
+
+  
+
+  
+
+
+
+
+
+
+
+<!-- author:forvoid begin -->
+<!-- author:forvoid begin -->
+
+<!-- author:forvoid end -->
+
+<!-- author:forvoid end -->
+
+
+
+ <script src="/js/is.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/elevator.js"></script>
+  </div>
+</body>
+</html>

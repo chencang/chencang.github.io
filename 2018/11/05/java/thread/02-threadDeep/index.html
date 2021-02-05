@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>多线程深入理解 | 飞翔的企鹅</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="目录介绍 1.ThreadPoolExecutor类介绍 1.1 构造函数 1.2 参数解析 1.3 遵循的规则 1.4 使用线程池管理线程的优点 2.关于线程池的分类 2.1 FixedThreadPool 2.2 CachedThreadPool 2.3 ScheduledThreadPool 2.4 SingleThreadExecutor 3.线程池一般用法 3.1 一般方法介绍">
+<meta name="keywords" content="多线程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="多线程深入理解">
+<meta property="og:url" content="https://blog.okjvm.com/2018/11/05/java/thread/02-threadDeep/index.html">
+<meta property="og:site_name" content="飞翔的企鹅">
+<meta property="og:description" content="目录介绍 1.ThreadPoolExecutor类介绍 1.1 构造函数 1.2 参数解析 1.3 遵循的规则 1.4 使用线程池管理线程的优点 2.关于线程池的分类 2.1 FixedThreadPool 2.2 CachedThreadPool 2.3 ScheduledThreadPool 2.4 SingleThreadExecutor 3.线程池一般用法 3.1 一般方法介绍">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-03-17T12:45:03.197Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="多线程深入理解">
+<meta name="twitter:description" content="目录介绍 1.ThreadPoolExecutor类介绍 1.1 构造函数 1.2 参数解析 1.3 遵循的规则 1.4 使用线程池管理线程的优点 2.关于线程池的分类 2.1 FixedThreadPool 2.2 CachedThreadPool 2.3 ScheduledThreadPool 2.4 SingleThreadExecutor 3.线程池一般用法 3.1 一般方法介绍">
+  
+    <link rel="alternate" href="/atom.xml" title="飞翔的企鹅" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  
+    
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    
+    <div id="header-inner" class="inner">
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://blog.okjvm.com"></form>
+      </div>
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+      </nav>
+      
+    </div>
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">飞翔的企鹅</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">欢迎访问</a>
+        </h2>
+      
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-java/thread/02-threadDeep" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/11/05/java/thread/02-threadDeep/" class="article-date">
+  <time datetime="2018-11-05T09:54:55.000Z" itemprop="datePublished">2018-11-05</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      多线程深入理解
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- Table of Contents -->
+        
+        <h3 id="目录介绍"><a href="#目录介绍" class="headerlink" title="目录介绍"></a>目录介绍</h3><ul>
+<li><strong>1.ThreadPoolExecutor类介绍</strong></li>
+<li>1.1 构造函数</li>
+<li>1.2 参数解析</li>
+<li>1.3 遵循的规则</li>
+<li>1.4 使用线程池管理线程的优点</li>
+<li><strong>2.关于线程池的分类</strong></li>
+<li>2.1 FixedThreadPool</li>
+<li>2.2 CachedThreadPool</li>
+<li>2.3 ScheduledThreadPool</li>
+<li>2.4 SingleThreadExecutor</li>
+<li><strong>3.线程池一般用法</strong></li>
+<li>3.1 一般方法介绍</li>
+</ul>
+<a id="more"></a>
+<h3 id="1-ThreadPoolExecutor类介绍"><a href="#1-ThreadPoolExecutor类介绍" class="headerlink" title="1.ThreadPoolExecutor类介绍"></a>1.ThreadPoolExecutor类介绍</h3><h4 id="1-1-构造函数"><a href="#1-1-构造函数" class="headerlink" title="1.1 构造函数"></a>1.1 构造函数</h4><ul>
+<li>ExecutorService是最初的线程池接口，ThreadPoolExecutor类是对线程池的具体实现，它通过构造方法来配置线程池的参数<pre><code class="java"><span class="function"><span class="keyword">public</span> <span class="title">ThreadPoolExecutor</span><span class="params">(<span class="keyword">int</span> corePoolSize,</span></span>
+<span class="function"><span class="params">                        <span class="keyword">int</span> maximumPoolSize,</span></span>
+<span class="function"><span class="params">                        <span class="keyword">long</span> keepAliveTime,</span></span>
+<span class="function"><span class="params">                        TimeUnit unit,</span></span>
+<span class="function"><span class="params">                        BlockingQueue&lt;Runnable&gt; workQueue)</span> </span>{
+  <span class="keyword">this</span>(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue,
+       Executors.defaultThreadFactory(), defaultHandler);
+}
+</code></pre>
+</li>
+</ul>
+<h4 id="1-2-参数解析"><a href="#1-2-参数解析" class="headerlink" title="1.2 参数解析"></a>1.2 参数解析</h4><ul>
+<li>corePoolSize，线程池中核心线程的数量，默认情况下，即使核心线程没有任务在执行它也存在的，我们固定一定数量的核心线程且它一直存活这样就避免了一般情况下CPU创建和销毁线程带来的开销。我们如果将ThreadPoolExecutor的allowCoreThreadTimeOut属性设置为true，那么闲置的核心线程就会有超时策略，这个时间由keepAliveTime来设定，即keepAliveTime时间内如果核心线程没有回应则该线程就会被终止。allowCoreThreadTimeOut默认为false，核心线程没有超时时间。</li>
+<li>maximumPoolSize，线程池中的最大线程数，当任务数量超过最大线程数时其它任务可能就会被阻塞。最大线程数=核心线程+非核心线程。非核心线程只有当核心线程不够用且线程池有空余时才会被创建，执行完任务后非核心线程会被销毁。</li>
+<li>keepAliveTime，非核心线程的超时时长，当执行时间超过这个时间时，非核心线程就会被回收。当allowCoreThreadTimeOut设置为true时，此属性也作用在核心线程上。</li>
+<li>unit，枚举时间单位，TimeUnit。</li>
+<li>workQueue，线程池中的任务队列，我们提交给线程池的runnable会被存储在这个对象上。</li>
+</ul>
+<h4 id="1-3-遵循的规则"><a href="#1-3-遵循的规则" class="headerlink" title="1.3 遵循的规则"></a>1.3 遵循的规则</h4><ul>
+<li>当线程池中的核心线程数量未达到最大线程数时，启动一个核心线程去执行任务；</li>
+<li>如果线程池中的核心线程数量达到最大线程数时，那么任务会被插入到任务队列中排队等待执行；</li>
+<li>如果在上一步骤中任务队列已满但是线程池中线程数量未达到限定线程总数，那么启动一个非核心线程来处理任务；</li>
+<li>如果上一步骤中线程数量达到了限定线程总量，那么线程池则拒绝执行该任务，且ThreadPoolExecutor会调用RejectedtionHandler的rejectedExecution方法来通知调用者。</li>
+</ul>
+<h4 id="1-4-使用线程池管理线程的优点"><a href="#1-4-使用线程池管理线程的优点" class="headerlink" title="1.4 使用线程池管理线程的优点"></a>1.4 使用线程池管理线程的优点</h4><ul>
+<li>1、线程的创建和销毁由线程池维护，一个线程在完成任务后并不会立即销毁，而是由后续的任务复用这个线程，从而减少线程的创建和销毁，节约系统的开销</li>
+<li>2、线程池旨在线程的复用，这就可以节约我们用以往的方式创建线程和销毁所消耗的时间，减少线程频繁调度的开销，从而节约系统资源，提高系统吞吐量</li>
+<li>3、在执行大量异步任务时提高了性能</li>
+<li>4、Java内置的一套ExecutorService线程池相关的api，可以更方便的控制线程的最大并发数、线程的定时任务、单线程的顺序执行等</li>
+</ul>
+<h3 id="2-关于线程池的分类"><a href="#2-关于线程池的分类" class="headerlink" title="2.关于线程池的分类"></a>2.关于线程池的分类</h3><h4 id="2-1-FixedThreadPool"><a href="#2-1-FixedThreadPool" class="headerlink" title="2.1 FixedThreadPool"></a>2.1 FixedThreadPool</h4><ul>
+<li>通过Executors的newFixedThreadPool()方法创建，它是个线程数量固定的线程池，该线程池的线程全部为核心线程，它们没有超时机制且排队任务队列无限制，因为全都是核心线程，所以响应较快，且不用担心线程会被回收。</li>
+</ul>
+<h4 id="2-2-CachedThreadPool"><a href="#2-2-CachedThreadPool" class="headerlink" title="2.2 CachedThreadPool"></a>2.2 CachedThreadPool</h4><ul>
+<li>通过Executors的newCachedThreadPool()方法来创建，它是一个数量无限多的线程池，它所有的线程都是非核心线程，当有新任务来时如果没有空闲的线程则直接创建新的线程不会去排队而直接执行，并且超时时间都是60s，所以此线程池适合执行大量耗时小的任务。由于设置了超时时间为60s，所以当线程空闲一定时间时就会被系统回收，所以理论上该线程池不会有占用系统资源的无用线程。</li>
+</ul>
+<h4 id="2-3-ScheduledThreadPool"><a href="#2-3-ScheduledThreadPool" class="headerlink" title="2.3 ScheduledThreadPool"></a>2.3 ScheduledThreadPool</h4><ul>
+<li>通过Executors的newScheduledThreadPool()方法来创建，ScheduledThreadPool线程池像是上两种的合体，它有数量固定的核心线程，且有数量无限多的非核心线程，但是它的非核心线程超时时间是0s，所以非核心线程一旦空闲立马就会被回收。这类线程池适合用于执行定时任务和固定周期的重复任务。</li>
+</ul>
+<h4 id="2-4-SingleThreadExecutor"><a href="#2-4-SingleThreadExecutor" class="headerlink" title="2.4 SingleThreadExecutor"></a>2.4 SingleThreadExecutor</h4><ul>
+<li>通过Executors的newSingleThreadExecutor()方法来创建，它内部只有一个核心线程，它确保所有任务进来都要排队按顺序执行。它的意义在于，统一所有的外界任务到同一线程中，让调用者可以忽略线程同步问题。</li>
+</ul>
+<h3 id="3-线程池一般用法"><a href="#3-线程池一般用法" class="headerlink" title="3.线程池一般用法"></a>3.线程池一般用法</h3><h4 id="3-1-一般方法介绍"><a href="#3-1-一般方法介绍" class="headerlink" title="3.1 一般方法介绍"></a>3.1 一般方法介绍</h4><ul>
+<li>shutDown()，关闭线程池，需要执行完已提交的任务；</li>
+<li>shutDownNow()，关闭线程池，并尝试结束已提交的任务；</li>
+<li>allowCoreThreadTimeOut(boolen)，允许核心线程闲置超时回收；</li>
+<li>execute()，提交任务无返回值；</li>
+<li>submit()，提交任务有返回值；</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.okjvm.com/2018/11/05/java/thread/02-threadDeep/" data-id="ckkrzb8xn0028cv2a0pxn4fn2" class="article-share-link">分享</a>
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/多线程/">多线程</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+ <script src="/jquery/jquery.min.js"></script>
+  <div id="random_posts">
+    <h2>推荐文章</h2>
+    <div class="random_posts_ul">
+      <script>
+          var random_count =4
+          var site = {BASE_URI:'/'};
+          function load_random_posts(obj) {
+              var arr=site.posts;
+              if (!obj) return;
+              // var count = $(obj).attr('data-count') || 6;
+              for (var i, tmp, n = arr.length; n; i = Math.floor(Math.random() * n), tmp = arr[--n], arr[n] = arr[i], arr[i] = tmp);
+              arr = arr.slice(0, random_count);
+              var html = '<ul>';
+            
+              for(var j=0;j<arr.length;j++){
+                var item=arr[j];
+                html += '<li><strong>' + 
+                item.date + ':&nbsp;&nbsp;<a href="' + (site.BASE_URI+item.uri) + '">' + 
+                (item.title || item.uri) + '</a></strong>';
+                if(item.excerpt){
+                  html +='<div class="post-excerpt">'+item.excerpt+'</div>';
+                }
+                html +='</li>';
+                
+              }
+              $(obj).html(html + '</ul>');
+          }
+          $('.random_posts_ul').each(function () {
+              var c = this;
+              if (!site.posts || !site.posts.length){
+                  $.getJSON(site.BASE_URI + 'js/posts.js',function(json){site.posts = json;load_random_posts(c)});
+              } 
+               else{
+                load_random_posts(c);
+              }
+          });
+      </script>
+    </div>
+  </div>
+
+    
+<nav id="article-nav">
+  
+    <a href="/2018/11/06/java/base/05-javaString/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          05 javaString类
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/11/01/散文/藤野先生/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">藤野先生</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+ 
+     
+  <div class="comments" id="comments">
+    
+     
+       
+       
+      
+      
+  </div>
+ 
+  
+
+</section>
+           
+    <aside id="sidebar">
+  
+    
+
+  
+    
+    <div class="widget-wrap">
+    
+      <div class="widget" id="toc-widget-fixed">
+      
+        <strong class="toc-title">文章目录</strong>
+        <div class="toc-widget-list">
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#目录介绍"><span class="toc-number">1.</span> <span class="toc-text">目录介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-ThreadPoolExecutor类介绍"><span class="toc-number">2.</span> <span class="toc-text">1.ThreadPoolExecutor类介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-1-构造函数"><span class="toc-number">2.1.</span> <span class="toc-text">1.1 构造函数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-2-参数解析"><span class="toc-number">2.2.</span> <span class="toc-text">1.2 参数解析</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-3-遵循的规则"><span class="toc-number">2.3.</span> <span class="toc-text">1.3 遵循的规则</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-4-使用线程池管理线程的优点"><span class="toc-number">2.4.</span> <span class="toc-text">1.4 使用线程池管理线程的优点</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-关于线程池的分类"><span class="toc-number">3.</span> <span class="toc-text">2.关于线程池的分类</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-FixedThreadPool"><span class="toc-number">3.1.</span> <span class="toc-text">2.1 FixedThreadPool</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-CachedThreadPool"><span class="toc-number">3.2.</span> <span class="toc-text">2.2 CachedThreadPool</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-3-ScheduledThreadPool"><span class="toc-number">3.3.</span> <span class="toc-text">2.3 ScheduledThreadPool</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-4-SingleThreadExecutor"><span class="toc-number">3.4.</span> <span class="toc-text">2.4 SingleThreadExecutor</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-线程池一般用法"><span class="toc-number">4.</span> <span class="toc-text">3.线程池一般用法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-一般方法介绍"><span class="toc-number">4.1.</span> <span class="toc-text">3.1 一般方法介绍</span></a></li></ol></li></ol>
+          </div>
+      </div>
+    </div>
+
+  
+    
+
+  
+    
+  
+    
+  
+    
+
+  
+    
+  
+    <!--微信公众号二维码-->
+
+
+  
+</aside>
+
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-left">
+      &copy; 2014 - 2021 popc&nbsp;|&nbsp;
+      主题 <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
+    </div>
+     <div id="footer-right">
+      联系方式&nbsp;|&nbsp;cc5853235@gmail.com
+    </div>
+  </div>
+</footer>
+ <script src="/jquery/jquery.min.js"></script>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+</nav>
+    <img class="back-to-top-btn" src="/images/fly-to-top.png">
+<script>
+// Elevator script included on the page, already.
+window.onload = function() {
+  var elevator = new Elevator({
+    selector:'.back-to-top-btn',
+    element: document.querySelector('.back-to-top-btn'),
+    duration: 1000 // milliseconds
+  });
+}
+</script>
+      
+
+  
+
+  
+
+
+
+
+
+
+
+<!-- author:forvoid begin -->
+<!-- author:forvoid begin -->
+
+<!-- author:forvoid end -->
+
+<!-- author:forvoid end -->
+
+
+
+ <script src="/js/is.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/elevator.js"></script>
+  </div>
+</body>
+</html>

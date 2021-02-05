@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>飞翔的企鹅</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="这里是介绍">
+<meta property="og:type" content="website">
+<meta property="og:title" content="飞翔的企鹅">
+<meta property="og:url" content="https://blog.okjvm.com/page/5/index.html">
+<meta property="og:site_name" content="飞翔的企鹅">
+<meta property="og:description" content="这里是介绍">
+<meta property="og:locale" content="zh-CN">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="飞翔的企鹅">
+<meta name="twitter:description" content="这里是介绍">
+  
+    <link rel="alternate" href="/atom.xml" title="飞翔的企鹅" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  
+    
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    
+    <div id="header-inner" class="inner">
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://blog.okjvm.com"></form>
+      </div>
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+      </nav>
+      
+    </div>
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">飞翔的企鹅</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">欢迎访问</a>
+        </h2>
+      
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-java/dataStructure/07.ConcurrentHashMap" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/11/20/java/dataStructure/07.ConcurrentHashMap/" class="article-date">
+  <time datetime="2017-11-20T10:01:00.000Z" itemprop="datePublished">2017-11-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/11/20/java/dataStructure/07.ConcurrentHashMap/">ConcurrentHashMap</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="目录介绍"><a href="#目录介绍" class="headerlink" title="目录介绍"></a>目录介绍</h4><ul>
+<li>0.问题答疑部分</li>
+<li>1.HashMap和HashTable困境<ul>
+<li>1.1 效率低下的HashTable容器</li>
+<li>1.2 线程不安全的HashMap</li>
+</ul>
+</li>
+<li>2.ConcurrentHashMap应用场景<ul>
+<li>2.1 应用场景</li>
+<li>2.2 常见的使用场景</li>
+</ul>
+</li>
+<li>3.ConcurrentHashMap基本原理<ul>
+<li>3.1 锁分段技术</li>
+<li>3.2 jdk1.6，1.7和1.8对比[参考文档]</li>
+</ul>
+</li>
+<li>4.ConcurrentHashMap部分源码分析</li>
+<li>5.ConcurrentHashMap性能分析</li>
+</ul>
+        
+          <p class="article-more-link">
+            <a href="/2017/11/20/java/dataStructure/07.ConcurrentHashMap/#more">继续阅读全文 »</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.okjvm.com/2017/11/20/java/dataStructure/07.ConcurrentHashMap/" data-id="ckkrzb8xl0024cv2aq25xl8lf" class="article-share-link">分享</a>
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/数据结构/">数据结构</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+ 
+
+
+  
+    <article id="post-java/dataStructure/06.MapCollection2" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/11/20/java/dataStructure/06.MapCollection2/" class="article-date">
+  <time datetime="2017-11-20T10:00:59.000Z" itemprop="datePublished">2017-11-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/11/20/java/dataStructure/06.MapCollection2/">Map集合深度解析</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="目录介绍"><a href="#目录介绍" class="headerlink" title="目录介绍"></a>目录介绍</h4><ul>
+<li>1.问题解答答疑</li>
+<li>2.Map集合整体结构<ul>
+<li>2.1 Map集合整体结构图形</li>
+<li>2.2 整体结构介绍</li>
+</ul>
+</li>
+<li>3.Map集合部分源码分析<ul>
+<li>3.1 HashMap 内部的结构</li>
+<li>3.2 HashMap(int initialCapacity, float loadFactor)</li>
+<li>3.3 put(K key, V value)代码解析</li>
+<li>3.4 final Node&lt;K,V&gt;[] resize()</li>
+</ul>
+</li>
+<li>4.Map集合容量和负载因子</li>
+<li>5.Map集合性能分析<ul>
+<li>5.1 Map集合性能</li>
+<li>5.2 HashTable和HashMap初始化与增长方式</li>
+</ul>
+</li>
+<li>6.解决哈希冲突有哪些典型方法呢？</li>
+<li>7.其他常见问题<ul>
+<li>7.1 HashTable和HashMap线程安全性</li>
+<li>7.2 HashMap集合深入概况</li>
+</ul>
+</li>
+</ul>
+        
+          <p class="article-more-link">
+            <a href="/2017/11/20/java/dataStructure/06.MapCollection2/#more">继续阅读全文 »</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.okjvm.com/2017/11/20/java/dataStructure/06.MapCollection2/" data-id="ckkrzb8y6002zcv2a3s54xk87" class="article-share-link">分享</a>
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/数据结构/">数据结构</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+ 
+
+
+  
+    <article id="post-java/dataStructure/05.MapCollection" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/11/20/java/dataStructure/05.MapCollection/" class="article-date">
+  <time datetime="2017-11-20T10:00:58.000Z" itemprop="datePublished">2017-11-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/11/20/java/dataStructure/05.MapCollection/">Map集合基础介绍</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="目录介绍"><a href="#目录介绍" class="headerlink" title="目录介绍"></a>目录介绍</h3><ul>
+<li>1.Map集合概述和特点<ul>
+<li>1.1 Map集合从何而来</li>
+<li>1.2 Collection集合和Map集合的区别?</li>
+<li>1.3 Map集合的特点</li>
+</ul>
+</li>
+<li>2.Map集合功能概述<ul>
+<li>2.1 Map集合的是一个接口</li>
+<li>2.2 Map集合的功能概述</li>
+</ul>
+</li>
+<li>3.Map集合遍历案例<ul>
+<li>3.1 Map集合的遍历根据键找值得遍历</li>
+<li>3.2 Map集合的遍历根据键值对对象的遍历</li>
+<li>3.3 两种遍历原理图</li>
+</ul>
+</li>
+<li>4.HashMap集合<ul>
+<li>4.1 HashMap集合结构特点</li>
+<li>4.2 HashMap集合键是Stirng值是String的案例</li>
+<li>4.3 HashMap集合键是String值是Student的案例</li>
+<li>4.4 HashMap集合键是Student值是String的案例</li>
+</ul>
+</li>
+<li>5.LinkedHashMap集合<ul>
+<li>5.1 LinkedHashMap的概述</li>
+<li>5.2 LinkedHashMap的特点</li>
+</ul>
+</li>
+<li>6.TreeMap集合<ul>
+<li>6.1 TreeMap集合结构特点</li>
+<li>6.2 TreeMap集合键是String值是String的案例</li>
+<li>6.3 TreeMap集合键是Student值是String的案例</li>
+<li>6.4 “aababcabcdabcde”,获取字符串中每一个字母出现的次数要求结果:a(5)b(4)c(3)d(2)e(1)</li>
+</ul>
+</li>
+<li>7.集合嵌套<ul>
+<li>7.1 集合嵌套之HashMap嵌套HashMap</li>
+<li>7.2 集合嵌套之HashMap嵌套ArrayList</li>
+<li>7.3 集合嵌套之ArrayList嵌套HashMap</li>
+</ul>
+</li>
+</ul>
+        
+          <p class="article-more-link">
+            <a href="/2017/11/20/java/dataStructure/05.MapCollection/#more">继续阅读全文 »</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.okjvm.com/2017/11/20/java/dataStructure/05.MapCollection/" data-id="ckkrzb8yh003dcv2a7wq95ea1" class="article-share-link">分享</a>
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/数据结构/">数据结构</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+ 
+
+
+  
+    <article id="post-java/dataStructure/04.SetCollection" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/11/20/java/dataStructure/04.SetCollection/" class="article-date">
+  <time datetime="2017-11-20T10:00:57.000Z" itemprop="datePublished">2017-11-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/11/20/java/dataStructure/04.SetCollection/">Set集合深度解析</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="目录介绍"><a href="#目录介绍" class="headerlink" title="目录介绍"></a>目录介绍</h3><ul>
+<li>1.Set集合<ul>
+<li>1.1 特点</li>
+<li>1.2 注意</li>
+</ul>
+</li>
+<li>2.HashSet<ul>
+<li>2.1 特点</li>
+<li>2.2 如何保证元素唯一性</li>
+<li>2.3 使用HashSet集合存储自定义对象,保证元素的唯一性</li>
+<li>2.4 存储图解</li>
+</ul>
+</li>
+<li>3.LinkedHashSet<ul>
+<li>3.1 特点</li>
+</ul>
+</li>
+<li>4.TreeSet<ul>
+<li>4.1 TreeSet集合特点</li>
+<li>4.2 如何进行排序</li>
+<li>4.3 使用TreeSet集合存储自定义对象,并排序案例</li>
+<li>4.4 使用TreeSet集合存储自定义对象,安排姓名的长度进行排序</li>
+<li>4.4 产生10个1-20之间的随机数要求随机数不能重复案例</li>
+</ul>
+</li>
+<li>5.二叉树原理图</li>
+</ul>
+        
+          <p class="article-more-link">
+            <a href="/2017/11/20/java/dataStructure/04.SetCollection/#more">继续阅读全文 »</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.okjvm.com/2017/11/20/java/dataStructure/04.SetCollection/" data-id="ckkrzb8xk0022cv2a7oegvbcb" class="article-share-link">分享</a>
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/数据结构/">数据结构</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+ 
+
+
+  
+    <article id="post-java/dataStructure/03.ListCollection" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/11/20/java/dataStructure/03.ListCollection/" class="article-date">
+  <time datetime="2017-11-20T10:00:56.000Z" itemprop="datePublished">2017-11-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/11/20/java/dataStructure/03.ListCollection/">List集合深度解析</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="目录介绍"><a href="#目录介绍" class="headerlink" title="目录介绍"></a>目录介绍</h3><ul>
+<li>0.问题答疑部分</li>
+<li>1.ArrayList<ul>
+<li>1.1 ArrayList集合特点</li>
+<li>1.2 简单去重复数据</li>
+<li>1.3 ArrayList的扩容消耗</li>
+<li>1.4 Arrays.asList方法后的List可以扩容吗？</li>
+<li>1.5 List怎么实现排序？</li>
+<li>1.6 ArrayList的序列化</li>
+<li>1.7 System.arraycopy()和Arrays.copyOf()方法分析</li>
+<li>1.8 System.arraycopy()和Arrays.copyOf()方法测试</li>
+</ul>
+</li>
+<li>2.Vector<ul>
+<li>2.1 Vector集合特点</li>
+</ul>
+</li>
+<li>3.LinkedList<ul>
+<li>3.1 LinkedList集合特点</li>
+</ul>
+</li>
+<li>4.如何选择合适list<ul>
+<li>4.1 如何选择合适list</li>
+<li>4.2 不同容器类型适合的场景</li>
+<li>4.3 list集合读写机制和读写效率</li>
+</ul>
+</li>
+<li>5.List集合框架拓展<ul>
+<li>5.1 Java中list集合框架的设计结构</li>
+<li>5.2 ArrayList扩容源码分析</li>
+<li>5.3 List集合并发</li>
+<li>5.4 ArrayList删除元素源码分析</li>
+<li>5.5 ArrayList的Fail-Fast</li>
+<li>5.6 面试之集合中设计算法考察</li>
+<li>5.7 CopyOnWriteArrayList的读写分离</li>
+<li>5.8 ArrayList核心源代码分析</li>
+</ul>
+</li>
+<li>6.思考与总结</li>
+</ul>
+        
+          <p class="article-more-link">
+            <a href="/2017/11/20/java/dataStructure/03.ListCollection/#more">继续阅读全文 »</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.okjvm.com/2017/11/20/java/dataStructure/03.ListCollection/" data-id="ckkrzb8yn003ocv2aw878uf7v" class="article-share-link">分享</a>
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/数据结构/">数据结构</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+ 
+
+
+  
+    <article id="post-java/dataStructure/02.baseDataStructure2" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/11/20/java/dataStructure/02.baseDataStructure2/" class="article-date">
+  <time datetime="2017-11-20T10:00:55.000Z" itemprop="datePublished">2017-11-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/11/20/java/dataStructure/02.baseDataStructure2/">java常用数据结构深度解析</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="目录介绍"><a href="#目录介绍" class="headerlink" title="目录介绍"></a>目录介绍</h3><ul>
+<li>1.对象数组</li>
+<li>2.集合<ul>
+<li>2.1 集合的由来</li>
+<li>2.2 数组和集合的区别</li>
+<li>2.3 集合继承体系图</li>
+<li>2.4 Collection功能概述</li>
+<li>2.5 集合的遍历</li>
+<li>2.6 迭代器的原理</li>
+</ul>
+</li>
+<li>3.数据结构<ul>
+<li>3.0 List集合如何选择合适的</li>
+<li>3.1 数据结构之数组和链表</li>
+<li>3.2 数据结构之栈和队列</li>
+</ul>
+</li>
+<li>4.集合总结<ul>
+<li>4.1 集合总结</li>
+<li>4.2 Hashcode与equal区别</li>
+</ul>
+</li>
+</ul>
+        
+          <p class="article-more-link">
+            <a href="/2017/11/20/java/dataStructure/02.baseDataStructure2/#more">继续阅读全文 »</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.okjvm.com/2017/11/20/java/dataStructure/02.baseDataStructure2/" data-id="ckkrzb8xj001zcv2aqwmevfrr" class="article-share-link">分享</a>
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/数据结构/">数据结构</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+ 
+
+
+  
+    <article id="post-java/dataStructure/01.baseDataStructure" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/11/20/java/dataStructure/01.baseDataStructure/" class="article-date">
+  <time datetime="2017-11-20T10:00:54.000Z" itemprop="datePublished">2017-11-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/11/20/java/dataStructure/01.baseDataStructure/">常见的数据结构</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="目录结构"><a href="#目录结构" class="headerlink" title="目录结构"></a>目录结构</h3><ul>
+<li>1.常用数据有哪些</li>
+<li>2.数据的说明</li>
+<li>3.集合数据结构介绍</li>
+<li>4.集合{List，Set，Map}的特点</li>
+<li>5.Queue队列</li>
+</ul>
+        
+          <p class="article-more-link">
+            <a href="/2017/11/20/java/dataStructure/01.baseDataStructure/#more">继续阅读全文 »</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.okjvm.com/2017/11/20/java/dataStructure/01.baseDataStructure/" data-id="ckkrzb8y4002xcv2adjbsnt2w" class="article-share-link">分享</a>
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/数据结构/">数据结构</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+ 
+
+
+  
+    <article id="post-java/reflex/deepReflex" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/11/20/java/reflex/deepReflex/" class="article-date">
+  <time datetime="2017-11-20T06:55:00.000Z" itemprop="datePublished">2017-11-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/11/20/java/reflex/deepReflex/">深入理解反射</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="目录介绍"><a href="#目录介绍" class="headerlink" title="目录介绍"></a>目录介绍</h4><ul>
+<li>01.如何防止反射序列化攻击单例</li>
+</ul>
+        
+          <p class="article-more-link">
+            <a href="/2017/11/20/java/reflex/deepReflex/#more">继续阅读全文 »</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.okjvm.com/2017/11/20/java/reflex/deepReflex/" data-id="ckkrzb8xm0027cv2aujgyv54v" class="article-share-link">分享</a>
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/反射/">反射</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+ 
+
+
+  
+    <article id="post-java/reflex/reflexInfo" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/11/20/java/reflex/reflexInfo/" class="article-date">
+  <time datetime="2017-11-20T06:54:00.000Z" itemprop="datePublished">2017-11-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/11/20/java/reflex/reflexInfo/">反射介绍</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="目录介绍"><a href="#目录介绍" class="headerlink" title="目录介绍"></a>目录介绍</h3><ul>
+<li><strong>1.反射概述</strong><ul>
+<li>1.1 反射概述</li>
+<li>1.2 获取class文件对象的三种方式</li>
+<li>1.3 反射常用的方法介绍</li>
+<li>1.4 反射的定义</li>
+<li>1.5 反射的组成</li>
+<li>1.6 反射的作用有哪些</li>
+</ul>
+</li>
+<li><strong>2.反射的相关使用</strong><ul>
+<li>2.1.1 通过反射获取无参构造方法并使用</li>
+<li>2.1.2 通过反射获取带参构造方法并使用</li>
+<li>2.1.3 通过反射获取私有构造方法并使用</li>
+<li>2.1.4 通过反射获取成员变量并使用</li>
+<li>2.1.5 通过反射获取无参无返回值成员方法并使用</li>
+<li>2.1.6 通过反射获取带参无返回值成员方法并使用</li>
+<li>2.1.7 通过反射获取带参带返回值成员方法并使用</li>
+<li>2.1.8 通过反射获取无参带返回值成员方法并使用</li>
+</ul>
+</li>
+<li><strong>3.相关知识点</strong><ul>
+<li>3.1.1 设置setAccessible(true)暴力访问权限</li>
+<li>3.1.2 获取Filed两个方法的区别</li>
+<li>3.1.3 获取Field的类型</li>
+<li>3.1.4 Method获取方法名，获取方法参数</li>
+<li>3.1.5 Method方法的invoke()方法执行</li>
+</ul>
+</li>
+</ul>
+        
+          <p class="article-more-link">
+            <a href="/2017/11/20/java/reflex/reflexInfo/#more">继续阅读全文 »</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.okjvm.com/2017/11/20/java/reflex/reflexInfo/" data-id="ckkrzb8y70031cv2aqhwtsf6o" class="article-share-link">分享</a>
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/反射/">反射</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+ 
+
+
+  
+    <article id="post-base/fix-hexo" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2000/12/14/base/fix-hexo/" class="article-date">
+  <time datetime="2000-12-14T02:41:07.000Z" itemprop="datePublished">2000-12-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2000/12/14/base/fix-hexo/">fix hexo</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <ol>
+<li>解决fs.SyncWriteStream报错问题<br>在执行hexo命令的时候，总会显示如下报错:<blockquote>
+<p>(node:14887) [DEP0061] DeprecationWarning: fs.SyncWriteStream is deprecated.</p>
+</blockquote>
+</li>
+</ol>
+        
+          <p class="article-more-link">
+            <a href="/2000/12/14/base/fix-hexo/#more">继续阅读全文 »</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.okjvm.com/2000/12/14/base/fix-hexo/" data-id="ckkrzb8w5000ccv2awponv0xa" class="article-share-link">分享</a>
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hexo/">hexo</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+ 
+
+
+  
+
+
+  <nav id="page-nav">
+    <a class="extend prev" rel="prev" href="/page/4/">&laquo; 上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/6/">下一页&raquo;</a>
+  </nav>
+</section>
+           
+    <aside id="sidebar">
+  
+    
+
+  
+    
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title recent-posts">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/02/05/送你一朵小红花/">送你一朵小红花</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/01/base/vim学习/">vim学习</a>
+          </li>
+        
+          <li>
+            <a href="/2020/02/23/前端往事/">前端往事</a>
+          </li>
+        
+          <li>
+            <a href="/2020/02/10/散文/鲁迅名句摘要/">鲁迅名句摘要</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/18/network/c10k问题/">C10K问题由来</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+    
+
+  
+    
+  
+    <!--微信公众号二维码-->
+
+
+  
+</aside>
+
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-left">
+      &copy; 2014 - 2021 popc&nbsp;|&nbsp;
+      主题 <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
+    </div>
+     <div id="footer-right">
+      联系方式&nbsp;|&nbsp;cc5853235@gmail.com
+    </div>
+  </div>
+</footer>
+ <script src="/jquery/jquery.min.js"></script>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+</nav>
+    <img class="back-to-top-btn" src="/images/fly-to-top.png">
+<script>
+// Elevator script included on the page, already.
+window.onload = function() {
+  var elevator = new Elevator({
+    selector:'.back-to-top-btn',
+    element: document.querySelector('.back-to-top-btn'),
+    duration: 1000 // milliseconds
+  });
+}
+</script>
+      
+
+  
+
+  
+
+
+
+
+
+
+
+<!-- author:forvoid begin -->
+<!-- author:forvoid begin -->
+
+<!-- author:forvoid end -->
+
+<!-- author:forvoid end -->
+
+
+
+ <script src="/js/is.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/elevator.js"></script>
+  </div>
+</body>
+</html>

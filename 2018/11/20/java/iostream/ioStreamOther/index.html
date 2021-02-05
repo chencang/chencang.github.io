@@ -1,4 +1,103 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.8.0"><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content="这里是介绍"><title>IO流其他 | 飞翔的企鹅</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/normalize/8.0.0/normalize.min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/1.0.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/1.0.0/grids-responsive-min.css"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">IO流其他</h1><a id="logo" href="/.">飞翔的企鹅</a><p class="description">欢迎访问</p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">IO流其他</h1><div class="post-meta">Nov 20, 2018</div><div class="post-content"><h3 id="目录介绍"><a href="#目录介绍" class="headerlink" title="目录介绍"></a>目录介绍</h3><ul>
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>IO流其他 | 飞翔的企鹅</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="目录介绍 1.字符流出现的原因 2.String中的编解码问题 3.转换流 3.1 转换流OutputStreamWriter的使用 3.2 转换流InputStreamReader的使用 3.3 字符流的5种写数据的方式 3.4 字符流的2种读数据的方式 3.5 高效流FileWriter和FileReader 3.6 字符缓冲流的基本使用 3.7 字符缓冲流的特殊功能   4.IO流的练习题">
+<meta name="keywords" content="io">
+<meta property="og:type" content="article">
+<meta property="og:title" content="IO流其他">
+<meta property="og:url" content="https://blog.okjvm.com/2018/11/20/java/iostream/ioStreamOther/index.html">
+<meta property="og:site_name" content="飞翔的企鹅">
+<meta property="og:description" content="目录介绍 1.字符流出现的原因 2.String中的编解码问题 3.转换流 3.1 转换流OutputStreamWriter的使用 3.2 转换流InputStreamReader的使用 3.3 字符流的5种写数据的方式 3.4 字符流的2种读数据的方式 3.5 高效流FileWriter和FileReader 3.6 字符缓冲流的基本使用 3.7 字符缓冲流的特殊功能   4.IO流的练习题">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-03-17T12:44:00.384Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="IO流其他">
+<meta name="twitter:description" content="目录介绍 1.字符流出现的原因 2.String中的编解码问题 3.转换流 3.1 转换流OutputStreamWriter的使用 3.2 转换流InputStreamReader的使用 3.3 字符流的5种写数据的方式 3.4 字符流的2种读数据的方式 3.5 高效流FileWriter和FileReader 3.6 字符缓冲流的基本使用 3.7 字符缓冲流的特殊功能   4.IO流的练习题">
+  
+    <link rel="alternate" href="/atom.xml" title="飞翔的企鹅" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  
+    
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    
+    <div id="header-inner" class="inner">
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://blog.okjvm.com"></form>
+      </div>
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+      </nav>
+      
+    </div>
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">飞翔的企鹅</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">欢迎访问</a>
+        </h2>
+      
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-java/iostream/ioStreamOther" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/11/20/java/iostream/ioStreamOther/" class="article-date">
+  <time datetime="2018-11-20T06:26:28.000Z" itemprop="datePublished">2018-11-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      IO流其他
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- Table of Contents -->
+        
+        <h3 id="目录介绍"><a href="#目录介绍" class="headerlink" title="目录介绍"></a>目录介绍</h3><ul>
 <li>1.字符流出现的原因</li>
 <li>2.String中的编解码问题</li>
 <li>3.转换流<ul>
@@ -30,6 +129,7 @@
 </ul>
 </li>
 </ul>
+<a id="more"></a>
 <h3 id="1-字符流出现的原因"><a href="#1-字符流出现的原因" class="headerlink" title="1.字符流出现的原因"></a>1.字符流出现的原因</h3><h4 id="1-1字符流出现的原因及编码表概述"><a href="#1-1字符流出现的原因及编码表概述" class="headerlink" title="1.1字符流出现的原因及编码表概述"></a>1.1字符流出现的原因及编码表概述</h4><ul>
 <li>字符流出现的原因:由于字节流操作中文不是特别方便，所以，java就提供了字符流。</li>
 <li>字符流:  字符流 = 字节流 + 编码表</li>
@@ -56,4 +156,199 @@
 <h4 id="4-8-复制指定目录下指定后缀名的文件并修改名称"><a href="#4-8-复制指定目录下指定后缀名的文件并修改名称" class="headerlink" title="4.8 复制指定目录下指定后缀名的文件并修改名称"></a>4.8 复制指定目录下指定后缀名的文件并修改名称</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 把C:\\demo这个目录下所有的以.java结尾的文件复制到D:\\demo中,然后将这个文件的后缀名更改为.jad</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="comment">// 把C:\\demo这个目录下所有的以.java结尾的文件复制到D:\\demo中</span></span><br><span class="line">	<span class="comment">// 1: 把C:\\demo这个目录封装成一个File对象</span></span><br><span class="line">	File srcFolder = <span class="keyword">new</span> File(<span class="string">"C:\\demo"</span>) ;</span><br><span class="line">	<span class="comment">// 2: 把D:\\demo这么目录封装成一个File对象</span></span><br><span class="line">	File destFolder = <span class="keyword">new</span> File(<span class="string">"D:\\demo"</span>) ;</span><br><span class="line">	<span class="comment">// 3: 判断D:\\demo这个路径是否存在</span></span><br><span class="line">	<span class="keyword">if</span>(!destFolder.exists()) &#123;</span><br><span class="line">		destFolder.mkdir() ;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// 调用方法</span></span><br><span class="line">	IOUtils.copyFolder(srcFolder, destFolder, <span class="keyword">new</span> FilenameFilter() &#123;</span><br><span class="line">		<span class="meta">@Override</span></span><br><span class="line">		<span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">accept</span><span class="params">(File dir, String name)</span> </span>&#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">new</span> File(dir , name).isFile() &amp;&amp; name.endsWith(<span class="string">".java"</span>) ;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;) ;</span><br><span class="line">	System.out.println(<span class="string">"-----------------------------------------------------"</span>);</span><br><span class="line">	<span class="comment">// 获取destFolder下所有的文件对应的File数组</span></span><br><span class="line">	File[] files = destFolder.listFiles() ;</span><br><span class="line">	<span class="keyword">for</span>(File f : files) &#123;</span><br><span class="line">		<span class="comment">// 创建目标文件名称		</span></span><br><span class="line">		String destFileName = f.getName().replace(<span class="string">".java"</span>, <span class="string">".jad"</span>) ;</span><br><span class="line">		<span class="comment">// 创建目标文件</span></span><br><span class="line">		File destFile = <span class="keyword">new</span> File(destFolder , destFileName) ;</span><br><span class="line">		<span class="comment">// 调用</span></span><br><span class="line">		f.renameTo(destFile) ;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h4 id="4-7和4-8工具类"><a href="#4-7和4-8工具类" class="headerlink" title="4.7和4.8工具类"></a>4.7和4.8工具类</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">IOUtils</span> </span>&#123;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">copyFolder</span><span class="params">(String srcPahtName , String destPathName , FilenameFilter filenameFilter)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">		File srcFolder = <span class="keyword">new</span> File(srcPahtName) ;</span><br><span class="line">		File destFolder = <span class="keyword">new</span> File(destPathName) ;</span><br><span class="line">		<span class="keyword">if</span>(!destFolder.exists()) &#123;</span><br><span class="line">			destFolder.mkdir() ;</span><br><span class="line">		&#125;</span><br><span class="line">		copyFolder(srcFolder , destFolder , filenameFilter) ;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">copyFolder</span><span class="params">(File srcFolder , File destFolder , FilenameFilter filenameFilter)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">		File[] files = <span class="keyword">null</span> ;</span><br><span class="line">		<span class="keyword">if</span>(filenameFilter == <span class="keyword">null</span>) &#123;</span><br><span class="line">			files = srcFolder.listFiles() ;</span><br><span class="line">		&#125;<span class="keyword">else</span> &#123;</span><br><span class="line">			files = srcFolder.listFiles(filenameFilter) ;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// 遍历</span></span><br><span class="line">		<span class="keyword">for</span>(File f : files) &#123;</span><br><span class="line">			<span class="comment">// 创建目标文件</span></span><br><span class="line">			String destFileName = f.getName() ;</span><br><span class="line">			File destFile = <span class="keyword">new</span> File(destFolder , destFileName) ; </span><br><span class="line">			<span class="comment">// 复制文件</span></span><br><span class="line">			copyFile(f , destFile) ;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125; </span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">copyFile</span><span class="params">(File srcFile , File destFile)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">		<span class="comment">// 创建流对象</span></span><br><span class="line">		BufferedInputStream bis = <span class="keyword">new</span> BufferedInputStream(<span class="keyword">new</span> FileInputStream(srcFile)) ;</span><br><span class="line">		BufferedOutputStream bos = <span class="keyword">new</span> BufferedOutputStream(<span class="keyword">new</span> FileOutputStream(destFile)) ;</span><br><span class="line">		</span><br><span class="line">		<span class="comment">// 一次读取一个字节数组复制文件</span></span><br><span class="line">		<span class="keyword">byte</span>[] bytes = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">1024</span>] ;</span><br><span class="line">		<span class="keyword">int</span> len = <span class="number">0</span> ;</span><br><span class="line">		<span class="keyword">while</span>((len = bis.read(bytes)) != -<span class="number">1</span>)&#123;</span><br><span class="line">			bos.write(bytes, <span class="number">0</span>, len) ;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// 释放资源</span></span><br><span class="line">		bos.close() ;</span><br><span class="line">		bis.close() ;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h4 id="4-9-键盘录入学生信息按照总分排序并写入文本文件"><a href="#4-9-键盘录入学生信息按照总分排序并写入文本文件" class="headerlink" title="4.9 键盘录入学生信息按照总分排序并写入文本文件"></a>4.9 键盘录入学生信息按照总分排序并写入文本文件</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 需求：键盘录入3个学生信息(姓名,语文成绩(chineseScore),数学成绩(mathScore),英语成绩(englishScore)),按照总分从高到低存入文本文件</span></span><br><span class="line"><span class="comment">	 * 分析:</span></span><br><span class="line"><span class="comment">	 * 		1: 创建一个学生类</span></span><br><span class="line"><span class="comment">	 * 		2: 创建一个集合对象TreeSet集合</span></span><br><span class="line"><span class="comment">	 * 		3: 键盘录入学生信息,把学生信息封装到学生对象中,然后把学生对象添加到集合中</span></span><br><span class="line"><span class="comment">	 * 		4: 创建一个高效的字符输出流对象</span></span><br><span class="line"><span class="comment">	 * 		5: 遍历集合,获取每一个元素,把其信息写入到文件中</span></span><br><span class="line"><span class="comment">	 * 		6: 释放资源</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="comment">//  创建一个集合对象TreeSet集合</span></span><br><span class="line">	TreeSet&lt;Student&gt; ts = <span class="keyword">new</span> TreeSet&lt;Student&gt;(<span class="keyword">new</span> Comparator&lt;Student&gt;() &#123;</span><br><span class="line">		<span class="meta">@Override</span></span><br><span class="line">		<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">compare</span><span class="params">(Student s1, Student s2)</span> </span>&#123;</span><br><span class="line">			<span class="comment">// 总分</span></span><br><span class="line">			<span class="keyword">int</span> num = s2.getTotalScore() - s1.getTotalScore() ;</span><br><span class="line">			<span class="comment">// 比较姓名</span></span><br><span class="line">			<span class="keyword">int</span> num2 = (num == <span class="number">0</span>) ? s2.getName().compareTo(s1.getName()) : num ;</span><br><span class="line">			<span class="comment">// 返回</span></span><br><span class="line">			<span class="keyword">return</span> num2;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;) ;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// 3: 键盘录入学生信息,把学生信息封装到学生对象中,然后把学生对象添加到集合中</span></span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> x = <span class="number">1</span> ; x &lt;= <span class="number">3</span> ; x++) &#123;</span><br><span class="line">		<span class="comment">// 创建Scanner对象</span></span><br><span class="line">		Scanner sc = <span class="keyword">new</span> Scanner(System.in) ;</span><br><span class="line">		System.out.println(<span class="string">"请您输入第"</span> + x + <span class="string">"个学生的姓名"</span> );</span><br><span class="line">		String sutName = sc.nextLine() ;</span><br><span class="line">		System.out.println(<span class="string">"请您输入第"</span> + x + <span class="string">"个学生的语文成绩"</span> );</span><br><span class="line">		<span class="keyword">int</span> chineseScore = sc.nextInt() ;</span><br><span class="line">		System.out.println(<span class="string">"请您输入第"</span> + x + <span class="string">"个学生的数学成绩"</span> );</span><br><span class="line">		<span class="keyword">int</span> mathScore = sc.nextInt() ;</span><br><span class="line">		System.out.println(<span class="string">"请您输入第"</span> + x + <span class="string">"个学生的英语成绩"</span> );</span><br><span class="line">		<span class="keyword">int</span> englishScore = sc.nextInt() ;</span><br><span class="line">		</span><br><span class="line">		<span class="comment">// 把学生的信封装到一个学生对象中</span></span><br><span class="line">		Student s = <span class="keyword">new</span> Student() ;</span><br><span class="line">		s.setName(sutName) ;</span><br><span class="line">		s.setMathScore(mathScore) ;</span><br><span class="line">		s.setChineseScore(chineseScore) ;</span><br><span class="line">		s.setEnglishScore(englishScore) ;</span><br><span class="line">		<span class="comment">// 把学生的信息添加到集合中</span></span><br><span class="line">		ts.add(s) ;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// 创建一个高效的字符输出流对象</span></span><br><span class="line">	BufferedWriter bw = <span class="keyword">new</span> BufferedWriter(<span class="keyword">new</span> FileWriter(<span class="string">"student.info"</span>)) ;</span><br><span class="line">	bw.write(<span class="string">"==========================================学生的信息如下===================================================="</span>) ;</span><br><span class="line">	bw.newLine() ;</span><br><span class="line">	bw.flush() ;</span><br><span class="line">	bw.write(<span class="string">"姓名\t\t总分\t\t数学成绩\t\t语文成绩\t\t英语成绩\t\t"</span>) ;</span><br><span class="line">	bw.newLine() ;</span><br><span class="line">	bw.flush() ;</span><br><span class="line">	<span class="keyword">for</span>(Student t : ts) &#123;</span><br><span class="line">		bw.write(t.getName() + <span class="string">"\t\t"</span> + t.getTotalScore() + <span class="string">"\t\t"</span> + t.getMathScore() + <span class="string">"\t\t"</span> + t.getChineseScore() + <span class="string">"\t\t"</span> + t.getEnglishScore()) ;</span><br><span class="line">		bw.newLine() ;</span><br><span class="line">		bw.flush() ;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// 释放资源</span></span><br><span class="line">	bw.close() ;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</div><div class="tags"><a href="/tags/io/">io</a></div><div class="post-nav"><a class="pre" href="/2018/11/20/java/reflex/reflexInfo/">反射介绍</a><a class="next" href="/2018/11/20/java/iostream/ioStreamBase/">IO流基础知识</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"><input type="hidden" name="sitesearch" value="https://fly.popc.top"></form></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"><a href="/tags/鲁迅/" style="font-size: 15px;">鲁迅</a> <a href="/tags/java/" style="font-size: 15px;">java</a> <a href="/tags/数据结构/" style="font-size: 15px;">数据结构</a> <a href="/tags/网络编程/" style="font-size: 15px;">网络编程</a> <a href="/tags/反射/" style="font-size: 15px;">反射</a> <a href="/tags/多线程/" style="font-size: 15px;">多线程</a> <a href="/tags/io/" style="font-size: 15px;">io</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最近文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2018/11/21/java/network/03.TCP&UDP/">TCP和UDP详细介绍</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/11/21/java/network/02.networkProgram2/">网络编程基础知识02</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/11/21/java/network/01.networkProgram/">网络编程基础知识01</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/11/21/java/thread/07-threadDeadLock/">线程死锁</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/11/21/java/thread/06-closeThread/">Thread关闭方法</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/11/21/java/thread/05-synchronizeAndReentrantLock/">synchronize与ReentrantLock</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/11/21/java/thread/04-synchronize/">synchronize深入理解</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/11/21/java/thread/03-threadBackage/">多线程深入理解2</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/11/21/java/thread/02-threadDeep/">多线程深入理解</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/11/21/java/thread/01-threadBase/">多线程基础</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-external-link"> 友情链接</i></div><ul></ul><a href="http://www.example1.com/" title="site-name1" target="_blank">site-name1</a><ul></ul><a href="http://www.example2.com/" title="site-name2" target="_blank">site-name2</a><ul></ul><a href="http://www.example3.com/" title="site-name3" target="_blank">site-name3</a></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2018 <a href="/." rel="nofollow">飞翔的企鹅.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//cdn.bootcss.com/fancybox/3.3.5/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/fancybox/3.3.5/jquery.fancybox.min.css"><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.okjvm.com/2018/11/20/java/iostream/ioStreamOther/" data-id="ckkrzb8yj003hcv2afv2zhroe" class="article-share-link">分享</a>
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/io/">io</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+ <script src="/jquery/jquery.min.js"></script>
+  <div id="random_posts">
+    <h2>推荐文章</h2>
+    <div class="random_posts_ul">
+      <script>
+          var random_count =4
+          var site = {BASE_URI:'/'};
+          function load_random_posts(obj) {
+              var arr=site.posts;
+              if (!obj) return;
+              // var count = $(obj).attr('data-count') || 6;
+              for (var i, tmp, n = arr.length; n; i = Math.floor(Math.random() * n), tmp = arr[--n], arr[n] = arr[i], arr[i] = tmp);
+              arr = arr.slice(0, random_count);
+              var html = '<ul>';
+            
+              for(var j=0;j<arr.length;j++){
+                var item=arr[j];
+                html += '<li><strong>' + 
+                item.date + ':&nbsp;&nbsp;<a href="' + (site.BASE_URI+item.uri) + '">' + 
+                (item.title || item.uri) + '</a></strong>';
+                if(item.excerpt){
+                  html +='<div class="post-excerpt">'+item.excerpt+'</div>';
+                }
+                html +='</li>';
+                
+              }
+              $(obj).html(html + '</ul>');
+          }
+          $('.random_posts_ul').each(function () {
+              var c = this;
+              if (!site.posts || !site.posts.length){
+                  $.getJSON(site.BASE_URI + 'js/posts.js',function(json){site.posts = json;load_random_posts(c)});
+              } 
+               else{
+                load_random_posts(c);
+              }
+          });
+      </script>
+    </div>
+  </div>
+
+    
+<nav id="article-nav">
+  
+    <a href="/2018/11/21/network/01.networkProgram/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          网络编程基础知识01
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/11/20/java/iostream/ioStreamBase/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">IO流基础知识</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+ 
+     
+  <div class="comments" id="comments">
+    
+     
+       
+       
+      
+      
+  </div>
+ 
+  
+
+</section>
+           
+    <aside id="sidebar">
+  
+    
+
+  
+    
+    <div class="widget-wrap">
+    
+      <div class="widget" id="toc-widget-fixed">
+      
+        <strong class="toc-title">文章目录</strong>
+        <div class="toc-widget-list">
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#目录介绍"><span class="toc-number">1.</span> <span class="toc-text">目录介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-字符流出现的原因"><span class="toc-number">2.</span> <span class="toc-text">1.字符流出现的原因</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-1字符流出现的原因及编码表概述"><span class="toc-number">2.1.</span> <span class="toc-text">1.1字符流出现的原因及编码表概述</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-String中的编解码问题"><span class="toc-number">3.</span> <span class="toc-text">2.String中的编解码问题</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-String类中的编码和解码问题"><span class="toc-number">3.1.</span> <span class="toc-text">2.1 String类中的编码和解码问题</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-转换流-掌握"><span class="toc-number">4.</span> <span class="toc-text">3.转换流[掌握]</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-转换流OutputStreamWriter的使用"><span class="toc-number">4.1.</span> <span class="toc-text">3.1 转换流OutputStreamWriter的使用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-2-转换流InputStreamReader的使用"><span class="toc-number">4.2.</span> <span class="toc-text">3.2 转换流InputStreamReader的使用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-3-字符流的5种写数据的方式"><span class="toc-number">4.3.</span> <span class="toc-text">3.3 字符流的5种写数据的方式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-4-字符流的2种读数据的方式"><span class="toc-number">4.4.</span> <span class="toc-text">3.4 字符流的2种读数据的方式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-5-高效流FileWriter和FileReader"><span class="toc-number">4.5.</span> <span class="toc-text">3.5 高效流FileWriter和FileReader</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-6-字符缓冲流的基本使用"><span class="toc-number">4.6.</span> <span class="toc-text">3.6 字符缓冲流的基本使用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-7-字符缓冲流的特殊功能"><span class="toc-number">4.7.</span> <span class="toc-text">3.7 字符缓冲流的特殊功能</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-IO流的练习题"><span class="toc-number">5.</span> <span class="toc-text">4.IO流的练习题</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#4-1-字符流复制文本文件"><span class="toc-number">5.1.</span> <span class="toc-text">4.1 字符流复制文本文件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-FileWriter和FileReader复制文本文件"><span class="toc-number">5.2.</span> <span class="toc-text">4.2 FileWriter和FileReader复制文本文件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-3-字符缓冲流的特殊功能复制文本文件"><span class="toc-number">5.3.</span> <span class="toc-text">4.3 字符缓冲流的特殊功能复制文本文件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-4-把集合中的数据存储到文本文件"><span class="toc-number">5.4.</span> <span class="toc-text">4.4 把集合中的数据存储到文本文件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-5-把文本文件中的数据存储到集合中"><span class="toc-number">5.5.</span> <span class="toc-text">4.5 把文本文件中的数据存储到集合中</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-6-随机获取文本文件中的姓名"><span class="toc-number">5.6.</span> <span class="toc-text">4.6 随机获取文本文件中的姓名</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-7-复制单级文件夹"><span class="toc-number">5.7.</span> <span class="toc-text">4.7 复制单级文件夹</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-8-复制指定目录下指定后缀名的文件并修改名称"><span class="toc-number">5.8.</span> <span class="toc-text">4.8 复制指定目录下指定后缀名的文件并修改名称</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-7和4-8工具类"><span class="toc-number">5.9.</span> <span class="toc-text">4.7和4.8工具类</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-9-键盘录入学生信息按照总分排序并写入文本文件"><span class="toc-number">5.10.</span> <span class="toc-text">4.9 键盘录入学生信息按照总分排序并写入文本文件</span></a></li></ol></li></ol>
+          </div>
+      </div>
+    </div>
+
+  
+    
+
+  
+    
+  
+    
+  
+    
+
+  
+    
+  
+    <!--微信公众号二维码-->
+
+
+  
+</aside>
+
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-left">
+      &copy; 2014 - 2021 popc&nbsp;|&nbsp;
+      主题 <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
+    </div>
+     <div id="footer-right">
+      联系方式&nbsp;|&nbsp;cc5853235@gmail.com
+    </div>
+  </div>
+</footer>
+ <script src="/jquery/jquery.min.js"></script>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+</nav>
+    <img class="back-to-top-btn" src="/images/fly-to-top.png">
+<script>
+// Elevator script included on the page, already.
+window.onload = function() {
+  var elevator = new Elevator({
+    selector:'.back-to-top-btn',
+    element: document.querySelector('.back-to-top-btn'),
+    duration: 1000 // milliseconds
+  });
+}
+</script>
+      
+
+  
+
+  
+
+
+
+
+
+
+
+<!-- author:forvoid begin -->
+<!-- author:forvoid begin -->
+
+<!-- author:forvoid end -->
+
+<!-- author:forvoid end -->
+
+
+
+ <script src="/js/is.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/elevator.js"></script>
+  </div>
+</body>
+</html>

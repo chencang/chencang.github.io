@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>多线程深入理解2 | 飞翔的企鹅</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="目录介绍 1.遇到的问题和需求 1.1 遇到的问题有哪些 1.2 遇到的需求 1.3 多线程通过实现Runnable弊端 1.4 为什么要用线程池">
+<meta name="keywords" content="多线程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="多线程深入理解2">
+<meta property="og:url" content="https://blog.okjvm.com/2018/11/08/java/thread/03-threadBackage/index.html">
+<meta property="og:site_name" content="飞翔的企鹅">
+<meta property="og:description" content="目录介绍 1.遇到的问题和需求 1.1 遇到的问题有哪些 1.2 遇到的需求 1.3 多线程通过实现Runnable弊端 1.4 为什么要用线程池">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-03-17T12:45:06.243Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="多线程深入理解2">
+<meta name="twitter:description" content="目录介绍 1.遇到的问题和需求 1.1 遇到的问题有哪些 1.2 遇到的需求 1.3 多线程通过实现Runnable弊端 1.4 为什么要用线程池">
+  
+    <link rel="alternate" href="/atom.xml" title="飞翔的企鹅" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  
+    
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    
+    <div id="header-inner" class="inner">
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://blog.okjvm.com"></form>
+      </div>
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+      </nav>
+      
+    </div>
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">飞翔的企鹅</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">欢迎访问</a>
+        </h2>
+      
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-java/thread/03-threadBackage" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/11/08/java/thread/03-threadBackage/" class="article-date">
+  <time datetime="2018-11-08T09:54:56.000Z" itemprop="datePublished">2018-11-08</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      多线程深入理解2
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- Table of Contents -->
+        
+        <h3 id="目录介绍"><a href="#目录介绍" class="headerlink" title="目录介绍"></a>目录介绍</h3><ul>
+<li><strong>1.遇到的问题和需求</strong></li>
+<li>1.1 遇到的问题有哪些</li>
+<li>1.2 遇到的需求</li>
+<li>1.3 多线程通过实现Runnable弊端</li>
+<li>1.4 为什么要用线程池</li>
+</ul>
+<a id="more"></a>
+<h3 id="0-前言介绍"><a href="#0-前言介绍" class="headerlink" title="0.前言介绍"></a>0.前言介绍</h3><h4 id="0-1-基础介绍"><a href="#0-1-基础介绍" class="headerlink" title="0.1 基础介绍"></a>0.1 基础介绍</h4><ul>
+<li>轻量级线程池封装库，支持线程执行过程中状态回调监测(包含成功，失败，异常等多种状态)；支持创建异步任务，并且可以设置线程的名称，延迟执行时间，线程优先级，回调callback等；可以根据自己需要创建自己需要的线程池，一共有四种；线程异常时，可以打印异常日志，避免崩溃。</li>
+<li>关于线程池，对于开发来说是十分重要，但是又有点难以理解或者运用。关于写线程池的博客网上已经有很多了，但是一般很少有看到的实际案例或者封装的库，许多博客也仅仅是介绍了线程池的概念，方法，或者部分源码分析，那么为了方便管理线程任务操作，所以才想结合实际案例是不是更容易理解线程池，更多可以参考代码。</li>
+<li>非常感谢aofeng，Alibaba，OpenHFT，yjfnypeu等开源工作者的奉献精神，文末有链接。查找了大量的博客，以及开源的项目，因此最后才会有了这个案例。会慢慢完善的……</li>
+</ul>
+<h3 id="1-遇到的问题和需求"><a href="#1-遇到的问题和需求" class="headerlink" title="1.遇到的问题和需求"></a>1.遇到的问题和需求</h3><h4 id="1-1-遇到的问题有哪些？"><a href="#1-1-遇到的问题有哪些？" class="headerlink" title="1.1 遇到的问题有哪些？"></a>1.1 遇到的问题有哪些？</h4><ul>
+<li>继承Thread，或者实现接口Runnable来开启一个子线程，无法准确地知道线程什么时候执行完成并获得到线程执行完成后返回的结果</li>
+<li>当线程出现异常的时候，如何避免导致崩溃问题</li>
+</ul>
+<h4 id="1-2-遇到的需求"><a href="#1-2-遇到的需求" class="headerlink" title="1.2 遇到的需求"></a>1.2 遇到的需求</h4><ul>
+<li>如何在实际开发中配置线程的优先级</li>
+<li>开启一个线程，是否可以监听Runnable接口中run方法操作的过程，比如监听线程的状态开始，成功，异常，完成等多种状态。</li>
+<li>开启一个线程，是否可以监听Callable<t>接口中call()方法操作的过程，比如监听线程的状态开始，错误异常，完成等多种状态。</t></li>
+</ul>
+<h4 id="1-3-多线程通过实现Runnable弊端"><a href="#1-3-多线程通过实现Runnable弊端" class="headerlink" title="1.3 多线程通过实现Runnable弊端"></a>1.3 多线程通过实现Runnable弊端</h4><ul>
+<li><strong>1.3.1 一般开启线程的操作如下所示</strong><pre><code class="java"><span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() {
+  <span class="meta">@Override</span>
+  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>{
+      <span class="comment">//做一些任务</span>
+  }
+}).start();
+</code></pre>
+</li>
+<li>创建了一个线程并执行，它在任务结束后GC会自动回收该线程。</li>
+<li><p>在线程并发不多的程序中确实不错，而假如这个程序有很多地方需要开启大量线程来处理任务，那么如果还是用上述的方式去创建线程处理的话，那么将导致系统的性能表现的非常糟糕。</p>
+</li>
+<li><p><strong>1.3.2 主要的弊端有这些，可能总结并不全面</strong></p>
+</li>
+<li>大量的线程创建、执行和销毁是非常耗cpu和内存的，这样将直接影响系统的吞吐量，导致性能急剧下降，如果内存资源占用的比较多，还很可能造成OOM</li>
+<li>大量的线程的创建和销毁很容易导致GC频繁的执行，从而发生内存抖动现象，而发生了内存抖动，对于移动端来说，最大的影响就是造成界面卡顿</li>
+<li>线程的创建和销毁都需要时间，当有大量的线程创建和销毁时，那么这些时间的消耗则比较明显，将导致性能上的缺失</li>
+</ul>
+<h4 id="1-4-为什么要用线程池"><a href="#1-4-为什么要用线程池" class="headerlink" title="1.4 为什么要用线程池"></a>1.4 为什么要用线程池</h4><ul>
+<li>重用线程池中的线程，避免频繁地创建和销毁线程带来的性能消耗；</li>
+<li>有效控制线程的最大并发数量，防止线程过大导致抢占资源造成系统阻塞；</li>
+<li>可以对线程进行一定地管理。</li>
+</ul>
+<ul>
+<li><strong>Runnable和Callable接口是干什么的</strong></li>
+<li>Runnable 从 JDK1.0 开始就有了，Callable 是在 JDK1.5 增加的。</li>
+<li>Thread调用了Runnable接口中的方法用来在线程中执行任务。Runnable 和 Callable 都代表那些要在不同的线程中执行的任务。</li>
+<li>Thread调用了Runnable接口中的方法用来在线程中执行任务。</li>
+</ul>
+<ul>
+<li><strong>Runnable和Callable接口有何区别</strong></li>
+<li>它们的主要区别是 Callable 的 call() 方法可以返回值和抛出异常，而 Runnable 的 run() 方法没有这些功能。Callable 可以返回装载有计算结果的 Future 对象。</li>
+<li><strong>比较两个接口，可以得出这样结论：</strong></li>
+<li>Callable 的任务执行后可返回值，而 Runnable 的任务是不能返回值的</li>
+<li>call() 方法可以抛出异常，run()方法不可以的</li>
+<li>运行 Callable 任务可以拿到一个 Future 对象，表示异步计算的结果。它提供了检查计算是否完成的方法，以等待计算的完成，并检索计算的结果。通过 Future 对象可以了解任务执行情况，可取消任务的执行，还可获取执行结果；</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.okjvm.com/2018/11/08/java/thread/03-threadBackage/" data-id="ckkrzb8xo002bcv2a6ml3emaa" class="article-share-link">分享</a>
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/多线程/">多线程</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+ <script src="/jquery/jquery.min.js"></script>
+  <div id="random_posts">
+    <h2>推荐文章</h2>
+    <div class="random_posts_ul">
+      <script>
+          var random_count =4
+          var site = {BASE_URI:'/'};
+          function load_random_posts(obj) {
+              var arr=site.posts;
+              if (!obj) return;
+              // var count = $(obj).attr('data-count') || 6;
+              for (var i, tmp, n = arr.length; n; i = Math.floor(Math.random() * n), tmp = arr[--n], arr[n] = arr[i], arr[i] = tmp);
+              arr = arr.slice(0, random_count);
+              var html = '<ul>';
+            
+              for(var j=0;j<arr.length;j++){
+                var item=arr[j];
+                html += '<li><strong>' + 
+                item.date + ':&nbsp;&nbsp;<a href="' + (site.BASE_URI+item.uri) + '">' + 
+                (item.title || item.uri) + '</a></strong>';
+                if(item.excerpt){
+                  html +='<div class="post-excerpt">'+item.excerpt+'</div>';
+                }
+                html +='</li>';
+                
+              }
+              $(obj).html(html + '</ul>');
+          }
+          $('.random_posts_ul').each(function () {
+              var c = this;
+              if (!site.posts || !site.posts.length){
+                  $.getJSON(site.BASE_URI + 'js/posts.js',function(json){site.posts = json;load_random_posts(c)});
+              } 
+               else{
+                load_random_posts(c);
+              }
+          });
+      </script>
+    </div>
+  </div>
+
+    
+<nav id="article-nav">
+  
+    <a href="/2018/11/09/java/base/08-classLoader/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          类加载机制
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/11/08/java/base/07-javaBaseTypeCache/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">07 基础类型缓存池概念</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+ 
+     
+  <div class="comments" id="comments">
+    
+     
+       
+       
+      
+      
+  </div>
+ 
+  
+
+</section>
+           
+    <aside id="sidebar">
+  
+    
+
+  
+    
+    <div class="widget-wrap">
+    
+      <div class="widget" id="toc-widget-fixed">
+      
+        <strong class="toc-title">文章目录</strong>
+        <div class="toc-widget-list">
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#目录介绍"><span class="toc-number">1.</span> <span class="toc-text">目录介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#0-前言介绍"><span class="toc-number">2.</span> <span class="toc-text">0.前言介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#0-1-基础介绍"><span class="toc-number">2.1.</span> <span class="toc-text">0.1 基础介绍</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-遇到的问题和需求"><span class="toc-number">3.</span> <span class="toc-text">1.遇到的问题和需求</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-1-遇到的问题有哪些？"><span class="toc-number">3.1.</span> <span class="toc-text">1.1 遇到的问题有哪些？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-2-遇到的需求"><span class="toc-number">3.2.</span> <span class="toc-text">1.2 遇到的需求</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-3-多线程通过实现Runnable弊端"><span class="toc-number">3.3.</span> <span class="toc-text">1.3 多线程通过实现Runnable弊端</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-4-为什么要用线程池"><span class="toc-number">3.4.</span> <span class="toc-text">1.4 为什么要用线程池</span></a></li></ol></li></ol>
+          </div>
+      </div>
+    </div>
+
+  
+    
+
+  
+    
+  
+    
+  
+    
+
+  
+    
+  
+    <!--微信公众号二维码-->
+
+
+  
+</aside>
+
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-left">
+      &copy; 2014 - 2021 popc&nbsp;|&nbsp;
+      主题 <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
+    </div>
+     <div id="footer-right">
+      联系方式&nbsp;|&nbsp;cc5853235@gmail.com
+    </div>
+  </div>
+</footer>
+ <script src="/jquery/jquery.min.js"></script>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+</nav>
+    <img class="back-to-top-btn" src="/images/fly-to-top.png">
+<script>
+// Elevator script included on the page, already.
+window.onload = function() {
+  var elevator = new Elevator({
+    selector:'.back-to-top-btn',
+    element: document.querySelector('.back-to-top-btn'),
+    duration: 1000 // milliseconds
+  });
+}
+</script>
+      
+
+  
+
+  
+
+
+
+
+
+
+
+<!-- author:forvoid begin -->
+<!-- author:forvoid begin -->
+
+<!-- author:forvoid end -->
+
+<!-- author:forvoid end -->
+
+
+
+ <script src="/js/is.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/elevator.js"></script>
+  </div>
+</body>
+</html>

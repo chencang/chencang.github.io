@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>Markdown语法 | 飞翔的企鹅</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Markdown是一种轻量级标记语言，让作者专注于写作而不用关注样式.">
+<meta name="keywords" content="markdown">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Markdown语法">
+<meta property="og:url" content="https://blog.okjvm.com/2019/01/19/base/markdown/index.html">
+<meta property="og:site_name" content="飞翔的企鹅">
+<meta property="og:description" content="Markdown是一种轻量级标记语言，让作者专注于写作而不用关注样式.">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://blog.okjvm.com/images/markdown/1.png">
+<meta property="og:image" content="https://blog.okjvm.com/images/markdown/5.png">
+<meta property="og:image" content="https://blog.okjvm.com/images/markdown/3.png">
+<meta property="og:image" content="https://blog.okjvm.com/images/markdown/4.png">
+<meta property="og:image" content="https://blog.okjvm.com/images/markdown/7.png">
+<meta property="og:image" content="https://blog.okjvm.com/images/markdown/7.png">
+<meta property="og:updated_time" content="2019-03-17T12:36:00.397Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Markdown语法">
+<meta name="twitter:description" content="Markdown是一种轻量级标记语言，让作者专注于写作而不用关注样式.">
+<meta name="twitter:image" content="https://blog.okjvm.com/images/markdown/1.png">
+  
+    <link rel="alternate" href="/atom.xml" title="飞翔的企鹅" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  
+    
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    
+    <div id="header-inner" class="inner">
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://blog.okjvm.com"></form>
+      </div>
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+      </nav>
+      
+    </div>
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">飞翔的企鹅</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">欢迎访问</a>
+        </h2>
+      
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-base/markdown" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/01/19/base/markdown/" class="article-date">
+  <time datetime="2019-01-19T03:38:25.000Z" itemprop="datePublished">2019-01-19</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Markdown语法
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- Table of Contents -->
+        
+        <p>Markdown是一种轻量级标记语言，让作者专注于写作而不用关注样式.<br><a id="more"></a></p>
+<h3 id="标题"><a href="#标题" class="headerlink" title="标题"></a>标题</h3><p>用Markdown书写时，只需要在文本前面加上『# 』即可创建一级标题。同理，创建二级标题、三级标题等只需要增加『# 』个数即可,Markdown共支持六级标题。如下所示：<br><figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="section"># 一级标题</span></span><br><span class="line"><span class="section">## 二级标题</span></span><br><span class="line"><span class="section">### 三级标题</span></span><br><span class="line"><span class="section">#### 四级标题</span></span><br><span class="line"><span class="section">##### 五级标题</span></span><br><span class="line"><span class="section">###### 六级标题</span></span><br></pre></td></tr></table></figure></p>
+<p>效果图如图所示<br><img src="/images/markdown/1.png" style="margin:0"></p>
+<h3 id="锚点"><a href="#锚点" class="headerlink" title="锚点"></a>锚点</h3><p>markdown中锚点的使用，一般的使用场景，在文章大纲时，需要列出当前的讲解列表，此时大都会用到锚点。锚点的使用方式如下：</p>
+<ul>
+<li><p>1.标记锚点</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;span id="maodian"&gt;锚点&lt;/span&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>2.使用锚点</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">锚点</span>](<span class="link">#maodian</span>)</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h3><p>Markdown标记区块引用和email中用『&gt;』的引用方式类似，只需要在整个段落的第一行最前面加上『&gt;』：<br><figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="quote">&gt; 这里是引用文字。</span></span><br></pre></td></tr></table></figure></p>
+<p>区块引用可以嵌套，只要根据层次加上不同数量的『&gt;』：<br><figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="quote">&gt; 这是第一级引用。</span></span><br><span class="line">&gt;</span><br><span class="line"><span class="quote">&gt; &gt; 这是第二级引用。</span></span><br><span class="line">&gt;</span><br><span class="line"><span class="quote">&gt; 现在回到第一级引用。</span></span><br></pre></td></tr></table></figure></p>
+<p>引用的区块内也可以使用其他的Markdown语法，包括标题、列表、代码区块等：<br><figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="quote">&gt; ## 这是一个标题。</span></span><br><span class="line"><span class="quote">&gt; 1. 这是第一行列表项。</span></span><br><span class="line"><span class="quote">&gt; 2. 这是第二行列表项。</span></span><br><span class="line">&gt;</span><br><span class="line"><span class="quote">&gt; 给出一些例子代码：</span></span><br><span class="line">&gt;</span><br><span class="line"><span class="quote">&gt; return shell_exec(`echo $input | $markdown_script`);</span></span><br></pre></td></tr></table></figure></p>
+<p>效果图如下：</p>
+<div align="left"><img src="/images/markdown/5.png"></div>
+
+<h3 id="列表"><a href="#列表" class="headerlink" title="列表"></a>列表</h3><p>列表项目标记通常放在最左边，项目标记后面要接一个字符的空格。<br>无序列表：使用星号、加号或是减号作为列表标记.<br><figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="bullet">- </span>Red</span><br><span class="line"><span class="bullet">- </span>Green</span><br><span class="line"><span class="bullet">- </span>Blue</span><br></pre></td></tr></table></figure></p>
+<p><img src="/images/markdown/3.png" style="margin:0"></p>
+<p>有序列表：使用数字接着一个英文句点.<br><figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="bullet">1. </span>Red</span><br><span class="line"><span class="bullet">2. </span>Green</span><br><span class="line"><span class="bullet">3. </span>Blue</span><br></pre></td></tr></table></figure></p>
+<p>效果图如下：<br><img src="/images/markdown/4.png" style="margin:0"><br>如果要在列表项目内放进引用，那『&gt;』就需要缩进：</p>
+<ul>
+<li>Markdown有以下主要功能:<blockquote>
+<p>xxxx<br>xxxx<br>xxxx<br>xxxx</p>
+</blockquote>
+</li>
+</ul>
+<p>代办列表: 表示列表是否勾选状态（注意：[ ] 前后都要有空格）<br><figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="bullet">- </span>[ ] 不勾选</span><br><span class="line"><span class="bullet">- </span>[x] 勾选</span><br></pre></td></tr></table></figure></p>
+<p>效果图如下：<br><img src="/images/markdown/7.png" style="margin:0"></p>
+<h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><p>只要把你的代码块包裹在 “` 之间，你就不需要通过无休止的缩进来标记代码块了。 在围栏式代码块中，你可以指定一个可选的语言标识符，然后我们就可以为它启用语法着色了。 举个例子，这样可以为一段 Ruby 代码着色：</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="code">```ruby</span></span><br><span class="line"><span class="code">require 'redcarpet'</span></span><br><span class="line"><span class="code">markdown = Redcarpet.new("Hello World!")</span></span><br><span class="line"><span class="code">puts markdown.to_html</span></span><br><span class="line"><span class="code">```</span></span><br></pre></td></tr></table></figure>
+<h3 id="强调"><a href="#强调" class="headerlink" title="强调"></a>强调</h3><p>在Markdown中，可以使用 * 和  _  来表示斜体和加粗。</p>
+<p>自动链接<br>方括号显示说明，圆括号内显示网址， Markdown 会自动把它转成链接，例如：<br><figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">我爱你中国</span>](<span class="link">http://www.baidu.com</span>)</span><br></pre></td></tr></table></figure></p>
+<h3 id="表格"><a href="#表格" class="headerlink" title="表格"></a>表格</h3><p>在 Markdown 中，可以制作表格，例如：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">First Header | Second Header | Third Header</span><br><span class="line">------------ | ------------- | ------------</span><br><span class="line">Content Cell | Content Cell  | Content Cell</span><br><span class="line">Content Cell | Content Cell  | Content Cell</span><br></pre></td></tr></table></figure></p>
+<p>或者也可以让表格两边内容对齐，中间内容居中，例如：<br><figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">First Header | Second Header | Third Header</span><br><span class="line">:----------- | :-----------: | -----------:</span><br><span class="line">Left         | Center        | Right</span><br><span class="line">Left         | Center        | Right</span><br></pre></td></tr></table></figure></p>
+<h3 id="分割线"><a href="#分割线" class="headerlink" title="分割线"></a>分割线</h3><p>在 Markdown 中，可以使用 3 个以上『-』符号制作分割线，例如：<br><figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">这是分隔线上部分内容</span><br><span class="line">---</span><br><span class="line">这是分隔线上部分内容</span><br></pre></td></tr></table></figure></p>
+<p>效果图如下：<br><img src="/images/markdown/7.png" style="margin:0"></p>
+<h3 id="图片"><a href="#图片" class="headerlink" title="图片"></a>图片</h3><p>Markdown 使用了类似链接的语法来插入图片, 包含两种形式: 内联 和 引用.<br><figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">![<span class="string">Alt text</span>](<span class="link">/path/to/img.jpg</span>)</span><br><span class="line">或</span><br><span class="line">![<span class="string">Alt text</span>](<span class="link">/path/to/img.jpg "Optional title"</span>)</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>一个惊叹号『!』</li>
+<li>接着一个方括号，里面是图片的替代文字</li>
+<li>接着一个普通括号，里面是图片的网址，最后还可以用引号包住并加上 选择性的『title’』文字。</li>
+</ul>
+<blockquote>
+<p>一般涉及到的语法， 应该都包括进来了，后续可以再补充！</p>
+</blockquote>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.okjvm.com/2019/01/19/base/markdown/" data-id="ckkrzb8w5000dcv2axt2uurn3" class="article-share-link">分享</a>
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/markdown/">markdown</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+ <script src="/jquery/jquery.min.js"></script>
+  <div id="random_posts">
+    <h2>推荐文章</h2>
+    <div class="random_posts_ul">
+      <script>
+          var random_count =4
+          var site = {BASE_URI:'/'};
+          function load_random_posts(obj) {
+              var arr=site.posts;
+              if (!obj) return;
+              // var count = $(obj).attr('data-count') || 6;
+              for (var i, tmp, n = arr.length; n; i = Math.floor(Math.random() * n), tmp = arr[--n], arr[n] = arr[i], arr[i] = tmp);
+              arr = arr.slice(0, random_count);
+              var html = '<ul>';
+            
+              for(var j=0;j<arr.length;j++){
+                var item=arr[j];
+                html += '<li><strong>' + 
+                item.date + ':&nbsp;&nbsp;<a href="' + (site.BASE_URI+item.uri) + '">' + 
+                (item.title || item.uri) + '</a></strong>';
+                if(item.excerpt){
+                  html +='<div class="post-excerpt">'+item.excerpt+'</div>';
+                }
+                html +='</li>';
+                
+              }
+              $(obj).html(html + '</ul>');
+          }
+          $('.random_posts_ul').each(function () {
+              var c = this;
+              if (!site.posts || !site.posts.length){
+                  $.getJSON(site.BASE_URI + 'js/posts.js',function(json){site.posts = json;load_random_posts(c)});
+              } 
+               else{
+                load_random_posts(c);
+              }
+          });
+      </script>
+    </div>
+  </div>
+
+    
+<nav id="article-nav">
+  
+    <a href="/2019/03/17/mysql/msyql-锁/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          MySQL锁
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/01/18/mysql/mysql事务隔离/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">MySQL的四种事务隔离级别</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+ 
+     
+  <div class="comments" id="comments">
+    
+     
+       
+       
+      
+      
+  </div>
+ 
+  
+
+</section>
+           
+    <aside id="sidebar">
+  
+    
+
+  
+    
+    <div class="widget-wrap">
+    
+      <div class="widget" id="toc-widget-fixed">
+      
+        <strong class="toc-title">文章目录</strong>
+        <div class="toc-widget-list">
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#标题"><span class="toc-number">1.</span> <span class="toc-text">标题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#锚点"><span class="toc-number">2.</span> <span class="toc-text">锚点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#引用"><span class="toc-number">3.</span> <span class="toc-text">引用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#列表"><span class="toc-number">4.</span> <span class="toc-text">列表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#代码"><span class="toc-number">5.</span> <span class="toc-text">代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#强调"><span class="toc-number">6.</span> <span class="toc-text">强调</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#表格"><span class="toc-number">7.</span> <span class="toc-text">表格</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#分割线"><span class="toc-number">8.</span> <span class="toc-text">分割线</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#图片"><span class="toc-number">9.</span> <span class="toc-text">图片</span></a></li></ol>
+          </div>
+      </div>
+    </div>
+
+  
+    
+
+  
+    
+  
+    
+  
+    
+
+  
+    
+  
+    <!--微信公众号二维码-->
+
+
+  
+</aside>
+
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-left">
+      &copy; 2014 - 2021 popc&nbsp;|&nbsp;
+      主题 <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
+    </div>
+     <div id="footer-right">
+      联系方式&nbsp;|&nbsp;cc5853235@gmail.com
+    </div>
+  </div>
+</footer>
+ <script src="/jquery/jquery.min.js"></script>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+</nav>
+    <img class="back-to-top-btn" src="/images/fly-to-top.png">
+<script>
+// Elevator script included on the page, already.
+window.onload = function() {
+  var elevator = new Elevator({
+    selector:'.back-to-top-btn',
+    element: document.querySelector('.back-to-top-btn'),
+    duration: 1000 // milliseconds
+  });
+}
+</script>
+      
+
+  
+
+  
+
+
+
+
+
+
+
+<!-- author:forvoid begin -->
+<!-- author:forvoid begin -->
+
+<!-- author:forvoid end -->
+
+<!-- author:forvoid end -->
+
+
+
+ <script src="/js/is.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/elevator.js"></script>
+  </div>
+</body>
+</html>

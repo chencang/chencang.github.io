@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>MySQL的四种事务隔离级别 | 飞翔的企鹅</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="在阅读完《mysql技术内幕–innodb存储引擎》这本书后，发现其实mysql在RR级别是做到了解决幻读的可能性的。只是依然存在幻读是业务本身存在的。引用文章介绍如下：  InnoDB存储引擎默认支持的隔离级别是REPEATABLE READ，但是与标准SQL不同的是，InnoDB存储引擎在REPEATABLE READ事务隔离级别下，使用Next-Key Lock锁的算法，因此避免幻读的产生。">
+<meta name="keywords" content="mysql">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL的四种事务隔离级别">
+<meta property="og:url" content="https://blog.okjvm.com/2019/01/18/mysql/mysql事务隔离/index.html">
+<meta property="og:site_name" content="飞翔的企鹅">
+<meta property="og:description" content="在阅读完《mysql技术内幕–innodb存储引擎》这本书后，发现其实mysql在RR级别是做到了解决幻读的可能性的。只是依然存在幻读是业务本身存在的。引用文章介绍如下：  InnoDB存储引擎默认支持的隔离级别是REPEATABLE READ，但是与标准SQL不同的是，InnoDB存储引擎在REPEATABLE READ事务隔离级别下，使用Next-Key Lock锁的算法，因此避免幻读的产生。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-06-04T02:47:55.182Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="MySQL的四种事务隔离级别">
+<meta name="twitter:description" content="在阅读完《mysql技术内幕–innodb存储引擎》这本书后，发现其实mysql在RR级别是做到了解决幻读的可能性的。只是依然存在幻读是业务本身存在的。引用文章介绍如下：  InnoDB存储引擎默认支持的隔离级别是REPEATABLE READ，但是与标准SQL不同的是，InnoDB存储引擎在REPEATABLE READ事务隔离级别下，使用Next-Key Lock锁的算法，因此避免幻读的产生。">
+  
+    <link rel="alternate" href="/atom.xml" title="飞翔的企鹅" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  
+    
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    
+    <div id="header-inner" class="inner">
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://blog.okjvm.com"></form>
+      </div>
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+      </nav>
+      
+    </div>
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">飞翔的企鹅</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">欢迎访问</a>
+        </h2>
+      
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-mysql/mysql事务隔离" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/01/18/mysql/mysql事务隔离/" class="article-date">
+  <time datetime="2019-01-18T14:47:32.000Z" itemprop="datePublished">2019-01-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      MySQL的四种事务隔离级别
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- Table of Contents -->
+        
+        <p>在阅读完《mysql技术内幕–innodb存储引擎》这本书后，发现其实mysql在RR级别是做到了解决幻读的可能性的。只是依然存在幻读是业务本身存在的。引用文章介绍如下：</p>
+<blockquote>
+<p>InnoDB存储引擎默认支持的隔离级别是<code>REPEATABLE READ</code>，但是与标准SQL不同的是，InnoDB存储引擎在<code>REPEATABLE READ</code>事务隔离级别下，使用<code>Next-Key Lock</code>锁的算法，因此避免幻读的产生。这与其他数据库系统（如Microsoft SQL Server数据库）是不同的。所以说，InnoDB存储引擎在默认的REPEATABLE READ的事务隔离级别下已经能完全保证事务的隔离性要求，即达到SQL标准的SERIALIZABLE隔离级别。在InnoDB存储引擎中，通过使用Next-Key Lock算法来避免不可重复读的问题。<span style="color:red;">在MySQL官方文档中将不可重复读的问题定义为Phantom Problem，即幻像问题。</span>在Next-Key Lock算法下，对于索引的扫描，不仅是锁住扫描到的索引，而且还锁住这些索引覆盖的范围（gap）。因此在这个范围内的插入都是不允许的。这样就避免了另外的事务在这个范围内插入数据导致的不可重复读的问题。因此，InnoDB存储引擎的默认事务隔离级别是READ REPEATABLE，采用Next-Key Lock算法，避免了不可重复读的现象。</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="一、事务的基本要素（ACID"><a href="#一、事务的基本要素（ACID" class="headerlink" title="一、事务的基本要素（ACID)"></a>一、事务的基本要素（ACID)</h2><ul>
+<li>1.<strong>原子性</strong>（Atomicity）:事务开始后所有的操作，要么完成，要么失败，不能滞留在中间环节。事务执行过程中出错，会回滚到事务开始前的状态，所有的操作就像没有发生一样。也就是说事务是一个不可分割的整体，就像化学中学过的原子，是物质构成的基本单位。</li>
+<li>2.<strong>一致性</strong>（Consistency）：事务开始前和结束后，数据库的完整性约束没有被破坏。比如A向B转账，不可能A扣了钱，B却没有到账。</li>
+<li>3.<strong>隔离性</strong>（Isolation）：同一时间，只允许一个事务请求同一数据，不同的事务之间彼此没有任何干扰。比如A正在从一张银行卡取钱，在A取钱的过程结束前，B不能向这张卡转账。</li>
+<li>4.<strong>持久性</strong>（Durability）:事务完成后，事务对数据库的所有更新将被保存到数据库，不能回滚。</li>
+</ul>
+<h2 id="二、事务的并发问题"><a href="#二、事务的并发问题" class="headerlink" title="二、事务的并发问题"></a>二、事务的并发问题</h2><ul>
+<li>1.<strong>脏读</strong>：事务A读取了事务B更新的数据，然后B回滚了操作，那么A读取到的数据是脏数据。</li>
+<li>2.<strong>不可重复读</strong>：事务A多次读取同一个数据，事务B在事务A多次读取的过程中，对数据更新并提交，导致事务A多次读取同一个数据时，结果不一致。</li>
+<li><p>3.<strong>幻读</strong>：系统管理员A将数据库中所有学生的成绩单从具体的分数改为ABC等级，但是系统管理员B就在这个时候插入了一条具体分数的记录，当管理员A改结束后发现还有一条记录没有改过来，就好像发生了幻觉一样。还有一种比如：系统管理员A查询成绩单只有3条记录，此时系统管理员B插入了一条记录并提交。系统管理员此时插入一条记录，被提示键重复。</p>
+<blockquote>
+<p>不可重复读的和幻读很容易混淆，不可重复读侧重于修改，幻读侧重于新增或删除。解决不可重复读的问题只需锁住满足条件的行，解决幻读需要锁表.在MYSQL的官方文档中，是将不可重复度读的问题定义为幻想，即就是幻读。所以我觉得在讨论事务并发产生的问题时，不应该将不可重复读和幻读放在一起讨论， 因为本身就是同一个事情。</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="三、MYSQL事务隔离级别"><a href="#三、MYSQL事务隔离级别" class="headerlink" title="三、MYSQL事务隔离级别"></a>三、MYSQL事务隔离级别</h2><table>
+<thead>
+<tr>
+<th>事务隔离级别</th>
+<th>脏读</th>
+<th>不可重复读</th>
+<th>幻读</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>读未提交（read-uncommitted）</td>
+<td>是</td>
+<td>是</td>
+<td>是</td>
+</tr>
+<tr>
+<td>不可重复读（read-committed）</td>
+<td>否</td>
+<td>是</td>
+<td>是</td>
+</tr>
+<tr>
+<td>可重复读（repeatable-read）</td>
+<td>否</td>
+<td>否</td>
+<td>是</td>
+</tr>
+<tr>
+<td>串行化（serializable）</td>
+<td>否</td>
+<td>否</td>
+<td>否</td>
+</tr>
+</tbody>
+</table>
+<p>mysql默认的事务隔离级别为repeatable-read，mysql8以前可通过如下命令查询：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select @@tx_isolation;</span><br></pre></td></tr></table></figure></p>
+<p>mysql8的命令如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">SELECT @@GLOBAL.transaction_isolation, @@GLOBAL.transaction_read_only;</span><br><span class="line">SELECT @@SESSION.transaction_isolation, @@SESSION.transaction_read_only;</span><br><span class="line"></span><br><span class="line">+--------------------------------+--------------------------------+</span><br><span class="line">| @@GLOBAL.transaction_isolation | @@GLOBAL.transaction_read_only |</span><br><span class="line">+--------------------------------+--------------------------------+</span><br><span class="line">| REPEATABLE-READ                |                              0 |</span><br><span class="line">+--------------------------------+--------------------------------+</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.okjvm.com/2019/01/18/mysql/mysql事务隔离/" data-id="ckkrzb8w9000icv2apq80ht0x" class="article-share-link">分享</a>
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/">mysql</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+ <script src="/jquery/jquery.min.js"></script>
+  <div id="random_posts">
+    <h2>推荐文章</h2>
+    <div class="random_posts_ul">
+      <script>
+          var random_count =4
+          var site = {BASE_URI:'/'};
+          function load_random_posts(obj) {
+              var arr=site.posts;
+              if (!obj) return;
+              // var count = $(obj).attr('data-count') || 6;
+              for (var i, tmp, n = arr.length; n; i = Math.floor(Math.random() * n), tmp = arr[--n], arr[n] = arr[i], arr[i] = tmp);
+              arr = arr.slice(0, random_count);
+              var html = '<ul>';
+            
+              for(var j=0;j<arr.length;j++){
+                var item=arr[j];
+                html += '<li><strong>' + 
+                item.date + ':&nbsp;&nbsp;<a href="' + (site.BASE_URI+item.uri) + '">' + 
+                (item.title || item.uri) + '</a></strong>';
+                if(item.excerpt){
+                  html +='<div class="post-excerpt">'+item.excerpt+'</div>';
+                }
+                html +='</li>';
+                
+              }
+              $(obj).html(html + '</ul>');
+          }
+          $('.random_posts_ul').each(function () {
+              var c = this;
+              if (!site.posts || !site.posts.length){
+                  $.getJSON(site.BASE_URI + 'js/posts.js',function(json){site.posts = json;load_random_posts(c)});
+              } 
+               else{
+                load_random_posts(c);
+              }
+          });
+      </script>
+    </div>
+  </div>
+
+    
+<nav id="article-nav">
+  
+    <a href="/2019/01/19/base/markdown/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          Markdown语法
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/01/18/散文/如梦令/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">如梦令</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+ 
+     
+  <div class="comments" id="comments">
+    
+     
+       
+       
+      
+      
+  </div>
+ 
+  
+
+</section>
+           
+    <aside id="sidebar">
+  
+    
+
+  
+    
+    <div class="widget-wrap">
+    
+      <div class="widget" id="toc-widget-fixed">
+      
+        <strong class="toc-title">文章目录</strong>
+        <div class="toc-widget-list">
+              <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、事务的基本要素（ACID"><span class="toc-number">1.</span> <span class="toc-text">一、事务的基本要素（ACID)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、事务的并发问题"><span class="toc-number">2.</span> <span class="toc-text">二、事务的并发问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三、MYSQL事务隔离级别"><span class="toc-number">3.</span> <span class="toc-text">三、MYSQL事务隔离级别</span></a></li></ol>
+          </div>
+      </div>
+    </div>
+
+  
+    
+
+  
+    
+  
+    
+  
+    
+
+  
+    
+  
+    <!--微信公众号二维码-->
+
+
+  
+</aside>
+
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-left">
+      &copy; 2014 - 2021 popc&nbsp;|&nbsp;
+      主题 <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
+    </div>
+     <div id="footer-right">
+      联系方式&nbsp;|&nbsp;cc5853235@gmail.com
+    </div>
+  </div>
+</footer>
+ <script src="/jquery/jquery.min.js"></script>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+</nav>
+    <img class="back-to-top-btn" src="/images/fly-to-top.png">
+<script>
+// Elevator script included on the page, already.
+window.onload = function() {
+  var elevator = new Elevator({
+    selector:'.back-to-top-btn',
+    element: document.querySelector('.back-to-top-btn'),
+    duration: 1000 // milliseconds
+  });
+}
+</script>
+      
+
+  
+
+  
+
+
+
+
+
+
+
+<!-- author:forvoid begin -->
+<!-- author:forvoid begin -->
+
+<!-- author:forvoid end -->
+
+<!-- author:forvoid end -->
+
+
+
+ <script src="/js/is.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/elevator.js"></script>
+  </div>
+</body>
+</html>

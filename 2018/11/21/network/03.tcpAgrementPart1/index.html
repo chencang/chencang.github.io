@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>TCP和UDP详细介绍 | 飞翔的企鹅</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="目录介绍 1.TCP和UDP的区别 1.1 UDP协议 1.2 TCP协议   2.Socket介绍 2.1 Socket简单介绍 2.2 Socket工作图解   3.UDP协议传输数据 3.1 客户端发送数据 3.2 服务端接收数据   4.TCP协议传输数据 4.1 客户端发送数据 4.2 服务端接收数据   5.三次握手建立连接 5.1 三次握手原理图 5.2 为什么建立连接需要三次握手">
+<meta name="keywords" content="网络编程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TCP和UDP详细介绍">
+<meta property="og:url" content="https://blog.okjvm.com/2018/11/21/network/03.tcpAgrementPart1/index.html">
+<meta property="og:site_name" content="飞翔的企鹅">
+<meta property="og:description" content="目录介绍 1.TCP和UDP的区别 1.1 UDP协议 1.2 TCP协议   2.Socket介绍 2.1 Socket简单介绍 2.2 Socket工作图解   3.UDP协议传输数据 3.1 客户端发送数据 3.2 服务端接收数据   4.TCP协议传输数据 4.1 客户端发送数据 4.2 服务端接收数据   5.三次握手建立连接 5.1 三次握手原理图 5.2 为什么建立连接需要三次握手">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://blog.okjvm.com/images/tcp4432347-81e16b1dba650de8.png">
+<meta property="og:image" content="https://blog.okjvm.com/images/network/03_03.jpg">
+<meta property="og:image" content="https://blog.okjvm.com/images/network/03_04.jpg">
+<meta property="og:image" content="https://blog.okjvm.com/images/network/03_01.jpg">
+<meta property="og:image" content="https://blog.okjvm.com/images/network/03_02.jpg">
+<meta property="og:updated_time" content="2019-03-17T12:42:50.524Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="TCP和UDP详细介绍">
+<meta name="twitter:description" content="目录介绍 1.TCP和UDP的区别 1.1 UDP协议 1.2 TCP协议   2.Socket介绍 2.1 Socket简单介绍 2.2 Socket工作图解   3.UDP协议传输数据 3.1 客户端发送数据 3.2 服务端接收数据   4.TCP协议传输数据 4.1 客户端发送数据 4.2 服务端接收数据   5.三次握手建立连接 5.1 三次握手原理图 5.2 为什么建立连接需要三次握手">
+<meta name="twitter:image" content="https://blog.okjvm.com/images/tcp4432347-81e16b1dba650de8.png">
+  
+    <link rel="alternate" href="/atom.xml" title="飞翔的企鹅" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  
+    
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    
+    <div id="header-inner" class="inner">
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://blog.okjvm.com"></form>
+      </div>
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+      </nav>
+      
+    </div>
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">飞翔的企鹅</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">欢迎访问</a>
+        </h2>
+      
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-network/03.tcpAgrementPart1" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/11/21/network/03.tcpAgrementPart1/" class="article-date">
+  <time datetime="2018-11-21T12:54:54.000Z" itemprop="datePublished">2018-11-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      TCP和UDP详细介绍
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- Table of Contents -->
+        
+        <h4 id="目录介绍"><a href="#目录介绍" class="headerlink" title="目录介绍"></a>目录介绍</h4><ul>
+<li>1.TCP和UDP的区别<ul>
+<li>1.1 UDP协议</li>
+<li>1.2 TCP协议</li>
+</ul>
+</li>
+<li>2.Socket介绍<ul>
+<li>2.1 Socket简单介绍</li>
+<li>2.2 Socket工作图解</li>
+</ul>
+</li>
+<li>3.UDP协议传输数据<ul>
+<li>3.1 客户端发送数据</li>
+<li>3.2 服务端接收数据</li>
+</ul>
+</li>
+<li>4.TCP协议传输数据<ul>
+<li>4.1 客户端发送数据</li>
+<li>4.2 服务端接收数据</li>
+</ul>
+</li>
+<li>5.三次握手建立连接<ul>
+<li>5.1 三次握手原理图</li>
+<li>5.2 为什么建立连接需要三次握手</li>
+<li>5.3 四次握手断开连接</li>
+</ul>
+</li>
+<li>6.Socket文件传输</li>
+</ul>
+<a id="more"></a>
+<h3 id="1-TCP和UDP的区别"><a href="#1-TCP和UDP的区别" class="headerlink" title="1.TCP和UDP的区别"></a>1.TCP和UDP的区别</h3><h4 id="1-1-TCP和UDP的区别"><a href="#1-1-TCP和UDP的区别" class="headerlink" title="1.1 TCP和UDP的区别"></a>1.1 TCP和UDP的区别</h4><ul>
+<li>①UDP协议：<ul>
+<li>面向无连接</li>
+<li>每个数据报的大小在限制在64k内</li>
+<li>因为是面向无连接，所以是不可靠协议</li>
+<li>不需要建立连接，速度快</li>
+</ul>
+</li>
+<li>②TCP协议：<ul>
+<li>必须建立连接，形成传输数据的通道</li>
+<li>在连接中可进行大数据量传输</li>
+<li>通过三次握手完成连接，是可靠协议</li>
+<li>必须建立连接，效率会稍低</li>
+</ul>
+</li>
+<li>注：三次握手：<ul>
+<li>第一次：我问你：在么？</li>
+<li>第二次：你回答：在。</li>
+<li>第三次：我反馈：哦，我知道你在。</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-Socket介绍"><a href="#2-Socket介绍" class="headerlink" title="2.Socket介绍"></a>2.Socket介绍</h3><h4 id="2-1-Socket简单介绍"><a href="#2-1-Socket简单介绍" class="headerlink" title="2.1 Socket简单介绍"></a>2.1 Socket简单介绍</h4><ul>
+<li>Socket简单介绍<ul>
+<li>Socket就是为网络服务提供的一种机制</li>
+<li>通信的两端都有Socket</li>
+<li>网络通信其实就是Socket间的通信</li>
+<li>数据在两个Socket间通过IO传输</li>
+<li>玩Socket主要就是记住流程，代码查文档就行</li>
+<li>Socket的简单使用的话应该都会，两个端各建立一个Socket，服务端的叫ServerSocket，然后建立连接即可。</li>
+</ul>
+</li>
+</ul>
+<h4 id="2-2-Socket工作图解"><a href="#2-2-Socket工作图解" class="headerlink" title="2.2 Socket工作图解"></a>2.2 Socket工作图解</h4><p><img src="/images/tcp4432347-81e16b1dba650de8.png" alt=""></p>
+<h3 id="3-UDP协议传输数据"><a href="#3-UDP协议传输数据" class="headerlink" title="3.UDP协议传输数据"></a>3.UDP协议传输数据</h3><h4 id="3-1-客户端发送数据"><a href="#3-1-客户端发送数据" class="headerlink" title="3.1 客户端发送数据"></a>3.1 客户端发送数据</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 端口号</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> PORT = <span class="number">8080</span>;</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * UDP协议发送数据：</span></span><br><span class="line"><span class="comment"> * 1.创建发送端Socket对象</span></span><br><span class="line"><span class="comment"> * 2.创建数据，并把数据打包</span></span><br><span class="line"><span class="comment"> * 3.调用Socket对象发送方法发送数据包</span></span><br><span class="line"><span class="comment"> * 4.释放资源</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">udpSendMessage</span><span class="params">(String serverAddress)</span> </span>&#123;</span><br><span class="line">    String content = <span class="string">"yang"</span>;</span><br><span class="line">    <span class="comment">// 创建发送端Socket对象</span></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="comment">// 创建发送端Socket对象</span></span><br><span class="line">        DatagramSocket ds = <span class="keyword">new</span> DatagramSocket();</span><br><span class="line">        <span class="comment">// 创建数据，并把数据打包</span></span><br><span class="line">        <span class="keyword">byte</span>[] bys = content.getBytes();</span><br><span class="line">        InetAddress byName = InetAddress.getByName(serverAddress);</span><br><span class="line">        DatagramPacket dp = <span class="keyword">new</span> DatagramPacket(bys, bys.length,byName ,PORT);</span><br><span class="line">        <span class="comment">// 调用Socket对象发送方法发送数据包</span></span><br><span class="line">        ds.send(dp);</span><br><span class="line">        <span class="comment">// 释放资源</span></span><br><span class="line">        ds.close();</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="3-2-服务端接收数据"><a href="#3-2-服务端接收数据" class="headerlink" title="3.2 服务端接收数据"></a>3.2 服务端接收数据</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">     * UDP协议接收数据：</span></span><br><span class="line"><span class="comment">     * 1.创建接收端Socket对象</span></span><br><span class="line"><span class="comment">     * 2.创建一个数据包(接收容器)</span></span><br><span class="line"><span class="comment">     * 3.调用Socket对象接收方法接收数据包</span></span><br><span class="line"><span class="comment">     * 4.解析数据包</span></span><br><span class="line"><span class="comment">     * 5.释放资源</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">receive_udp</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="comment">// 创建接收端Socket对象</span></span><br><span class="line">        DatagramSocket ds = <span class="keyword">new</span> DatagramSocket(PORT);</span><br><span class="line">        <span class="comment">// 创建一个数据包(接收容器)</span></span><br><span class="line">        <span class="keyword">byte</span>[] bys = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">1024</span>];</span><br><span class="line">        DatagramPacket dp = <span class="keyword">new</span> DatagramPacket(bys, bys.length);</span><br><span class="line">        <span class="comment">// 调用Socket对象接收方法接收数据包</span></span><br><span class="line">        ds.receive(dp);</span><br><span class="line">        <span class="comment">// 获取对方的ip</span></span><br><span class="line">        String ip = dp.getAddress().getHostAddress();</span><br><span class="line">        <span class="comment">// 解析数据</span></span><br><span class="line">        String data = <span class="keyword">new</span> String(dp.getData(), <span class="number">0</span>, dp.getLength());</span><br><span class="line">        Message message = <span class="keyword">new</span> Message();</span><br><span class="line">        message.obj = data;</span><br><span class="line">        message.what = <span class="number">2</span>;</span><br><span class="line">        handler.sendMessage(message);</span><br><span class="line">        <span class="comment">// 关闭数据库</span></span><br><span class="line">        ds.close();</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="4-TCP协议传输数据"><a href="#4-TCP协议传输数据" class="headerlink" title="4.TCP协议传输数据"></a>4.TCP协议传输数据</h3><h4 id="4-1-客户端发送数据"><a href="#4-1-客户端发送数据" class="headerlink" title="4.1 客户端发送数据"></a>4.1 客户端发送数据</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 端口号</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> PORT = <span class="number">8080</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> serverAddress 要发送到服务端的ip</span></span><br><span class="line"><span class="comment"> * 1.创建socket并指定ip和端口号</span></span><br><span class="line"><span class="comment"> * 2.获取输出流，写数据</span></span><br><span class="line"><span class="comment"> * 3.释放资源</span></span><br><span class="line"><span class="comment"> * 4.Tcp一定要先开接收端</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">send_tcp</span><span class="params">(String serverAddress)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        Socket s = <span class="keyword">new</span> Socket(serverAddress, PORT);</span><br><span class="line">        <span class="comment">//为了发送数据，应该获得socket流中的输出流</span></span><br><span class="line">        OutputStream out = s.getOutputStream();</span><br><span class="line">        String content = <span class="string">"yang"</span>;</span><br><span class="line">        out.write(content.getBytes());</span><br><span class="line">        s.close();</span><br><span class="line">    &#125; <span class="keyword">catch</span> (UnknownHostException e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="4-2-服务端接收数据"><a href="#4-2-服务端接收数据" class="headerlink" title="4.2 服务端接收数据"></a>4.2 服务端接收数据</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * TCP协议接收数据</span></span><br><span class="line"><span class="comment"> * 1.创建接收端的Socket对象</span></span><br><span class="line"><span class="comment"> * 2.监听客户端接收，返回一个Socket对象</span></span><br><span class="line"><span class="comment"> * 3.获取输入流，读取数据显示在控制台</span></span><br><span class="line"><span class="comment"> * 4.释放资源</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">receive_tcp</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="comment">//1.建立连接，监听端口</span></span><br><span class="line">        ServerSocket ss = <span class="keyword">new</span> ServerSocket(PORT);</span><br><span class="line">        <span class="comment">//2.连接客户端对象</span></span><br><span class="line">        <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">            <span class="comment">//阻塞式方法，只有客户端连接了才会继续往下运行</span></span><br><span class="line">            Socket accept = ss.accept();</span><br><span class="line">            <span class="comment">//获取ip</span></span><br><span class="line">            String ip = accept.getInetAddress().getHostAddress();</span><br><span class="line">            <span class="comment">//3.获取客户端发送过来的数据</span></span><br><span class="line">            InputStream in = accept.getInputStream();</span><br><span class="line">            <span class="comment">//4.开始读取,获取输入信息</span></span><br><span class="line">            BufferedReader bff = <span class="keyword">new</span> BufferedReader(<span class="keyword">new</span> InputStreamReader(in));</span><br><span class="line">            <span class="comment">//读取信息</span></span><br><span class="line">            String line;</span><br><span class="line">            <span class="keyword">final</span> StringBuilder sb = <span class="keyword">new</span> StringBuilder();</span><br><span class="line">            <span class="keyword">while</span> ((line = bff.readLine()) != <span class="keyword">null</span>) &#123;</span><br><span class="line">                sb.append(line);</span><br><span class="line">            &#125;</span><br><span class="line">            Message message = <span class="keyword">new</span> Message();</span><br><span class="line">            message.obj = sb.toString();</span><br><span class="line">            handler.sendMessage(message);</span><br><span class="line">            <span class="comment">//5.关闭</span></span><br><span class="line">            <span class="comment">//ss.close();</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="5-三次握手建立连接"><a href="#5-三次握手建立连接" class="headerlink" title="5.三次握手建立连接"></a>5.三次握手建立连接</h3><h4 id="5-1-TCP的几种状态"><a href="#5-1-TCP的几种状态" class="headerlink" title="5.1 TCP的几种状态"></a>5.1 TCP的几种状态</h4><ul>
+<li>在TCP层，有个FLAGS字段，这个字段有以下几个标识（SYN,FIN,ACK,PSH,RST,URG）。其中我们来分下一下日常的几个字段<ul>
+<li>SYN 建立连接</li>
+<li>FIN 关闭连接</li>
+<li>ACK 响应</li>
+<li>PSH 有DATA数据传输</li>
+<li>URG 首部中的紧急指针有效</li>
+<li>RST 连接重置</li>
+</ul>
+</li>
+</ul>
+<h4 id="5-2-三次握手原理图"><a href="#5-2-三次握手原理图" class="headerlink" title="5.2 三次握手原理图"></a>5.2 三次握手原理图</h4><ul>
+<li>第一次：客户端发送SYN包至服务器，并进入SYN_SENT状态，等待服务器确认。</li>
+<li>第二次：服务器收到客户端的SYN包，发送一个ACK，同时发送自己的SYN，此时服务器进入SYN_RCVD状态 (可以注意对比一下，这里和四次挥手时候的区别，为何可以响应和建立连接一起发送过来！)</li>
+<li>第三次：客户端接收到服务器发送的SYN+ACK后，进入ESTABLISHED状态，并发送服务器SYN包的确认ACK，服务器接收到客户端ACK后，进入ESTABLISHED状态。</li>
+</ul>
+<blockquote>
+<p>当客户端和服务器都进入<code>ESTABLISHED</code>状态后，客户端和服务器之间就可以开始双向传递数据了。</p>
+</blockquote>
+<p><img src="/images/network/03_03.jpg" alt=""></p>
+<h4 id="5-3-四次握手断开连接"><a href="#5-3-四次握手断开连接" class="headerlink" title="5.3 四次握手断开连接"></a>5.3 四次握手断开连接</h4><ul>
+<li>第一次：主动方发送一个FIN并进入FIN_WAIT1状态。</li>
+<li>第二次：被动方接收到主动关闭方发送的FIN并发送ACK，此时被动关闭方进入CLOSE_WAIT状态；主动关闭方收到被动关闭方的ACK后，进入FIN_WAIT2状态。</li>
+<li>第三次：被动方发送一个FIN并进入LAST_ACK状态。（<strong>为何这里要分开发送呢， 因为被动方可能还在处理数据的过程中，所以无法立即断开</strong>）</li>
+<li>第四次：主动方收到被动关闭方发送的FIN并发送ACK，此时主动关闭方进入TIME_WAIT状态，经过2MSL时间后关闭连接；被动关闭方收到主动关闭方的ACK后，关闭连接。</li>
+</ul>
+<p><img src="/images/network/03_04.jpg" alt=""></p>
+<h4 id="5-4-为什么建立连接需要三次握手"><a href="#5-4-为什么建立连接需要三次握手" class="headerlink" title="5.4 为什么建立连接需要三次握手"></a>5.4 为什么建立连接需要三次握手</h4><ul>
+<li>首先非常明确的是两次握手是最基本的，第一次握手，C端发了个连接请求消息到S端，S端收到后S端就知道自己与C端是可以连接成功的，但是C端此时并不知道S端是否接收到这个消息，所以S端接收到消息后得应答，C端得到S端的回复后，才能确定自己与S端是可以连接上的，这就是第二次握手。</li>
+<li>C端只有确定了自己能与S端连接上才能开始发数据。所以两次握手肯定是最基本的。</li>
+<li>那么为什么需要第三次握手呢？假设一下如果没有第三次握手，而是两次握手后我们就认为连接建立，那么会发生什么？<ul>
+<li><ol>
+<li>C端发出去的第一个网络连接请求由于某些原因在网络节点中滞留了，导致延迟，直到连接释放的某个时间点才到达S端，这是一个早已失效的报文，但是此时S端仍然认为这是C端的建立连接请求第一次握手，于是S端回应了C端，第二次握手。</li>
+</ol>
+</li>
+<li><ol start="2">
+<li>如果只有两次握手，那么到这里，连接就建立了，但是此时C端并没有任何数据要发送，而S端就会傻傻的等待着，造成很大的资源浪费。所以需要第三次握手，告诉S端，C端收到了他的响应，如此就可以避免这种情况。</li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>三次握手是为了防止已经失效的连接请求报文段突然又传到服务端，因而产生错误。</p>
+</blockquote>
+<h4 id="TCP包的序号问题"><a href="#TCP包的序号问题" class="headerlink" title="TCP包的序号问题"></a>TCP包的序号问题</h4><p>TCP报文的seq值是一个32位的计数器，随着时间的变化而变化，每4微秒加1.如果计算一下，能取到重复值，需要4个多小时。（32位无符号最大值4294967296,1秒=1000000微秒，则 4/1000000*4294967296/60/60=4.7小时）,那么那个重复绕路的报文应该已经失效了， 另外我们也知道IP层有个TTL，指示的时路由的最大转发次数， 当递减到0时，再IP层也已经丢弃了。 </p>
+<h4 id="四次握手断开的异常分析"><a href="#四次握手断开的异常分析" class="headerlink" title="四次握手断开的异常分析"></a>四次握手断开的异常分析</h4><p>在前面讲解过四次握手断开连接的情况，那些都是正常的流程，那么如何处理异常情况呢。 TCP协议专门设计了几个状态来处理这些问题。我们来看看断开连接时的状态时序图：</p>
+<p><img src="/images/network/03_01.jpg" alt=""></p>
+<p>时序图分析：当A说“不玩了”时，A进入状态<code>FIN_WAIT_1</code>,B收到A不玩的消息后，发送一个ACK表示自己知道了，然后B进入<code>CLOASE_WAIT</code>状态。A收到B的消息后，A进入<code>FIN_WAIT_2</code>的状态。</p>
+<ul>
+<li><ol>
+<li>B直接跑路。那么此时A将永远在这个状态，TCP协议里没有对这个状态的异常处理，好在Linux有个命令，可以调整tcp_fin_timeout这个参数，用以设置一个超时时间。</li>
+</ol>
+</li>
+<li><ol start="2">
+<li>B没有跑路，在发送了”自己知道了“的同时，B接着发送了一个“B也不玩了”的FIN给A时，A发送“知道了”的ACK给B后。此时A的状态进入<code>TIME_WAIT</code>，A此时是可以跑路的。但是可能B没有收到这个ACK。那么B可能在到达等待时间后，重新发送一个“B也不玩了”的，让A重新响应。如果A此时跑路，那么B是收不到它要等待的A发出的”知道了“的ACK.所以TCP协议要求A在发出”知道了”这个ACK后， 依然要等待一段时间， 即就是进入的<code>TIME_WAIT</code>状态。这个时间要足够长，长到B没有收到A的消息，B重新发一个消息”B也不玩了“。</li>
+</ol>
+</li>
+<li><ol start="3">
+<li>A跑路时，A的端口将直接空出来， 但是B不知道，B原来发送的很多包可能还在路上。如果A的端口被一个新应用占用了， 它将收到很多B的包，这样也不合理。所以为了防止混乱。通常这个足够长的时间已经确保了B发送过来的包都已经被废弃，再才会空出端口来。这个等待时间是2MSL(Maximum Segment Lifetime),报文最大生存时间，它是任何报文在网络上的最大生存时间。超过这个时间的报文将被丢弃。又因为TCP报文是基于IP协议，而IP协议中还存在一个TTL，IP数据包经过的最大路有数。每经过一次递减1.当此值为0时，报文也将丢弃。</li>
+</ol>
+</li>
+<li><ol start="4">
+<li>如果B在发出FIN响应后，在超过了2MSL后，依然没有收到它等待A给它发送的ACK.按照上面讲的TCP原理，B将重新发送。这个时候A收到了这个包，但是A会说，我已经等了很长时间了。 我不会处理你的数据报文。同时发送一个RST。B就知道A以跑路。</li>
+</ol>
+<h4 id="TCP状态机"><a href="#TCP状态机" class="headerlink" title="TCP状态机"></a>TCP状态机</h4><p>将连接建立和断开的两个时序图综合起来，就是这个著名的TCP状态机，如下图所示：</p>
+<p><img src="/images/network/03_02.jpg" alt=""></p>
+<p>在这个图中，加黑加粗的部分，是上面说道的主要流程，其中阿拉伯数字的序号，是连接过程中的主流程。而大写中文数字的序号，是断开过程中的序号。加粗的实线是客户端A的状态变迁，加粗的虚线是服务端B的状态变迁。</p>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.okjvm.com/2018/11/21/network/03.tcpAgrementPart1/" data-id="ckkrzb8x3001gcv2ay9f45ews" class="article-share-link">分享</a>
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/网络编程/">网络编程</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+ <script src="/jquery/jquery.min.js"></script>
+  <div id="random_posts">
+    <h2>推荐文章</h2>
+    <div class="random_posts_ul">
+      <script>
+          var random_count =4
+          var site = {BASE_URI:'/'};
+          function load_random_posts(obj) {
+              var arr=site.posts;
+              if (!obj) return;
+              // var count = $(obj).attr('data-count') || 6;
+              for (var i, tmp, n = arr.length; n; i = Math.floor(Math.random() * n), tmp = arr[--n], arr[n] = arr[i], arr[i] = tmp);
+              arr = arr.slice(0, random_count);
+              var html = '<ul>';
+            
+              for(var j=0;j<arr.length;j++){
+                var item=arr[j];
+                html += '<li><strong>' + 
+                item.date + ':&nbsp;&nbsp;<a href="' + (site.BASE_URI+item.uri) + '">' + 
+                (item.title || item.uri) + '</a></strong>';
+                if(item.excerpt){
+                  html +='<div class="post-excerpt">'+item.excerpt+'</div>';
+                }
+                html +='</li>';
+                
+              }
+              $(obj).html(html + '</ul>');
+          }
+          $('.random_posts_ul').each(function () {
+              var c = this;
+              if (!site.posts || !site.posts.length){
+                  $.getJSON(site.BASE_URI + 'js/posts.js',function(json){site.posts = json;load_random_posts(c)});
+              } 
+               else{
+                load_random_posts(c);
+              }
+          });
+      </script>
+    </div>
+  </div>
+
+    
+<nav id="article-nav">
+  
+    <a href="/2018/11/22/network/04.tcpAgrementPart2/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          TCP协议下
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/11/21/network/02.networkProgram2/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">网络编程基础知识02</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+ 
+     
+  <div class="comments" id="comments">
+    
+     
+       
+       
+      
+      
+  </div>
+ 
+  
+
+</section>
+           
+    <aside id="sidebar">
+  
+    
+
+  
+    
+    <div class="widget-wrap">
+    
+      <div class="widget" id="toc-widget-fixed">
+      
+        <strong class="toc-title">文章目录</strong>
+        <div class="toc-widget-list">
+              <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#目录介绍"><span class="toc-number">1.</span> <span class="toc-text">目录介绍</span></a></li></ol><li class="toc-item toc-level-3"><a class="toc-link" href="#1-TCP和UDP的区别"><span class="toc-number"></span> <span class="toc-text">1.TCP和UDP的区别</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-1-TCP和UDP的区别"><span class="toc-number">1.</span> <span class="toc-text">1.1 TCP和UDP的区别</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-Socket介绍"><span class="toc-number"></span> <span class="toc-text">2.Socket介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-Socket简单介绍"><span class="toc-number">1.</span> <span class="toc-text">2.1 Socket简单介绍</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-Socket工作图解"><span class="toc-number">2.</span> <span class="toc-text">2.2 Socket工作图解</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-UDP协议传输数据"><span class="toc-number"></span> <span class="toc-text">3.UDP协议传输数据</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-客户端发送数据"><span class="toc-number">1.</span> <span class="toc-text">3.1 客户端发送数据</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-2-服务端接收数据"><span class="toc-number">2.</span> <span class="toc-text">3.2 服务端接收数据</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-TCP协议传输数据"><span class="toc-number"></span> <span class="toc-text">4.TCP协议传输数据</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#4-1-客户端发送数据"><span class="toc-number">1.</span> <span class="toc-text">4.1 客户端发送数据</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-服务端接收数据"><span class="toc-number">2.</span> <span class="toc-text">4.2 服务端接收数据</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-三次握手建立连接"><span class="toc-number"></span> <span class="toc-text">5.三次握手建立连接</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#5-1-TCP的几种状态"><span class="toc-number">1.</span> <span class="toc-text">5.1 TCP的几种状态</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-2-三次握手原理图"><span class="toc-number">2.</span> <span class="toc-text">5.2 三次握手原理图</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-3-四次握手断开连接"><span class="toc-number">3.</span> <span class="toc-text">5.3 四次握手断开连接</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-4-为什么建立连接需要三次握手"><span class="toc-number">4.</span> <span class="toc-text">5.4 为什么建立连接需要三次握手</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#TCP包的序号问题"><span class="toc-number">5.</span> <span class="toc-text">TCP包的序号问题</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#四次握手断开的异常分析"><span class="toc-number">6.</span> <span class="toc-text">四次握手断开的异常分析</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#TCP状态机"><span class="toc-number">7.</span> <span class="toc-text">TCP状态机</span></a></li></ol>
+          </li></div>
+      </div>
+    </div>
+
+  
+    
+
+  
+    
+  
+    
+  
+    
+
+  
+    
+  
+    <!--微信公众号二维码-->
+
+
+  
+</aside>
+
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-left">
+      &copy; 2014 - 2021 popc&nbsp;|&nbsp;
+      主题 <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
+    </div>
+     <div id="footer-right">
+      联系方式&nbsp;|&nbsp;cc5853235@gmail.com
+    </div>
+  </div>
+</footer>
+ <script src="/jquery/jquery.min.js"></script>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+</nav>
+    <img class="back-to-top-btn" src="/images/fly-to-top.png">
+<script>
+// Elevator script included on the page, already.
+window.onload = function() {
+  var elevator = new Elevator({
+    selector:'.back-to-top-btn',
+    element: document.querySelector('.back-to-top-btn'),
+    duration: 1000 // milliseconds
+  });
+}
+</script>
+      
+
+  
+
+  
+
+
+
+
+
+
+
+<!-- author:forvoid begin -->
+<!-- author:forvoid begin -->
+
+<!-- author:forvoid end -->
+
+<!-- author:forvoid end -->
+
+
+
+ <script src="/js/is.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/elevator.js"></script>
+  </div>
+</body>
+</html>

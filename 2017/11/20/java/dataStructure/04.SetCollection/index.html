@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>Set集合深度解析 | 飞翔的企鹅</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="目录介绍 1.Set集合 1.1 特点 1.2 注意   2.HashSet 2.1 特点 2.2 如何保证元素唯一性 2.3 使用HashSet集合存储自定义对象,保证元素的唯一性 2.4 存储图解   3.LinkedHashSet 3.1 特点   4.TreeSet 4.1 TreeSet集合特点 4.2 如何进行排序 4.3 使用TreeSet集合存储自定义对象,并排序案例 4.4 使用">
+<meta name="keywords" content="数据结构">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Set集合深度解析">
+<meta property="og:url" content="https://blog.okjvm.com/2017/11/20/java/dataStructure/04.SetCollection/index.html">
+<meta property="og:site_name" content="飞翔的企鹅">
+<meta property="og:description" content="目录介绍 1.Set集合 1.1 特点 1.2 注意   2.HashSet 2.1 特点 2.2 如何保证元素唯一性 2.3 使用HashSet集合存储自定义对象,保证元素的唯一性 2.4 存储图解   3.LinkedHashSet 3.1 特点   4.TreeSet 4.1 TreeSet集合特点 4.2 如何进行排序 4.3 使用TreeSet集合存储自定义对象,并排序案例 4.4 使用">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://blog.okjvm.com/images/t4432347-3e7f04523fbc8db6.png">
+<meta property="og:updated_time" content="2019-03-17T12:44:21.918Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Set集合深度解析">
+<meta name="twitter:description" content="目录介绍 1.Set集合 1.1 特点 1.2 注意   2.HashSet 2.1 特点 2.2 如何保证元素唯一性 2.3 使用HashSet集合存储自定义对象,保证元素的唯一性 2.4 存储图解   3.LinkedHashSet 3.1 特点   4.TreeSet 4.1 TreeSet集合特点 4.2 如何进行排序 4.3 使用TreeSet集合存储自定义对象,并排序案例 4.4 使用">
+<meta name="twitter:image" content="https://blog.okjvm.com/images/t4432347-3e7f04523fbc8db6.png">
+  
+    <link rel="alternate" href="/atom.xml" title="飞翔的企鹅" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  
+    
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    
+    <div id="header-inner" class="inner">
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://blog.okjvm.com"></form>
+      </div>
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+      </nav>
+      
+    </div>
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">飞翔的企鹅</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">欢迎访问</a>
+        </h2>
+      
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-java/dataStructure/04.SetCollection" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/11/20/java/dataStructure/04.SetCollection/" class="article-date">
+  <time datetime="2017-11-20T10:00:57.000Z" itemprop="datePublished">2017-11-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Set集合深度解析
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- Table of Contents -->
+        
+        <h3 id="目录介绍"><a href="#目录介绍" class="headerlink" title="目录介绍"></a>目录介绍</h3><ul>
+<li>1.Set集合<ul>
+<li>1.1 特点</li>
+<li>1.2 注意</li>
+</ul>
+</li>
+<li>2.HashSet<ul>
+<li>2.1 特点</li>
+<li>2.2 如何保证元素唯一性</li>
+<li>2.3 使用HashSet集合存储自定义对象,保证元素的唯一性</li>
+<li>2.4 存储图解</li>
+</ul>
+</li>
+<li>3.LinkedHashSet<ul>
+<li>3.1 特点</li>
+</ul>
+</li>
+<li>4.TreeSet<ul>
+<li>4.1 TreeSet集合特点</li>
+<li>4.2 如何进行排序</li>
+<li>4.3 使用TreeSet集合存储自定义对象,并排序案例</li>
+<li>4.4 使用TreeSet集合存储自定义对象,安排姓名的长度进行排序</li>
+<li>4.4 产生10个1-20之间的随机数要求随机数不能重复案例</li>
+</ul>
+</li>
+<li>5.二叉树原理图</li>
+</ul>
+<a id="more"></a>
+<h4 id="1-Set集合"><a href="#1-Set集合" class="headerlink" title="1.Set集合"></a>1.Set集合</h4><ul>
+<li><p><strong>1.1 特点</strong></p>
+<ul>
+<li>Set集合: 可以保证元素的唯一性 , 但是不保证有序(有序: 指的是存储和取出的顺序一致)。</li>
+</ul>
+</li>
+<li><p><strong>1.2 注意</strong></p>
+<ul>
+<li>Set集合在存储元素的时候,需要对元素进行处理,按照一定的算法对元素进行排序,而有的时候我们的添加元素的顺序巧号是Set集合计算完毕以后的顺序,但是这也不能说明是有序的。</li>
+</ul>
+</li>
+</ul>
+<h4 id="2-HashSet"><a href="#2-HashSet" class="headerlink" title="2.HashSet"></a>2.HashSet</h4><ul>
+<li><strong>2.1 特点</strong><ul>
+<li>HashSet集合保证元素的唯一性依赖于两个方法一个是hashCode方法,一个是equals方法在进行比较的时候先比较的是对象的hashCode值,如果对象的hashCode值是相同的,那么再调用equals方法比较。</li>
+</ul>
+</li>
+<li><strong>2.2 如何保证元素唯一性</strong><ul>
+<li>而我们的字符串是重写hashCode方法和equals方法,那么在这里相同的字符串的hashCode值就是相同的,并且equals方法比较是内容。当hashCode值相同,并且调用equals方法返回的是true的时候,说明两个对象是同一个,于是不进行存储,即就保证了元素的唯一性。</li>
+</ul>
+</li>
+<li><strong>2.3 使用HashSet集合存储自定义对象,保证元素的唯一性</strong><ul>
+<li>如果两个对象的成员变量是相同的,那么我们认为就是同一个对象。</li>
+</ul>
+</li>
+</ul>
+<h4 id="3-LinkedHashSet"><a href="#3-LinkedHashSet" class="headerlink" title="3.LinkedHashSet"></a>3.LinkedHashSet</h4><ul>
+<li>3.1 特点<ul>
+<li>LinkedHashSet: 底层的数据结构是链表和哈希表。</li>
+<li>元素唯一 ,并且有序</li>
+</ul>
+</li>
+</ul>
+<h4 id="4-TreeSet"><a href="#4-TreeSet" class="headerlink" title="4.TreeSet"></a>4.TreeSet</h4><ul>
+<li><p><strong>4.1 TreeSet集合特点</strong></p>
+<ul>
+<li>通常使用TreeSet集合时，肯的是为了排序而用，这个集合的数据结构是红黑树。红黑树是一个具有自平衡的二叉树，特点是对插入时间、删除时间和查找时间提供了最好可能的最坏情况担保。</li>
+</ul>
+</li>
+<li><p><strong>4.2 如何进行排序</strong></p>
+<ul>
+<li>集合可以对元素进行排序,而排序有两种方式一种是自然排序,一种是比较强器排序</li>
+<li>到底使用的是自然排序还是比较器排序,主要取决于我们使用的构造方法</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 使用自然排序</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">TreeSet</span><span class="params">()</span>:</span></span><br><span class="line"><span class="function"><span class="comment">// 使用的就是比较器排序</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">TreeSet</span><span class="params">(Comparator&lt;? <span class="keyword">super</span> E&gt; comparator)</span></span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>4.3 使用TreeSet集合存储自定义对象,并排序案例</strong></li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 需求: 使用TreeSet集合存储自定义对象,并排序</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="comment">// 创建自定义对象</span></span><br><span class="line">Student s1 = <span class="keyword">new</span> Student(<span class="string">"刘亦菲"</span> , <span class="number">18</span>) ;</span><br><span class="line">Student s2 = <span class="keyword">new</span> Student(<span class="string">"貂蝉"</span> , <span class="number">16</span>) ;</span><br><span class="line">Student s3 = <span class="keyword">new</span> Student(<span class="string">"杨玉环"</span> , <span class="number">22</span>) ;</span><br><span class="line">Student s4 = <span class="keyword">new</span> Student(<span class="string">"王昭君"</span> , <span class="number">14</span>) ;</span><br><span class="line">Student s5 = <span class="keyword">new</span> Student(<span class="string">"西施"</span> , <span class="number">25</span>) ;</span><br><span class="line">Student s6 = <span class="keyword">new</span> Student(<span class="string">"范冰冰"</span> , <span class="number">25</span>) ;</span><br><span class="line"><span class="comment">// 创建TreeSet集合对象,自然排序</span></span><br><span class="line">TreeSet&lt;Student&gt; ts = <span class="keyword">new</span> TreeSet&lt;Student&gt;() ;</span><br><span class="line"><span class="comment">// 添加元素</span></span><br><span class="line">ts.add(s1) ;</span><br><span class="line">ts.add(s2) ;</span><br><span class="line">ts.add(s3) ;</span><br><span class="line">ts.add(s4) ;</span><br><span class="line">ts.add(s5) ;</span><br><span class="line">ts.add(s6) ;</span><br><span class="line"><span class="comment">// 遍历集合</span></span><br><span class="line"><span class="keyword">for</span>(Student s : ts) &#123;</span><br><span class="line">    System.out.println(s.getName() + <span class="string">"---"</span> + s.getAge());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//在student类中</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Student</span> <span class="keyword">implements</span> <span class="title">Comparable</span>&lt;<span class="title">Student</span>&gt;</span>&#123;</span><br><span class="line">    <span class="comment">//省略部分代码</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">compareTo</span><span class="params">(Student o)</span> </span>&#123;</span><br><span class="line">        <span class="comment">/**</span></span><br><span class="line"><span class="comment">         * 按照年龄进行排序</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        <span class="keyword">int</span> num = <span class="keyword">this</span>.age - o.age  ;</span><br><span class="line">        <span class="comment">// 比较姓名</span></span><br><span class="line">        <span class="keyword">int</span> num2 = num == <span class="number">0</span> ? <span class="keyword">this</span>.name.compareTo(o.name) : num ;</span><br><span class="line">        <span class="keyword">return</span> num2;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>4.4 使用TreeSet集合存储自定义对象,安排姓名的长度进行排序</strong></li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 需求: 使用TreeSet集合存储自定义对象,安排姓名的长度进行排序</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="comment">// 创建自定义对象</span></span><br><span class="line">Student s1 = <span class="keyword">new</span> Student(<span class="string">"liubei"</span> , <span class="number">23</span>) ;</span><br><span class="line">Student s2 = <span class="keyword">new</span> Student(<span class="string">"guanyunchang"</span> , <span class="number">21</span>) ;</span><br><span class="line">Student s3 = <span class="keyword">new</span> Student(<span class="string">"zhangfei"</span> , <span class="number">18</span>) ;</span><br><span class="line">Student s4 = <span class="keyword">new</span> Student(<span class="string">"lvbu"</span> , <span class="number">25</span>) ;</span><br><span class="line">Student s5 = <span class="keyword">new</span> Student(<span class="string">"zhugeliang"</span> , <span class="number">23</span>) ;</span><br><span class="line">Student s6 = <span class="keyword">new</span> Student(<span class="string">"guanyu"</span> , <span class="number">23</span>) ;</span><br><span class="line">Student s7 = <span class="keyword">new</span> Student(<span class="string">"guanyu"</span> , <span class="number">25</span>) ;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 创建集合对象</span></span><br><span class="line">TreeSet&lt;Student&gt; ts = <span class="keyword">new</span> TreeSet&lt;Student&gt;() ;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 添加元素</span></span><br><span class="line">ts.add(s1) ;</span><br><span class="line">ts.add(s2) ;</span><br><span class="line">ts.add(s3) ;</span><br><span class="line">ts.add(s4) ;</span><br><span class="line">ts.add(s5) ;</span><br><span class="line">ts.add(s6) ;</span><br><span class="line">ts.add(s7) ;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 增强for遍历</span></span><br><span class="line"><span class="keyword">for</span>(Student s : ts) &#123;</span><br><span class="line">    System.out.println(s.getName() + <span class="string">"---"</span> + s.getAge());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//-------------------------</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Student</span> <span class="keyword">implements</span> <span class="title">Comparable</span>&lt;<span class="title">Student</span>&gt;</span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">compareTo</span><span class="params">(Student o)</span> </span>&#123;</span><br><span class="line">        <span class="comment">/**</span></span><br><span class="line"><span class="comment">         * 比较姓名的长度</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        <span class="keyword">int</span> num = <span class="keyword">this</span>.name.length() - o.name.length() ;</span><br><span class="line">        <span class="comment">// 比较内容</span></span><br><span class="line">        <span class="keyword">int</span> num2 = (num == <span class="number">0</span>) ? <span class="keyword">this</span>.name.compareTo(o.name) : num ;</span><br><span class="line">        <span class="comment">// 比较年龄</span></span><br><span class="line">        <span class="keyword">int</span> num3 = (num2 == <span class="number">0</span>) ? <span class="keyword">this</span>.age - o.age : num2 ;</span><br><span class="line">        <span class="keyword">return</span> num3;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>4.5 产生10个1-20之间的随机数要求随机数不能重复案例</strong></li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 产生10个1-20之间的随机数,要求不能重复</span></span><br><span class="line"><span class="comment"> * 分析:</span></span><br><span class="line"><span class="comment"> *         1: 创建一个HashSet集合对象 , 作用: 存储产生的随机数</span></span><br><span class="line"><span class="comment"> *         2: 生成随机数 , 把随机数添加到集合中</span></span><br><span class="line"><span class="comment"> *         3: 使用循环,当集合的长度大于等于10退出循环 , 小于10就一直循环</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="comment">// 创建一个HashSet集合对象 , 作用: 存储产生的随机数</span></span><br><span class="line">HashSet&lt;Integer&gt; hs = <span class="keyword">new</span> HashSet&lt;Integer&gt;() ;</span><br><span class="line"><span class="keyword">while</span>(hs.size() &lt; <span class="number">10</span>) &#123;</span><br><span class="line">    <span class="comment">// 使用Random类</span></span><br><span class="line">    Random random = <span class="keyword">new</span> Random() ;</span><br><span class="line">    <span class="keyword">int</span> num = random.nextInt(<span class="number">20</span>) + <span class="number">1</span> ;</span><br><span class="line">    <span class="comment">// 把num添加到集合中</span></span><br><span class="line">    hs.add(num) ;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 遍历</span></span><br><span class="line"><span class="keyword">for</span>(Integer i : hs) &#123;</span><br><span class="line">    System.out.println(i);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="5-二叉树原理图"><a href="#5-二叉树原理图" class="headerlink" title="5.二叉树原理图"></a>5.二叉树原理图</h4><p><img src="/images/t4432347-3e7f04523fbc8db6.png" alt="image"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.okjvm.com/2017/11/20/java/dataStructure/04.SetCollection/" data-id="ckkrzb8xk0022cv2a7oegvbcb" class="article-share-link">分享</a>
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/数据结构/">数据结构</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+ <script src="/jquery/jquery.min.js"></script>
+  <div id="random_posts">
+    <h2>推荐文章</h2>
+    <div class="random_posts_ul">
+      <script>
+          var random_count =4
+          var site = {BASE_URI:'/'};
+          function load_random_posts(obj) {
+              var arr=site.posts;
+              if (!obj) return;
+              // var count = $(obj).attr('data-count') || 6;
+              for (var i, tmp, n = arr.length; n; i = Math.floor(Math.random() * n), tmp = arr[--n], arr[n] = arr[i], arr[i] = tmp);
+              arr = arr.slice(0, random_count);
+              var html = '<ul>';
+            
+              for(var j=0;j<arr.length;j++){
+                var item=arr[j];
+                html += '<li><strong>' + 
+                item.date + ':&nbsp;&nbsp;<a href="' + (site.BASE_URI+item.uri) + '">' + 
+                (item.title || item.uri) + '</a></strong>';
+                if(item.excerpt){
+                  html +='<div class="post-excerpt">'+item.excerpt+'</div>';
+                }
+                html +='</li>';
+                
+              }
+              $(obj).html(html + '</ul>');
+          }
+          $('.random_posts_ul').each(function () {
+              var c = this;
+              if (!site.posts || !site.posts.length){
+                  $.getJSON(site.BASE_URI + 'js/posts.js',function(json){site.posts = json;load_random_posts(c)});
+              } 
+               else{
+                load_random_posts(c);
+              }
+          });
+      </script>
+    </div>
+  </div>
+
+    
+<nav id="article-nav">
+  
+    <a href="/2017/11/20/java/dataStructure/05.MapCollection/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          Map集合基础介绍
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/11/20/java/dataStructure/03.ListCollection/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">List集合深度解析</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+ 
+     
+  <div class="comments" id="comments">
+    
+     
+       
+       
+      
+      
+  </div>
+ 
+  
+
+</section>
+           
+    <aside id="sidebar">
+  
+    
+
+  
+    
+    <div class="widget-wrap">
+    
+      <div class="widget" id="toc-widget-fixed">
+      
+        <strong class="toc-title">文章目录</strong>
+        <div class="toc-widget-list">
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#目录介绍"><span class="toc-number">1.</span> <span class="toc-text">目录介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-Set集合"><span class="toc-number">1.1.</span> <span class="toc-text">1.Set集合</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-HashSet"><span class="toc-number">1.2.</span> <span class="toc-text">2.HashSet</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-LinkedHashSet"><span class="toc-number">1.3.</span> <span class="toc-text">3.LinkedHashSet</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-TreeSet"><span class="toc-number">1.4.</span> <span class="toc-text">4.TreeSet</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-二叉树原理图"><span class="toc-number">1.5.</span> <span class="toc-text">5.二叉树原理图</span></a></li></ol></li></ol>
+          </div>
+      </div>
+    </div>
+
+  
+    
+
+  
+    
+  
+    
+  
+    
+
+  
+    
+  
+    <!--微信公众号二维码-->
+
+
+  
+</aside>
+
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-left">
+      &copy; 2014 - 2021 popc&nbsp;|&nbsp;
+      主题 <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
+    </div>
+     <div id="footer-right">
+      联系方式&nbsp;|&nbsp;cc5853235@gmail.com
+    </div>
+  </div>
+</footer>
+ <script src="/jquery/jquery.min.js"></script>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+</nav>
+    <img class="back-to-top-btn" src="/images/fly-to-top.png">
+<script>
+// Elevator script included on the page, already.
+window.onload = function() {
+  var elevator = new Elevator({
+    selector:'.back-to-top-btn',
+    element: document.querySelector('.back-to-top-btn'),
+    duration: 1000 // milliseconds
+  });
+}
+</script>
+      
+
+  
+
+  
+
+
+
+
+
+
+
+<!-- author:forvoid begin -->
+<!-- author:forvoid begin -->
+
+<!-- author:forvoid end -->
+
+<!-- author:forvoid end -->
+
+
+
+ <script src="/js/is.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/elevator.js"></script>
+  </div>
+</body>
+</html>

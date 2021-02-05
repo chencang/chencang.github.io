@@ -1,31 +1,783 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.8.0"><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content="这里是介绍"><title>飞翔的企鹅 | 欢迎访问</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/normalize/8.0.0/normalize.min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/1.0.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/1.0.0/grids-responsive-min.css"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">飞翔的企鹅</h1><a id="logo" href="/.">飞翔的企鹅</a><p class="description">欢迎访问</p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title"><a href="/2018/11/21/java/network/03.TCP&amp;UDP/">TCP和UDP详细介绍</a></h1><div class="post-meta">2018-11-21</div><div class="post-content"><h4 id="目录介绍"><a href="#目录介绍" class="headerlink" title="目录介绍"></a>目录介绍</h4><ul>
-<li>1.TCP和UDP的区别<ul>
-<li>1.1 UDP协议</li>
-<li>1.2 TCP协议</li>
-</ul></li></ul></div><p class="readmore"><a href="/2018/11/21/java/network/03.TCP&amp;UDP/">阅读全文</a></p></div><div class="post"><h1 class="post-title"><a href="/2018/11/21/java/network/02.networkProgram2/">网络编程基础知识02</a></h1><div class="post-meta">2018-11-21</div><div class="post-content"><h4 id="目录介绍"><a href="#目录介绍" class="headerlink" title="目录介绍"></a>目录介绍</h4><ul>
-<li>1.计算机网络体系结构</li>
-<li>2.Http相关知识点<ul>
-<li>2.1 无连接与无状态</li>
-<li>2.2 HTTP的缓存机制</li></ul></li></ul></div><p class="readmore"><a href="/2018/11/21/java/network/02.networkProgram2/">阅读全文</a></p></div><div class="post"><h1 class="post-title"><a href="/2018/11/21/java/network/01.networkProgram/">网络编程基础知识01</a></h1><div class="post-meta">2018-11-21</div><div class="post-content"><h4 id="网络编程基础知识"><a href="#网络编程基础知识" class="headerlink" title="网络编程基础知识"></a>网络编程基础知识</h4><h3 id="目录介绍"><a href="#目录介绍" class="headerlink" title="目录介绍"></a>目录介绍</h3><ul></ul></div><p class="readmore"><a href="/2018/11/21/java/network/01.networkProgram/">阅读全文</a></p></div><div class="post"><h1 class="post-title"><a href="/2018/11/21/java/thread/07-threadDeadLock/">线程死锁</a></h1><div class="post-meta">2018-11-21</div><div class="post-content"><h4 id="目录介绍"><a href="#目录介绍" class="headerlink" title="目录介绍"></a>目录介绍</h4><ul>
-<li>1.代码模拟产生死锁<ul>
-<li>1.1 代码描述</li>
-<li>1.2 产生死锁代码</li>
-<li>1.3 死锁发生的场景</li></ul></li></ul></div><p class="readmore"><a href="/2018/11/21/java/thread/07-threadDeadLock/">阅读全文</a></p></div><div class="post"><h1 class="post-title"><a href="/2018/11/21/java/thread/06-closeThread/">Thread关闭方法</a></h1><div class="post-meta">2018-11-21</div><div class="post-content"><h4 id="目录介绍"><a href="#目录介绍" class="headerlink" title="目录介绍"></a>目录介绍</h4><ul>
-<li>1.Thread线程</li>
-<li>2.结束Thread线程的几种方法</li>
-<li>3.使用退出标志终止线程</li>
-<li>4.使用interrupt()方法终止线程</li></ul></div><p class="readmore"><a href="/2018/11/21/java/thread/06-closeThread/">阅读全文</a></p></div><div class="post"><h1 class="post-title"><a href="/2018/11/21/java/thread/05-synchronizeAndReentrantLock/">synchronize与ReentrantLock</a></h1><div class="post-meta">2018-11-21</div><div class="post-content"><h4 id="目录介绍"><a href="#目录介绍" class="headerlink" title="目录介绍"></a>目录介绍</h4><ul>
-<li>1.Synchronize和ReentrantLock区别<ul>
-<li>1.1 相似点</li>
-<li>1.2 区别</li>
-<li>1.3 什么是线程安全问题？如何理解</li></ul></li></ul></div><p class="readmore"><a href="/2018/11/21/java/thread/05-synchronizeAndReentrantLock/">阅读全文</a></p></div><div class="post"><h1 class="post-title"><a href="/2018/11/21/java/thread/04-synchronize/">synchronize深入理解</a></h1><div class="post-meta">2018-11-21</div><div class="post-content"><h4 id="目录介绍"><a href="#目录介绍" class="headerlink" title="目录介绍"></a>目录介绍</h4><ul>
-<li>1.synchronized简单介绍<ul>
-<li>1.1 简单介绍</li>
-<li>1.2 可以修饰哪些内容</li>
-</ul></li></ul></div><p class="readmore"><a href="/2018/11/21/java/thread/04-synchronize/">阅读全文</a></p></div><div class="post"><h1 class="post-title"><a href="/2018/11/21/java/thread/03-threadBackage/">多线程深入理解2</a></h1><div class="post-meta">2018-11-21</div><div class="post-content"><h3 id="目录介绍"><a href="#目录介绍" class="headerlink" title="目录介绍"></a>目录介绍</h3><ul>
-<li><strong>1.遇到的问题和需求</strong></li>
-<li>1.1 遇到的问题有哪些</li>
-<li>1.2 遇到的需求</li></ul></div><p class="readmore"><a href="/2018/11/21/java/thread/03-threadBackage/">阅读全文</a></p></div><div class="post"><h1 class="post-title"><a href="/2018/11/21/java/thread/02-threadDeep/">多线程深入理解</a></h1><div class="post-meta">2018-11-21</div><div class="post-content"><h3 id="目录介绍"><a href="#目录介绍" class="headerlink" title="目录介绍"></a>目录介绍</h3><ul>
-<li><strong>1.ThreadPoolExecutor类介绍</strong></li>
-<li>1.1 构造函数</li>
-<li>1.2 参数解析</li></ul></div><p class="readmore"><a href="/2018/11/21/java/thread/02-threadDeep/">阅读全文</a></p></div><div class="post"><h1 class="post-title"><a href="/2018/11/21/java/thread/01-threadBase/">多线程基础</a></h1><div class="post-meta">2018-11-21</div><div class="post-content"><h4 id="多线程基础知识"><a href="#多线程基础知识" class="headerlink" title="多线程基础知识"></a>多线程基础知识</h4><h3 id="目录介绍"><a href="#目录介绍" class="headerlink" title="目录介绍"></a>目录介绍</h3><ul></ul></div><p class="readmore"><a href="/2018/11/21/java/thread/01-threadBase/">阅读全文</a></p></div><nav class="page-navigator"><span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/">下一页</a></nav></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"><input type="hidden" name="sitesearch" value="https://fly.popc.top"></form></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"><a href="/tags/鲁迅/" style="font-size: 15px;">鲁迅</a> <a href="/tags/java/" style="font-size: 15px;">java</a> <a href="/tags/数据结构/" style="font-size: 15px;">数据结构</a> <a href="/tags/网络编程/" style="font-size: 15px;">网络编程</a> <a href="/tags/反射/" style="font-size: 15px;">反射</a> <a href="/tags/多线程/" style="font-size: 15px;">多线程</a> <a href="/tags/io/" style="font-size: 15px;">io</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最近文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2018/11/21/java/network/03.TCP&UDP/">TCP和UDP详细介绍</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/11/21/java/network/02.networkProgram2/">网络编程基础知识02</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/11/21/java/network/01.networkProgram/">网络编程基础知识01</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/11/21/java/thread/07-threadDeadLock/">线程死锁</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/11/21/java/thread/06-closeThread/">Thread关闭方法</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/11/21/java/thread/05-synchronizeAndReentrantLock/">synchronize与ReentrantLock</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/11/21/java/thread/04-synchronize/">synchronize深入理解</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/11/21/java/thread/03-threadBackage/">多线程深入理解2</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/11/21/java/thread/02-threadDeep/">多线程深入理解</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/11/21/java/thread/01-threadBase/">多线程基础</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-external-link"> 友情链接</i></div><ul></ul><a href="http://www.example1.com/" title="site-name1" target="_blank">site-name1</a><ul></ul><a href="http://www.example2.com/" title="site-name2" target="_blank">site-name2</a><ul></ul><a href="http://www.example3.com/" title="site-name3" target="_blank">site-name3</a></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2018 <a href="/." rel="nofollow">飞翔的企鹅.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//cdn.bootcss.com/fancybox/3.3.5/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/fancybox/3.3.5/jquery.fancybox.min.css"><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>飞翔的企鹅</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="这里是介绍">
+<meta property="og:type" content="website">
+<meta property="og:title" content="飞翔的企鹅">
+<meta property="og:url" content="https://blog.okjvm.com/index.html">
+<meta property="og:site_name" content="飞翔的企鹅">
+<meta property="og:description" content="这里是介绍">
+<meta property="og:locale" content="zh-CN">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="飞翔的企鹅">
+<meta name="twitter:description" content="这里是介绍">
+  
+    <link rel="alternate" href="/atom.xml" title="飞翔的企鹅" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  
+    
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    
+    <div id="header-inner" class="inner">
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://blog.okjvm.com"></form>
+      </div>
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+      </nav>
+      
+    </div>
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">飞翔的企鹅</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">欢迎访问</a>
+        </h2>
+      
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-送你一朵小红花" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/02/05/送你一朵小红花/" class="article-date">
+  <time datetime="2021-02-05T07:10:07.000Z" itemprop="datePublished">2021-02-05</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/02/05/送你一朵小红花/">送你一朵小红花</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- Table of Contents -->
+        
+        <p>认识时，已经是不在人世间。最近比较火的事件正是一位音乐人“赵英俊”离世，最早在微博上了热搜，并打上了“爆”的标签。当时我并不知道这个艺人是谁，会有多大的影响力， 但当大部分我认识的艺人开始追悼、送别时我才明白过来是一个有实力的艺人。很多朗朗上口的一些音乐，背后的创作都包含了他的影子，比如《大王叫我来巡山》、《清风徐来》等，在得知他在离世两个月前还在努力创作音乐就想给这个世界留点什么。而最后读了他离世前写的一些文字，这些事迹使我我肃然起敬。</p>
+<p>文字中，他说舍不得、太爱这个世界，那一刻，让我错愕、木讷。是啊，这个世界如此的丰富多彩，江山秀丽，国泰民安。对于我而言，一直觉得离开这个世界还是很远的事情，有太多个明天让我去安排怎么度过，接下来要忙的事情。可对于即将离世的人而言，当然是太多的不舍，因为也许就没有明天了。我想对于他爱这个世界的人而言， 最好的馈赠就是，好好活着，享受每一天的乐趣。</p>
+<p>对比现在，我们必须学会讨好自己，日常生活中增加一些仪式感。多交几个知心的朋友，多陪伴自己的家人、挚爱。每天多些笑容对待自己身边的人。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.okjvm.com/2021/02/05/送你一朵小红花/" data-id="ckkrzb8v90001cv2ao8qjune5" class="article-share-link">分享</a>
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/杂谈/">杂谈</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+ 
+
+
+  
+    <article id="post-base/vim学习" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/03/01/base/vim学习/" class="article-date">
+  <time datetime="2020-03-01T10:58:53.000Z" itemprop="datePublished">2020-03-01</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/03/01/base/vim学习/">vim学习</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- Table of Contents -->
+        
+        <p>键盘的选择 肌肉的记忆；<br>使用ctrl快捷键来完成编辑、删除工作，用以完成快速的编辑。</p>
+<h4 id="Vim-快速移动大法"><a href="#Vim-快速移动大法" class="headerlink" title="Vim 快速移动大法"></a>Vim 快速移动大法</h4><ol>
+<li>h 往左移动</li>
+<li>j 往下移动</li>
+<li>k 往上移动</li>
+<li>l 往后移动</li>
+</ol>
+<h6 id="在单词之间移动是我们浏览操作中最常使用的命令。"><a href="#在单词之间移动是我们浏览操作中最常使用的命令。" class="headerlink" title="在单词之间移动是我们浏览操作中最常使用的命令。"></a>在单词之间移动是我们浏览操作中最常使用的命令。</h6><p>w/W移动到下一个word/WORD开头。e/E下一个word/WORD尾<br>b/B移动到上一个word/WORD开头。通常可以常用上w/b;</p>
+<h6 id="行间搜索移动"><a href="#行间搜索移动" class="headerlink" title="行间搜索移动"></a>行间搜索移动</h6><p>同一行快速移动的方式其实是搜索一个字符并且移动到该字符 （同一行搜索生效）</p>
+<ol>
+<li>使用f{char}可以移动到char字符上，t移动到char的前一个字符</li>
+<li>如果第一次搜索到不是自己想要的，可以使用分号或者逗号(;,)继续搜索该行。</li>
+</ol>
+<h6 id="Vim水平移动"><a href="#Vim水平移动" class="headerlink" title="Vim水平移动"></a>Vim水平移动</h6><ol>
+<li>0移动到行首第一个字符，^移动到第一个非空白字符；</li>
+<li>$移动到行尾，g_移动到行尾非空白字符;</li>
+</ol>
+<h6 id="Vim垂直移动"><a href="#Vim垂直移动" class="headerlink" title="Vim垂直移动"></a>Vim垂直移动</h6><p>HML (head/middle/lower)  跳转到屏幕的开头、中间、结尾；</p>
+<p>翻页 ctrl+u . ctrl+f </p>
+<h4 id="Vim增删改查"><a href="#Vim增删改查" class="headerlink" title="Vim增删改查"></a>Vim增删改查</h4><ol>
+<li>插入模式进行编辑 a/i/o 进入插入模式；</li>
+<li>使用x来删除一个字符，u来回退一个字符；</li>
+<li>使用dd 来删除整行，使用dt[?]某个结尾的将删除知道某个结尾的字符之间的。</li>
+<li>删除x/d配合数字  比如2x,删除两个字符  2dd删除两行； 数字+命令表示多次执行命令；</li>
+<li>v/V选中,可以配合x/d来选中删除.</li>
+</ol>
+<h4 id="Vim快速修改"><a href="#Vim快速修改" class="headerlink" title="Vim快速修改"></a>Vim快速修改</h4><ol>
+<li>常用的有三个，r (replace) c (change), s(substitute)</li>
+<li>normal模式下使用r可以替换一个字符，s替换并进入插入模式</li>
+<li>使用c配合文本对象，我们可以快速进行修改<br>r : 比如normal下， hello world. 光标在h身上， 我们想把h替换成a ,可以ra<br>s : 删除字符，并进入插入模式下<br>c : 常用， 配合文本修改， ct; 和d命令差不多， 可以配合多个命令来用， cw 删除一个单词；</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.okjvm.com/2020/03/01/base/vim学习/" data-id="ckkrzb8w8000hcv2akw3nfm4w" class="article-share-link">分享</a>
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/vim/">vim</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+ 
+
+
+  
+    <article id="post-前端往事" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/02/23/前端往事/" class="article-date">
+  <time datetime="2020-02-23T10:25:23.000Z" itemprop="datePublished">2020-02-23</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/02/23/前端往事/">前端往事</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- Table of Contents -->
+        
+        <p>2011年参加工作，最开始的工作岗位就是前端和后端都会涉及的开发工程师，那会的互联网也没有现在这么发达，前端和后端也没有现在这样分离的如此清晰，所以我们作为开发人员通常前端和后端都会涉及到，我们用到前端最多的是jQuery。前端技术更多的是由PHP在统治，而且也没有像现在一样百花齐放，百家争鸣。所以，再蓦然回首，当再次关注前端技术时，已经感觉力不从心了，几乎是错过了几个世纪，对于前端技术，已经存在了巨大的空档期。</p>
+<p>之前和同事一起写了一个React Native，在他的带领下， 很多关键技术要么他封装好了，我直接用，要么就是我这边不太理解，直接问他给帮我解决了。所以并没有自己来经历过这其中的很多为什么。这次，趁着过年期间爆发的疫情，空闲时间比较多，所以重拾心情，好好规划，自己选了一套遵循React语法规范的多端统一编码的框架Taro，来开发了一个微信小程序。所以就打算本次好好记录一下在开发的过程中，自己又经历了什么，并查询、了解了什么。也来好好记录一番。</p>
+<p>本次的小程序是用Taro来开发的，后端采用java技术，之前我们在开发React Native，用到了Netty来做数据交换，就是我们并没有采用http的一请求一响应来回传给数据到客户端，而是通过一根websocket来做所有的数据交换。所以整个后端技术算是基于Netty来开发的。基于拿来主义，所以我的微信小程序同样，所有的数据回传， 全部依靠一根websocket来交换。后端技术框架已定，只需要开发对应的service即可，而小程序前端则是从0开始。所以也就开始了我的第一个困难，前端页面布局。</p>
+<p>作为一个从业快10年的程序员， 对于还是无法手写一些静态页出来，确实比较汗颜。 每次总是想沉下心来好好学习一番布局的技术，最终都是不了了之，我把这些经历，形容如同蒸一个没有发好的馒头，往后无论怎么多次蒸，最后出锅的味道，总是找不到那种最好吃的口感。为此，直到有一天，同事给我推荐flex布局，经过多次的实践，反复的练习，最终感觉是入门了。具体的参考也是<a href="http://www.ruanyifeng.com/blog/2015/07/flex-grammar.html" target="_blank" rel="noopener">阮一峰的教程</a>。基于此，小程序的整个布局，也就有了眉目。</p>
+<p>在小程序的布局问题解决之后， 我开始寻找具体使用什么技术来编写小程序。之前了解过vue.js,了解过react。vue.js是16年左右，当时接了个私单。需要开发一个公众号，当时学习的技术确实比较混杂，我居然是用php来编写那个后端的。然后另外一个哥们曾经和我一样是.net程序员，因为进入了他现在的公司。公司的技术栈中后端是php,所以他就转行来做php开发了，这样我就被带着一起了。而后整个后端我们两个用php来实现，前端他自己使用vue.js来实现了。也许当时的他和我一样，一直有着对前端的执念。所以他很有意志的承接了前端的全部页面，并且采用vue.js来实现，我也是在场景中，第一次接触到vue.js。当时的我，也许是对于技术的追求略显茫然，并没有深入的去了解。只是感叹前端的日新月异，全特么是响应式了，这段经历也为后面我有意对前端保持兴趣做了不少铺垫。跨过16年后，伴随着我换工作，我的技术栈有从短暂php回到了java。纵观我的近十年工作生涯，似乎所有都有所涉猎，却从未深入理解，经历了.net、php、java等多个编程技术，一直随波逐流，永远都在入门级别旁边蹦跶。这一次我也算是沉下心来，好好的在java中开始有意识的来，从心出发，虔诚的学习java技术。react是上文中提到的，和同事一起学习开发了一个React Native后，算是会上手了，不敢说深入；基于这两个前端编程框架。在选择用什么技术编写小程序时，框架mpVue和Taro走进了我的视野。 前者是遵循vue.js语法规范的，而后者是遵循react语法规范，在对比了两者的生态和基于自己的内心后，最终选择了后者Taro。于是小程序就这样的通过Taro编写了出来。这中间倒不是taro语法规范带给我的障碍，在开发过程中，发现带给我最大障碍的是，对js的不熟悉。这几年的技术断层，让我真是尝到了苦涩的味道。</p>
+<p>写到最后， 本想扩展一下在实际开发中碰到的问题，可结局又是过了好些天后来接着在写的，之前的一些思考和想法现在也慢慢的平复下来了。多说无益，倒不如保留它如同一片恼骚的文章一样。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.okjvm.com/2020/02/23/前端往事/" data-id="ckkrzb8vc0003cv2a9pojua5z" class="article-share-link">分享</a>
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript-疫情/">javascript 疫情</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+ 
+
+
+  
+    <article id="post-散文/鲁迅名句摘要" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/02/10/散文/鲁迅名句摘要/" class="article-date">
+  <time datetime="2020-02-10T14:32:58.000Z" itemprop="datePublished">2020-02-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/02/10/散文/鲁迅名句摘要/">鲁迅名句摘要</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- Table of Contents -->
+        
+        <p>一直对鲁迅的文章抱有共鸣之情。在人生的成长经历中，每当感叹社会上的各种经历和无奈时，便想再来读一读鲁迅的文章，感叹中华民族几百年的传承，确实没有什么根本性的变化。</p>
+<p>结合这从过年到现在的疫情以及政府执政官员的表现，只能用无知、懦弱、腐朽、傲慢等贬义词来形容。深深的刺痛万千人民的情感，国从未厉害，那些都是虚的。何时政府廉洁、效率、民主、负责， 那时可能才是我理想的认为民族存在变化了。</p>
+<ol>
+<li>从来如此，便对么？  ——《狂人日记》</li>
+<li>当我沉默着的时候，我觉得充实，我将开口，同时感到空虚.  -—《野草》题辞</li>
+<li>惟沉默是最高的轻蔑。   ——《且介亭杂文附集》</li>
+<li>人必生活著，爱才有所附丽。   ——《伤逝》</li>
+<li>我曾经尝得，失望无论大小，是一种苦味。   ——《坟》</li>
+<li>人世间真是难处的地方，说一个人“不通事故”，固然不是好话，但说他“深于世故”，也不是好话。   ——《南腔北调集•世故三昧》</li>
+<li>中国人的性情是总喜欢调和折中的，譬如你说，这屋子太暗，须在这里开一个窗，大家一定不允许的。但如果你主张拆掉屋顶他们就来调和，愿意开窗了。   ——《无声的中国》</li>
+<li>楼下一个男人病得要死，那间壁的一家唱着留声机；对面是弄孩子。楼上有两人狂笑；还有打牌声。河中的船上有女人哭着她死去的母亲。人类的悲欢并不相通，我只觉得他们吵闹。   ——《小杂感》</li>
+<li>我将用无所为和沉默求乞。我至少将得到虚无。   ——《野草.求乞者》</li>
+<li>勇者愤怒，抽刃向更强者；怯者愤怒，却抽刃向更弱者。   ——《华盖集·杂感》</li>
+<li>天地有如此静穆，我不能大笑而且歌唱。天地即不如此静穆，我或者也将不能。   ——《野草.序》</li>
+<li>中国各处是壁，然而无形，像“鬼打墙”一般，使你随时能“碰”，能打这墙的，能碰而不感到痛苦的，是胜利者。   ——《碰壁之后》</li>
+<li>记得有人说过，回忆多的人是没有出息的了，因为他眷念从前，难望再有勇猛的进取；但也有人说回忆是最为可喜的。   ——《华盖集•忽然想到九》</li>
+<li>猛兽是单独的，牛羊则结队；野牛的大队，就会排角成城以御强敌了，但拉开一匹，定只能牟牟地叫。人民与牛马同流，——此就中国而言，夷人别有分类法云，——治之之道，自然应该禁止集合：这方法是对的。   ——《春末闲谈》</li>
+<li><p>中国的孩子，只要生，不管他好不好，只要多，不管他才不才，生他们的人，不负教他的责任。虽然“人口众多”这一句话，很可以闭了眼睛自负，然而这许多人口，便只在尘土中辗转，小的时候，不把他当人，大了以后也做不了人。   ——《随感录廿五》</p>
+</li>
+<li><p>抓捕周树人，跟我鲁迅有什么关系。</p>
+</li>
+<li>救救孩子……   ——《狂人日记》</li>
+<li>于浩歌狂热之际中寒，于天上看见深渊，于一切眼中看见无所有，于无所希望中得救。   ——鲁迅《野草》</li>
+<li>有缺点的战士终竟是战士，完美的苍蝇也终竟不过是苍蝇。   ——《战士和苍蝇》</li>
+<li>我独不解中国人何以于旧状况那么心平气和，于较新的机运就这么疾首蹙额；于已成之局那么委曲求全；于初兴之事就这么求全责备?   ——《这个与那个》</li>
+<li>群众，尤其是中国的——永远是戏剧的看客。牺牲上场，如果显得慷慨，他们就看了悲壮剧；如果显得觳觫，他们就看了滑稽剧。北京的羊肉铺常有几个人张嘴看剥羊，仿佛颇为愉快，人的牺牲能给他们的益处，也不过如此。而况事后走不几步，他们并这一点也就忘了。   ——《娜拉走后怎样》</li>
+<li>愿中国青年都摆脱冷气，只是向上走，不必听自暴自弃者流的话。</li>
+<li>能做事的做事，能发声的发声。</li>
+<li>有一分热，发一分光。</li>
+<li>就令萤火一般，也可以在黑暗里发一点光，不必等候炬火。</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.okjvm.com/2020/02/10/散文/鲁迅名句摘要/" data-id="ckkrzb8wg000ycv2a75ibcm2t" class="article-share-link">分享</a>
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/鲁迅-疫情/">鲁迅 疫情</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+ 
+
+
+  
+    <article id="page-network/c10k问题" class="article article-type-page" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/07/18/network/c10k问题/" class="article-date">
+  <time datetime="2019-07-18T03:24:03.000Z" itemprop="datePublished">2019-07-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/07/18/network/c10k问题/">C10K问题由来</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- Table of Contents -->
+        
+        <h3 id="C10K问题由来"><a href="#C10K问题由来" class="headerlink" title="C10K问题由来"></a>C10K问题由来</h3><p>随着互联网的普及，应用的用户群体几何倍增长，此时服务器性能问题就出现。最初的服务器是基于进程/线程模型。新到来一个TCP连接，就需要分配一个进程。假如有C10K，就需要创建1W个进程，可想而知单机是无法承受的。那么如何突破单机性能是高性能网络编程必须要面对的问题，进而这些局限和问题就统称为C10K问题，最早是由Dan Kegel进行归纳和总结的，并且他也系统的分析和提出解决方案。</p>
+<h4 id="C10K问题的本质"><a href="#C10K问题的本质" class="headerlink" title="C10K问题的本质"></a>C10K问题的本质</h4><p>C10K问题的本质上是操作系统的问题。对于Web 1.0/2.0时代的操作系统，传统的同步阻塞I/O模型处理方式都是requests per second。当创建的进程或线程多了，数据拷贝频繁（缓存I/O、内核将数据拷贝到用户进程空间、阻塞，进程/线程上下文切换消耗大， 导致操作系统崩溃，这就是C10K问题的本质。<br><span style="color:red">可见, 解决C10K问题的关键就是尽可能减少这些CPU资源消耗。</span><br>C10K问题的解决方案<br>从网络编程技术的角度来说，主要思路如下：</p>
+<ul>
+<li>每个连接分配一个独立的线程/进程</li>
+<li>同一个线程/进程同时处理多个连接</li>
+</ul>
+<p>每个进程/线程处理一个连接<br>该思路最为直接，但是申请进程/线程是需要系统资源的，且系统需要管理这些进程/线程，所以会使资源占用过多，可扩展性差<br>每个进程/线程同时处理 多个连接(I/O多路复用)</p>
+<ul>
+<li><code>select</code>方式：使用fd_set结构体告诉内核同时监控那些文件句柄，使用逐个排查方式去检查是否有文件句柄就绪或者超时。该方式有以下缺点：文件句柄数量是有上线的，逐个检查吞吐量低，每次调用都要重复初始化fd_set。</li>
+<li><code>poll</code>方式：该方式主要解决了select方式的2个缺点，文件句柄上限问题(链表方式存储)以及重复初始化问题(不同字段标注关注事件和发生事件)，但是逐个去检查文件句柄是否就绪的问题仍然没有解决。</li>
+<li><code>epoll</code>方式：该方式可以说是C10K问题的killer，他不去轮询监听所有文件句柄是否已经就绪。epoll只对发生变化的文件句柄感兴趣。其工作机制是，使用”事件”的就绪通知方式，通过epoll_ctl注册文件描述符fd，一旦该fd就绪，内核就会采用类似callback的回调机制来激活该fd, epoll_wait便可以收到通知, 并通知应用程序。而且epoll使用一个文件描述符管理多个描述符,将用户进程的文件描述符的事件存放到内核的一个事件表中, 这样数据只需要从内核缓存空间拷贝一次到用户进程地址空间。而且epoll是通过内核与用户空间共享内存方式来实现事件就绪消息传递的，其效率非常高。但是epoll是依赖系统的(Linux)。<br>异步I/O以及Windows，该方式在windows上支持很好，这里就不具体介绍啦。</li>
+</ul>
+<p>参考：</p>
+<ul>
+<li><a href="http://www.ideawu.net/blog/archives/740.html" target="_blank" rel="noopener">构建C1000K的服务器(1) – 基础</a></li>
+<li><a href="http://www.52im.net/thread-566-1-1.html" target="_blank" rel="noopener">高性能网络编程(二)：上一个10年，著名的C10K并发连接问题</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.okjvm.com/2019/07/18/network/c10k问题/" data-id="ckkrzb8we000ucv2ahxwbp9ky" class="article-share-link">分享</a>
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/网络/">网络</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+ 
+
+
+  
+    <article id="page-network/IO多路复用机制（Epoll）" class="article article-type-page" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/07/18/network/IO多路复用机制（Epoll）/" class="article-date">
+  <time datetime="2019-07-18T03:24:03.000Z" itemprop="datePublished">2019-07-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/07/18/network/IO多路复用机制（Epoll）/">I/O多路复用机制（Epoll）</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- Table of Contents -->
+        
+        <p>多路I/O复用模型是利用<code>select</code>、<code>poll</code>、<code>epoll</code>可以同时监察多个流的 I/O 事件的能力，在空闲的时候，会把当前线程阻塞掉。当有一个或多个流有 I/O事件时，就从阻塞态中唤醒，于是程序就会轮询一遍所有的流（epoll 是只轮询那些真正发出了事件的流），并且只依次顺序的处理就绪的流，这种做法就避免了大量的无用操作。 </p>
+<blockquote>
+<p>这里“多路”指的是多个网络连接，“复用”指的是复用同一个线程。</p>
+</blockquote>
+<p>采用多路 I/O 复用技术可以让单个线程高效的处理多个连接请求（尽量减少网络 IO 的时间消耗），且 Redis在内存中操作数据的速度非常快，也就是说内存内的操作不会成为影响Redis性能的瓶颈，主要由以上几点造就了 Redis 具有很高的吞吐量。</p>
+<ul>
+<li><p>网络IO都是通过Socket实现，Server在某一个端口持续监听，客户端通过Socket（IP+Port）与服务器建立连接（ServerSocket.accept），成功建立连接之后，就可以使用Socket中封装的InputStream和OutputStream进行IO交互了。针对每个客户端，Server都会创建一个新线程专门用于处理 </p>
+</li>
+<li><p>默认情况下，网络IO是阻塞模式，即服务器线程在数据到来之前处于【阻塞】状态，等到数据到达，会自动唤醒服务器线程，着手进行处理。阻塞模式下，一个线程只能处理一个流的IO事件 </p>
+</li>
+<li><p>为了提升服务器线程处理效率，有以下三种思路:</p>
+<ol>
+<li>非阻塞【忙轮询】：采用死循环方式轮询每一个流，如果有IO事件就处理，这样可以使得一个线程可以处理多个流，但是效率不高，容易导致CPU空转.</li>
+<li>Select代理（无差别轮询）：可以观察多个流的IO事件，如果所有流都没有IO事件，则将线程进入阻塞状态，如果有一个或多个发生了IO事件，则唤醒线程去处理。但是还是得遍历所有的流，才能找出哪些流需要处理。如果流个数为N，则时间复杂度为O(N).</li>
+<li>Epoll代理：Select代理有一个缺点，线程在被唤醒后轮询所有的Stream，还是存在无效操作。 Epoll会哪个流发生了怎样的I/O事件通知处理线程，因此对这些流的操作都是有意义的，复杂度降低到了O(1).</li>
+</ol>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.okjvm.com/2019/07/18/network/IO多路复用机制（Epoll）/" data-id="ckkrzb8wd000scv2advu2uib6" class="article-share-link">分享</a>
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/网络/">网络</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+ 
+
+
+  
+    <article id="post-work-2019" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/04/03/work-2019/" class="article-date">
+  <time datetime="2019-04-03T06:28:45.000Z" itemprop="datePublished">2019-04-03</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/04/03/work-2019/">2019年工作</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&nbsp;&nbsp;本来也不太喜欢规划的生活， 但是也不应该懒散的生活。所以就计划来一个2019年工作计划！</p>
+        
+          <p class="article-more-link">
+            <a href="/2019/04/03/work-2019/#more">继续阅读全文 »</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.okjvm.com/2019/04/03/work-2019/" data-id="ckkrzb8v60000cv2afima7057" class="article-share-link">分享</a>
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/工作/">工作</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+ 
+
+
+  
+    <article id="post-base/awk学习笔记" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/03/21/base/awk学习笔记/" class="article-date">
+  <time datetime="2019-03-20T16:02:10.000Z" itemprop="datePublished">2019-03-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/03/21/base/awk学习笔记/">awk学习笔记</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>&ensp; &emsp; &thinsp; &zwnj;&zwj;计算机用户经常把大量的时间花费在简单, 机械化的数据处理工作中 — 改变数据格式, 验证数据的有效 性, 搜索特定的数据项, 求和, 打印报表等. 这些工作完全可以自动化地完成, 但是如果每碰到一个这样的任务, 就用一门标准的编程语言 (比如 C 或 Pascal) 写一个专用的程序来解决它, 未免也太麻烦了。</p>
+        
+          <p class="article-more-link">
+            <a href="/2019/03/21/base/awk学习笔记/#more">继续阅读全文 »</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.okjvm.com/2019/03/21/base/awk学习笔记/" data-id="ckkrzb8w20009cv2a9ujkqqht" class="article-share-link">分享</a>
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/awk/">awk</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+ 
+
+
+  
+    <article id="post-mysql/msyql-锁" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/03/17/mysql/msyql-锁/" class="article-date">
+  <time datetime="2019-03-17T13:47:32.000Z" itemprop="datePublished">2019-03-17</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/03/17/mysql/msyql-锁/">MySQL锁</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="什么是锁"><a href="#什么是锁" class="headerlink" title="什么是锁"></a>什么是锁</h3><p>锁是数据库系统区别于文件系统的一个关键特性。锁机制用于管理对共享资源的并发访问。InnoDB存储引擎会在行级别上对表据上锁，这固然不错。不过InnoDB存储引擎也会在数据库内部其他多个地方使用锁，从而允许对多种不同资源提供并发访问。例如，操作缓冲池中的LRU列表，删除、添加、移动LRU列表中的元素，为了保证一致性，必须有锁的介入。数据库系统使用锁是为了支持对共享资源进行并发访问，提供数据的完整性和一致性。</p>
+        
+          <p class="article-more-link">
+            <a href="/2019/03/17/mysql/msyql-锁/#more">继续阅读全文 »</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.okjvm.com/2019/03/17/mysql/msyql-锁/" data-id="ckkrzb8wc000ocv2aoiembmy5" class="article-share-link">分享</a>
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/">mysql</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+ 
+
+
+  
+    <article id="post-base/markdown" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/01/19/base/markdown/" class="article-date">
+  <time datetime="2019-01-19T03:38:25.000Z" itemprop="datePublished">2019-01-19</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/01/19/base/markdown/">Markdown语法</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Markdown是一种轻量级标记语言，让作者专注于写作而不用关注样式.<br>
+        
+          </p><p class="article-more-link">
+            <a href="/2019/01/19/base/markdown/#more">继续阅读全文 »</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.okjvm.com/2019/01/19/base/markdown/" data-id="ckkrzb8w5000dcv2axt2uurn3" class="article-share-link">分享</a>
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/markdown/">markdown</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+ 
+
+
+  
+
+
+  <nav id="page-nav">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/2/">下一页&raquo;</a>
+  </nav>
+</section>
+           
+    <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+     
+        <h3 class="follow-title ">Follow me</h3>
+     
+    <div class="widget follow">
+      
+      
+      
+      
+            <a class="email" aria-hidden="true" href="mailto:cc5853235@gmail.com" target="_blank" title="邮箱"></a>
+      
+    </div>
+  </div>
+
+
+  
+    
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title tagcloud">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/awk/" style="font-size: 14px;">awk</a> <a href="/tags/hack/" style="font-size: 14px;">hack</a> <a href="/tags/hexo/" style="font-size: 14px;">hexo</a> <a href="/tags/io/" style="font-size: 16.75px;">io</a> <a href="/tags/java/" style="font-size: 25px;">java</a> <a href="/tags/javascript-疫情/" style="font-size: 14px;">javascript 疫情</a> <a href="/tags/markdown/" style="font-size: 14px;">markdown</a> <a href="/tags/mysql/" style="font-size: 16.75px;">mysql</a> <a href="/tags/netty/" style="font-size: 14px;">netty</a> <a href="/tags/ssh/" style="font-size: 14px;">ssh</a> <a href="/tags/vim/" style="font-size: 14px;">vim</a> <a href="/tags/反射/" style="font-size: 16.75px;">反射</a> <a href="/tags/多线程/" style="font-size: 22.25px;">多线程</a> <a href="/tags/工作/" style="font-size: 14px;">工作</a> <a href="/tags/数据结构/" style="font-size: 22.25px;">数据结构</a> <a href="/tags/杂谈/" style="font-size: 14px;">杂谈</a> <a href="/tags/歌词/" style="font-size: 14px;">歌词</a> <a href="/tags/网络/" style="font-size: 16.75px;">网络</a> <a href="/tags/网络编程/" style="font-size: 19.5px;">网络编程</a> <a href="/tags/鲁迅/" style="font-size: 14px;">鲁迅</a> <a href="/tags/鲁迅-疫情/" style="font-size: 14px;">鲁迅 疫情</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title recent-posts">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/02/05/送你一朵小红花/">送你一朵小红花</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/01/base/vim学习/">vim学习</a>
+          </li>
+        
+          <li>
+            <a href="/2020/02/23/前端往事/">前端往事</a>
+          </li>
+        
+          <li>
+            <a href="/2020/02/10/散文/鲁迅名句摘要/">鲁迅名句摘要</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/18/network/c10k问题/">C10K问题由来</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title archive">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">二月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">二月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">十二月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">十一月 2018</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">十月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2000/12/">十二月 2000</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2000/11/">十一月 2000</a><span class="archive-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+<div class="widget-wrap">
+    <h3 class="widget-title">友情链接</h3>
+    <div class="widget">
+        <ul>
+            
+            <li>
+                <a href="http://www.ruanyifeng.com/home.html">阮一峰的个人网站</a>
+            </li>
+            
+        </ul>
+    </div>
+</div>
+
+  
+    <!--微信公众号二维码-->
+
+
+  
+</aside>
+
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-left">
+      &copy; 2014 - 2021 popc&nbsp;|&nbsp;
+      主题 <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
+    </div>
+     <div id="footer-right">
+      联系方式&nbsp;|&nbsp;cc5853235@gmail.com
+    </div>
+  </div>
+</footer>
+ <script src="/jquery/jquery.min.js"></script>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+</nav>
+    <img class="back-to-top-btn" src="/images/fly-to-top.png">
+<script>
+// Elevator script included on the page, already.
+window.onload = function() {
+  var elevator = new Elevator({
+    selector:'.back-to-top-btn',
+    element: document.querySelector('.back-to-top-btn'),
+    duration: 1000 // milliseconds
+  });
+}
+</script>
+      
+
+  
+
+  
+
+
+
+
+
+
+
+<!-- author:forvoid begin -->
+<!-- author:forvoid begin -->
+
+<!-- author:forvoid end -->
+
+<!-- author:forvoid end -->
+
+
+
+ <script src="/js/is.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/elevator.js"></script>
+  </div>
+</body>
+</html>

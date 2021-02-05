@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>wireshark抓包工具详细说明及操作使用 | 飞翔的企鹅</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="wireshark简介wireshark是非常流行的网络封包分析软件，功能十分强大。可以截取各种网络封包，显示网络封包的详细信息，为了安全考虑，wireshark只能查看封包，而不能修改封包的内容，或者发送封包。wireshark能获取HTTP，也能获取HTTPS，但是不能解密HTTPS，所以wireshark是看不懂HTTPS中的内容。">
+<meta name="keywords" content="网络编程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="wireshark抓包工具详细说明及操作使用">
+<meta property="og:url" content="https://blog.okjvm.com/2018/11/27/network/05.wiresharkTool/index.html">
+<meta property="og:site_name" content="飞翔的企鹅">
+<meta property="og:description" content="wireshark简介wireshark是非常流行的网络封包分析软件，功能十分强大。可以截取各种网络封包，显示网络封包的详细信息，为了安全考虑，wireshark只能查看封包，而不能修改封包的内容，或者发送封包。wireshark能获取HTTP，也能获取HTTPS，但是不能解密HTTPS，所以wireshark是看不懂HTTPS中的内容。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://blog.okjvm.com/images/network/04_01.jpg">
+<meta property="og:image" content="https://blog.okjvm.com/images/network/04_02.jpg">
+<meta property="og:image" content="https://blog.okjvm.com/images/network/04_05.jpg">
+<meta property="og:image" content="https://blog.okjvm.com/images/network/04_03.jpg">
+<meta property="og:image" content="https://blog.okjvm.com/images/network/04_04.jpg">
+<meta property="og:image" content="https://blog.okjvm.com/images/network/04_06.jpg">
+<meta property="og:image" content="https://blog.okjvm.com/images/network/04_07.jpg">
+<meta property="og:updated_time" content="2019-03-17T12:42:00.648Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="wireshark抓包工具详细说明及操作使用">
+<meta name="twitter:description" content="wireshark简介wireshark是非常流行的网络封包分析软件，功能十分强大。可以截取各种网络封包，显示网络封包的详细信息，为了安全考虑，wireshark只能查看封包，而不能修改封包的内容，或者发送封包。wireshark能获取HTTP，也能获取HTTPS，但是不能解密HTTPS，所以wireshark是看不懂HTTPS中的内容。">
+<meta name="twitter:image" content="https://blog.okjvm.com/images/network/04_01.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="飞翔的企鹅" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  
+    
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    
+    <div id="header-inner" class="inner">
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://blog.okjvm.com"></form>
+      </div>
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+      </nav>
+      
+    </div>
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">飞翔的企鹅</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">欢迎访问</a>
+        </h2>
+      
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-network/05.wiresharkTool" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/11/27/network/05.wiresharkTool/" class="article-date">
+  <time datetime="2018-11-27T12:54:54.000Z" itemprop="datePublished">2018-11-27</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      wireshark抓包工具详细说明及操作使用
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- Table of Contents -->
+        
+        <h3 id="wireshark简介"><a href="#wireshark简介" class="headerlink" title="wireshark简介"></a>wireshark简介</h3><p><code>wireshark</code>是非常流行的网络封包分析软件，功能十分强大。可以截取各种网络封包，显示网络封包的详细信息，为了安全考虑，<code>wireshark</code>只能查看封包，而不能修改封包的内容，或者发送封包。<code>wireshark</code>能获取HTTP，也能获取HTTPS，但是不能解密HTTPS，所以<code>wireshark</code>是看不懂HTTPS中的内容。</p>
+<a id="more"></a>
+<blockquote>
+<p>如果是处理HTTP,HTTPS应该是用<code>Fiddler</code>、<code>Charles</code>, 其他协议比如TCP,UDP 就用<code>wireshark</code>。</p>
+</blockquote>
+<p>一个<code>wireshark</code>的主页面如图所示：<br><img src="/images/network/04_01.jpg" alt=""></p>
+<p>使用过滤是非常重要的，初学者使用<code>wireshark</code>时，将会得到大量的冗余信息，在几千甚至几万条记录中，以至于很难找到自己需要的部分,搞得晕头转向.过滤器会帮助我们在大量的数据中迅速找到我们需要的信息，过滤器有两种：</p>
+<ul>
+<li>一种是显示过滤器，就是主界面上那个，用来在捕获的记录中找到所需要的记录。</li>
+<li>一种是捕获过滤器，用来过滤捕获的封包，以免捕获太多的记录。 在Capture -&gt; Capture Filters 中设置。</li>
+</ul>
+<p>过滤表达式的规则</p>
+<ul>
+<li><ol>
+<li>协议过滤：比如TCP，只显示TCP协议。</li>
+</ol>
+</li>
+<li><ol start="2">
+<li>IP过滤：比如 ip.src ==192.168.1.102 显示源地址为192.168.1.102的所有包信息。ip.dst==192.168.1.102, 目标地址为192.168.1.102。</li>
+</ol>
+</li>
+<li><ol start="3">
+<li>端口过滤：tcp.port==80 端口为80的所有包信息 tcp.srcport == 80, 只显示TCP协议的愿端口为80的。</li>
+</ol>
+</li>
+<li><ol start="4">
+<li>http模式过滤：http.request.method==”GET”，只显示HTTP GET方法的。</li>
+</ol>
+<p>在追踪一条完整的数据请求时，可以通过选择某个数据信息包。<code>follow</code>–&gt; <code>tcp stream</code>即可，</p>
+</li>
+</ul>
+<p><img src="/images/network/04_02.jpg" alt=""></p>
+<p>这样就可以看到包括建立TCP时三次握手的请求连接等信息。</p>
+<p><img src="/images/network/04_05.jpg" alt=""></p>
+<p>在查看某条数据包时，下面的这个面板是我们最重要的，用来查看协议中的每一个字段。各行信息分别为：</p>
+<ul>
+<li>Frame：物理层的数据帧概况。</li>
+<li>EthernetII：数据链路层以太网帧头部信息。</li>
+<li>Internet Protocol Version 4：互联网层IP包头部信息</li>
+<li>Transmission Control Protocol:  传输层T的数据段头部信息，此处是TCP</li>
+<li>Hypertext Transfer Protocol:  应用层的信息，此处是HTTP协议。<br>如图所示：<br><img src="/images/network/04_03.jpg" alt=""></li>
+</ul>
+<p>从下图可以看到<code>wireshark</code>捕获到的TCP包中的每个字段<br><img src="/images/network/04_04.jpg" alt=""></p>
+<p>当然通过<code>wireshark</code>抓取到到的数据包中TCP包里的序号和确认号，其实是一个相对标志位。而不是实际的序列号或确认号。那么如何查看呢？如果想要关闭相对序列号/确认号，可以选择<code>Wireshark</code>菜单栏中的<code>Edit</code>-&gt;<code>Preferences</code>-&gt;<code>protocols</code>-&gt;<code>TCP</code>，去掉<code>Relative sequence number</code>后面勾选框中的√即可。如下图所示，此时显示的将是实际的序列号。</p>
+<p><img src="/images/network/04_06.jpg" alt=""></p>
+<p>同时，为了更好的理解在整个TCP会话期间，TCP的序列号和确认号是如何工作的，可以使用<code>wireshark</code>内置的绘制流功能。通过菜单栏Statistics -&gt;Flow Graph…-&gt;TCP flow -&gt;OK.如下图所示：</p>
+<p><img src="/images/network/04_07.jpg" alt=""></p>
+<p>对其中的每个字段的一个解析：</p>
+<ul>
+<li>1、端口号：用来标识同一台计算机的不同的应用进程。<ul>
+<li>1）源端口：源端口和IP地址的作用是标识报文的返回地址。</li>
+<li>2）目的端口：端口指明接收方计算机上的应用程序接口，TCP报头中的源端口号和目的端口号同IP数据报中的源IP与目的IP唯一确定一条TCP连接。</li>
+</ul>
+</li>
+<li>2、序号和确认号：是TCP可靠传输的关键部分。序号是本报文段发送的数据组的第一个字节的序号。在TCP传送的流中，每一个字节一个序号。e.g.一个报文段的序号为300，此报文段数据部分共有100字节，则下一个报文段的序号为400。所以序号确保了TCP传输的有序性。确认号，即ACK，指明下一个期待收到的字节序号，表明该序号之前的所有数据已经正确无误的收到。确认号只有当ACK标志为1时才有效。比如建立连接时，SYN报文的ACK标志位为0（这里的0其实只是相对标志位，通过<code>wireshark</code>勾选去掉相对显示时，即可看到实时标志位。</li>
+<li>3、数据偏移／首部长度：4bits。由于首部可能含有可选项内容，因此TCP报头的长度是不确定的，报头不包含任何任选字段则长度为20字节，4位首部长度字段所能表示的最大值为1111，转化为10进制为15，15*32/8 = 60，故报头最大长度为60字节。首部长度也叫数据偏移，是因为首部长度实际上指示了数据区在报文段中的起始偏移值。</li>
+<li>4、保留：为将来定义新的用途保留，现在一般置0。</li>
+<li>5、控制位：URG、ACK、PSH、RST、SYN、FIN共6个，每一个标志位表示一个控制功能。<ul>
+<li>1）URG：紧急指针标志，为1时表示紧急指针有效，为0则忽略紧急指针。</li>
+<li>2）ACK：确认序号标志，为1时表示确认号有效，为0表示报文中不含确认信息，忽略确认号字段。</li>
+<li>3）PSH：push标志，为1表示是带有push标志的数据，指示接收方在接收到该报文段以后，应尽快将这个报文段交给应用程序，而不是在缓冲区排队。</li>
+<li>4）RST：重置连接标志，用于重置由于主机崩溃或其他原因而出现错误的连接。或者用于拒绝非法的报文段和拒绝连接请求。</li>
+<li>5）SYN：同步序号，用于建立连接过程，在连接请求中，SYN=1和ACK=0表示该数据段没有使用捎带的确认域，而连接应答捎带一个确认，即SYN=1和ACK=1。</li>
+<li>6）FIN：finish标志，用于释放连接，为1时表示发送方已经没有数据发送了，即关闭本方数据流。</li>
+</ul>
+</li>
+<li>6、窗口：滑动窗口大小，用来告知发送端接受端的缓存大小，以此控制发送端发送数据的速率，从而达到流量控制。窗口大小是一个16bit字段，因而窗口大小最大为65535。</li>
+<li>7、校验和：奇偶校验，此校验和是对整个的TCP报文段，包括TCP头部和TCP数据，以16位字进行计算所得。由发送端计算和存储，并由接收端进行验证。</li>
+<li>8、紧急指针：只有当URG标志置1时紧急指针才有效。紧急指针是一个正的偏移量，和顺序号字段中的值相加表示紧急数据最后一个字节的序号。TCP的紧急方式是发送端向另一端发送紧急数据的一种方式。</li>
+<li>9、选项和填充：最常见的可选字段是最长报文大小，又称为MSS（Maximum Segment Size），每个连接方通常都在通信的第一个报文段（为建立连接而设置SYN标志为1的那个段）中指明这个选项，它表示本端所能接受的最大报文段的长度。选项长度不一定是32位的整数倍，所以要加填充位，即在这个字段中加入额外的零，以保证TCP头是32的整数倍。</li>
+<li>10、数据部分：TCP报文段中的数据部分是可选的。在一个连接建立和一个连接终止时，双方交换的报文段仅有TCP首部。如果一方没有数据要发送，也使用没有任何数据的首部来确认收到的数据。在处理超时的许多情况中，也会发送不带任何数据的报文段。</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.okjvm.com/2018/11/27/network/05.wiresharkTool/" data-id="ckkrzb8wd000qcv2ac2c0vh1q" class="article-share-link">分享</a>
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/网络编程/">网络编程</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+ <script src="/jquery/jquery.min.js"></script>
+  <div id="random_posts">
+    <h2>推荐文章</h2>
+    <div class="random_posts_ul">
+      <script>
+          var random_count =4
+          var site = {BASE_URI:'/'};
+          function load_random_posts(obj) {
+              var arr=site.posts;
+              if (!obj) return;
+              // var count = $(obj).attr('data-count') || 6;
+              for (var i, tmp, n = arr.length; n; i = Math.floor(Math.random() * n), tmp = arr[--n], arr[n] = arr[i], arr[i] = tmp);
+              arr = arr.slice(0, random_count);
+              var html = '<ul>';
+            
+              for(var j=0;j<arr.length;j++){
+                var item=arr[j];
+                html += '<li><strong>' + 
+                item.date + ':&nbsp;&nbsp;<a href="' + (site.BASE_URI+item.uri) + '">' + 
+                (item.title || item.uri) + '</a></strong>';
+                if(item.excerpt){
+                  html +='<div class="post-excerpt">'+item.excerpt+'</div>';
+                }
+                html +='</li>';
+                
+              }
+              $(obj).html(html + '</ul>');
+          }
+          $('.random_posts_ul').each(function () {
+              var c = this;
+              if (!site.posts || !site.posts.length){
+                  $.getJSON(site.BASE_URI + 'js/posts.js',function(json){site.posts = json;load_random_posts(c)});
+              } 
+               else{
+                load_random_posts(c);
+              }
+          });
+      </script>
+    </div>
+  </div>
+
+    
+<nav id="article-nav">
+  
+    <a href="/2018/12/10/netty/netty的组件和设计/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          netty的组件和设计
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/11/22/network/04.tcpAgrementPart2/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">TCP协议下</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+ 
+     
+  <div class="comments" id="comments">
+    
+     
+       
+       
+      
+      
+  </div>
+ 
+  
+
+</section>
+           
+    <aside id="sidebar">
+  
+    
+
+  
+    
+    <div class="widget-wrap">
+    
+      <div class="widget" id="toc-widget-fixed">
+      
+        <strong class="toc-title">文章目录</strong>
+        <div class="toc-widget-list">
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#wireshark简介"><span class="toc-number">1.</span> <span class="toc-text">wireshark简介</span></a></li></ol>
+          </div>
+      </div>
+    </div>
+
+  
+    
+
+  
+    
+  
+    
+  
+    
+
+  
+    
+  
+    <!--微信公众号二维码-->
+
+
+  
+</aside>
+
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-left">
+      &copy; 2014 - 2021 popc&nbsp;|&nbsp;
+      主题 <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
+    </div>
+     <div id="footer-right">
+      联系方式&nbsp;|&nbsp;cc5853235@gmail.com
+    </div>
+  </div>
+</footer>
+ <script src="/jquery/jquery.min.js"></script>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+</nav>
+    <img class="back-to-top-btn" src="/images/fly-to-top.png">
+<script>
+// Elevator script included on the page, already.
+window.onload = function() {
+  var elevator = new Elevator({
+    selector:'.back-to-top-btn',
+    element: document.querySelector('.back-to-top-btn'),
+    duration: 1000 // milliseconds
+  });
+}
+</script>
+      
+
+  
+
+  
+
+
+
+
+
+
+
+<!-- author:forvoid begin -->
+<!-- author:forvoid begin -->
+
+<!-- author:forvoid end -->
+
+<!-- author:forvoid end -->
+
+
+
+ <script src="/js/is.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/elevator.js"></script>
+  </div>
+</body>
+</html>

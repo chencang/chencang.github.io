@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>java常用数据结构深度解析 | 飞翔的企鹅</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="目录介绍 1.对象数组 2.集合 2.1 集合的由来 2.2 数组和集合的区别 2.3 集合继承体系图 2.4 Collection功能概述 2.5 集合的遍历 2.6 迭代器的原理   3.数据结构 3.0 List集合如何选择合适的 3.1 数据结构之数组和链表 3.2 数据结构之栈和队列   4.集合总结 4.1 集合总结 4.2 Hashcode与equal区别">
+<meta name="keywords" content="数据结构">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java常用数据结构深度解析">
+<meta property="og:url" content="https://blog.okjvm.com/2017/11/20/java/dataStructure/02.baseDataStructure2/index.html">
+<meta property="og:site_name" content="飞翔的企鹅">
+<meta property="og:description" content="目录介绍 1.对象数组 2.集合 2.1 集合的由来 2.2 数组和集合的区别 2.3 集合继承体系图 2.4 Collection功能概述 2.5 集合的遍历 2.6 迭代器的原理   3.数据结构 3.0 List集合如何选择合适的 3.1 数据结构之数组和链表 3.2 数据结构之栈和队列   4.集合总结 4.1 集合总结 4.2 Hashcode与equal区别">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://blog.okjvm.com/2017/11/20/java/dataStructure/02.baseDataStructure2/images/24432347-5a919e36b6d89254.png">
+<meta property="og:image" content="https://blog.okjvm.com/images/5432347-492ac09cb88c5b8e.png">
+<meta property="og:updated_time" content="2019-03-17T12:44:13.671Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="java常用数据结构深度解析">
+<meta name="twitter:description" content="目录介绍 1.对象数组 2.集合 2.1 集合的由来 2.2 数组和集合的区别 2.3 集合继承体系图 2.4 Collection功能概述 2.5 集合的遍历 2.6 迭代器的原理   3.数据结构 3.0 List集合如何选择合适的 3.1 数据结构之数组和链表 3.2 数据结构之栈和队列   4.集合总结 4.1 集合总结 4.2 Hashcode与equal区别">
+<meta name="twitter:image" content="https://blog.okjvm.com/2017/11/20/java/dataStructure/02.baseDataStructure2/images/24432347-5a919e36b6d89254.png">
+  
+    <link rel="alternate" href="/atom.xml" title="飞翔的企鹅" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  
+    
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    
+    <div id="header-inner" class="inner">
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://blog.okjvm.com"></form>
+      </div>
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+      </nav>
+      
+    </div>
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">飞翔的企鹅</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">欢迎访问</a>
+        </h2>
+      
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-java/dataStructure/02.baseDataStructure2" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/11/20/java/dataStructure/02.baseDataStructure2/" class="article-date">
+  <time datetime="2017-11-20T10:00:55.000Z" itemprop="datePublished">2017-11-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      java常用数据结构深度解析
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- Table of Contents -->
+        
+        <h3 id="目录介绍"><a href="#目录介绍" class="headerlink" title="目录介绍"></a>目录介绍</h3><ul>
+<li>1.对象数组</li>
+<li>2.集合<ul>
+<li>2.1 集合的由来</li>
+<li>2.2 数组和集合的区别</li>
+<li>2.3 集合继承体系图</li>
+<li>2.4 Collection功能概述</li>
+<li>2.5 集合的遍历</li>
+<li>2.6 迭代器的原理</li>
+</ul>
+</li>
+<li>3.数据结构<ul>
+<li>3.0 List集合如何选择合适的</li>
+<li>3.1 数据结构之数组和链表</li>
+<li>3.2 数据结构之栈和队列</li>
+</ul>
+</li>
+<li>4.集合总结<ul>
+<li>4.1 集合总结</li>
+<li>4.2 Hashcode与equal区别</li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+<h4 id="0-总结"><a href="#0-总结" class="headerlink" title="0.总结"></a>0.总结</h4><ul>
+<li><strong>1. List</strong><ul>
+<li>ArrayList：基于动态数组实现，支持随机访问。</li>
+<li>Vector：和 ArrayList 类似，但它是线程安全的。</li>
+<li>LinkedList：基于双向链表实现，只能顺序访问，但是可以快速地在链表中间插入和删除元素，因为它既可以从头往尾遍历也可以从尾部向头部遍历，这样当删除最后一个元素的时候，不至于遍历N次。不仅如此，LinkedList 还可以用作栈、队列和双向队列。</li>
+</ul>
+</li>
+<li><strong>2. Set</strong><ul>
+<li>TreeSet：基于红黑树实现，支持有序性操作，例如根据一个范围查找元素的操作。但是查找效率不如 HashSet，HashSet 查找的时间复杂度为 O(1)，TreeSet 则为 O(logN)。</li>
+<li>HashSet：基于哈希表实现，支持快速查找，但不支持有序性操作。并且失去了元素的插入顺序信息，也就是说使用 Iterator 遍历 HashSet 得到的结果是不确定的。</li>
+<li>LinkedHashSet：具有 HashSet 的查找效率，且内部使用双向链表维护元素的插入顺序。</li>
+</ul>
+</li>
+<li><strong>3.Map</strong><ul>
+<li>TreeMap：基于红黑树实现。</li>
+<li>HashMap：基于哈希表实现。</li>
+<li>HashTable：和 HashMap 类似，但它是线程安全的，这意味着同一时刻多个线程可以同时写入 HashTable 并且不会导致数据不一致。它是遗留类，不应该去使用它。现在可以使用 ConcurrentHashMap 来支持线程安全，并且 ConcurrentHashMap 的效率会更高，因为 ConcurrentHashMap 引入了分段锁。</li>
+<li>LinkedHashMap：使用双向链表来维护元素的顺序，顺序为插入顺序或者最近最少使用（LRU）顺序。</li>
+</ul>
+</li>
+<li><strong>4. Queue</strong><ul>
+<li>LinkedList：可以用它来实现双向队列。</li>
+<li>PriorityQueue：基于堆结构实现，可以用它来实现优先队列。</li>
+</ul>
+</li>
+</ul>
+<h4 id="1-对象数组"><a href="#1-对象数组" class="headerlink" title="1.对象数组"></a>1.对象数组</h4><ul>
+<li><strong>1.1 绘制对象数组内存图</strong><ul>
+<li>需求：把三个学生的信息【姓名，年龄】存储到对象数组中</li>
+<li>绘制内场图如下所示：<br><img src="images/24432347-5a919e36b6d89254.png" alt=""></li>
+</ul>
+</li>
+</ul>
+<h4 id="2-集合"><a href="#2-集合" class="headerlink" title="2.集合"></a>2.集合</h4><ul>
+<li><strong>2.1 集合的由来</strong><ul>
+<li>面向对象语言对事物的体现都是以对象的形式，所以为了方便对多个对象的操作，Java就提供了集合类。</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>2.2 数组和集合的区别</strong><ul>
+<li>(1): 长度区别: 数组的长度是固定的而集合的长度是可变的</li>
+<li>(2): 存储数据类型的区别: 数组可以存储基本数据类型 , 也可以存储引用数据类型; 而集合只能存储引用数据类型</li>
+<li>(3): 内容区别: 数组只能存储同种数据类型的元素 ,集合可以存储不同类型的元素</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>2.3 集合继承体系图</strong><br><img src="/images/5432347-492ac09cb88c5b8e.png" alt=""></li>
+</ul>
+<ul>
+<li><strong>2.4 Collection功能概述</strong></li>
+<li>a:添加功能<ul>
+<li>boolean add(Object obj):添加一个元素</li>
+<li>boolean addAll(Collection c):添加一个集合的元素</li>
+</ul>
+</li>
+<li>b:删除功能<ul>
+<li>void clear():移除所有元素</li>
+<li>boolean remove(Object o):移除一个元素</li>
+<li>boolean removeAll(Collection c):移除一个集合的元素(是一个还是所有)</li>
+</ul>
+</li>
+<li>c:判断功能<ul>
+<li>boolean contains(Object o)：判断集合中是否包含指定的元素   </li>
+<li>boolean containsAll(Collection c)：判断集合中是否包含指定的集合元素(是一个还是所有)</li>
+<li>boolean isEmpty()：判断集合是否为空</li>
+</ul>
+</li>
+<li>d:获取功能<ul>
+<li>Iterator<e> iterator()(重点)</e></li>
+</ul>
+</li>
+<li>e:长度功能<ul>
+<li>int size():元素的个数</li>
+<li>面试题：数组有没有length()方法呢?字符串有没有length()方法呢?集合有没有length()方法呢?</li>
+</ul>
+</li>
+<li>f:交集功能<ul>
+<li>boolean retainAll(Collection c):两个集合都有的元素?思考元素去哪了，返回的boolean又是什么意思呢?</li>
+</ul>
+</li>
+<li>g:把集合转换为数组<ul>
+<li>Object[] toArray()</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>2.5 集合的遍历</strong></li>
+<li>2.5.1 迭代器遍历【用的较少】</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CollectionDemo</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// Iterator iterator():     使用迭代器进行遍历(重点*********)</span></span><br><span class="line">        <span class="comment">// 创建Collection集合对象</span></span><br><span class="line">        Collection col = <span class="keyword">new</span> ArrayList() ;</span><br><span class="line">        <span class="comment">// 添加元素</span></span><br><span class="line">        col.add(<span class="string">"张三"</span>) ;</span><br><span class="line">        col.add(<span class="string">"李四"</span>) ;</span><br><span class="line">        col.add(<span class="string">"王五"</span>) ;</span><br><span class="line">        col.add(<span class="string">"赵六"</span>) ;</span><br><span class="line">        <span class="comment">// 使用迭代器对其进行遍历</span></span><br><span class="line">        <span class="comment">// 1. 获取迭代器对象</span></span><br><span class="line">        Iterator it = col.iterator() ;   <span class="comment">// 返回时实现了Iterator这个接口的子类对象</span></span><br><span class="line">        <span class="comment">// 2. 调用迭代器对象中的方法完成遍历</span></span><br><span class="line">        <span class="comment">// E next(): 获取元素的同时,将指针向后移动一位</span></span><br><span class="line">        <span class="keyword">while</span>(it.hasNext()) &#123;</span><br><span class="line">            System.out.println(it.next());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>2.5.2 集合转数组遍历</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CollectionDemo</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 1. 创建集合对象</span></span><br><span class="line">        Collection col = <span class="keyword">new</span> ArrayList() ;</span><br><span class="line">        <span class="comment">// 2. 添加元素</span></span><br><span class="line">        col.add(<span class="string">"鸣人"</span>) ;</span><br><span class="line">        col.add(<span class="string">"佐助"</span>) ;</span><br><span class="line">        col.add(<span class="string">"佩恩"</span>) ;</span><br><span class="line">        <span class="comment">// 3. 把集合转换成数组</span></span><br><span class="line">        <span class="comment">// Object[] toArray()</span></span><br><span class="line">        Object[] objs = col.toArray() ;</span><br><span class="line">        <span class="comment">// 4. 遍历数组</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> x = <span class="number">0</span> ; x &lt; objs.length ; x++) &#123;</span><br><span class="line">            <span class="comment">// 向下转型</span></span><br><span class="line">            String s = (String)objs[x] ;</span><br><span class="line">            System.out.println(s.length());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.okjvm.com/2017/11/20/java/dataStructure/02.baseDataStructure2/" data-id="ckkrzb8xj001zcv2aqwmevfrr" class="article-share-link">分享</a>
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/数据结构/">数据结构</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+ <script src="/jquery/jquery.min.js"></script>
+  <div id="random_posts">
+    <h2>推荐文章</h2>
+    <div class="random_posts_ul">
+      <script>
+          var random_count =4
+          var site = {BASE_URI:'/'};
+          function load_random_posts(obj) {
+              var arr=site.posts;
+              if (!obj) return;
+              // var count = $(obj).attr('data-count') || 6;
+              for (var i, tmp, n = arr.length; n; i = Math.floor(Math.random() * n), tmp = arr[--n], arr[n] = arr[i], arr[i] = tmp);
+              arr = arr.slice(0, random_count);
+              var html = '<ul>';
+            
+              for(var j=0;j<arr.length;j++){
+                var item=arr[j];
+                html += '<li><strong>' + 
+                item.date + ':&nbsp;&nbsp;<a href="' + (site.BASE_URI+item.uri) + '">' + 
+                (item.title || item.uri) + '</a></strong>';
+                if(item.excerpt){
+                  html +='<div class="post-excerpt">'+item.excerpt+'</div>';
+                }
+                html +='</li>';
+                
+              }
+              $(obj).html(html + '</ul>');
+          }
+          $('.random_posts_ul').each(function () {
+              var c = this;
+              if (!site.posts || !site.posts.length){
+                  $.getJSON(site.BASE_URI + 'js/posts.js',function(json){site.posts = json;load_random_posts(c)});
+              } 
+               else{
+                load_random_posts(c);
+              }
+          });
+      </script>
+    </div>
+  </div>
+
+    
+<nav id="article-nav">
+  
+    <a href="/2017/11/20/java/dataStructure/03.ListCollection/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          List集合深度解析
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/11/20/java/dataStructure/01.baseDataStructure/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">常见的数据结构</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+ 
+     
+  <div class="comments" id="comments">
+    
+     
+       
+       
+      
+      
+  </div>
+ 
+  
+
+</section>
+           
+    <aside id="sidebar">
+  
+    
+
+  
+    
+    <div class="widget-wrap">
+    
+      <div class="widget" id="toc-widget-fixed">
+      
+        <strong class="toc-title">文章目录</strong>
+        <div class="toc-widget-list">
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#目录介绍"><span class="toc-number">1.</span> <span class="toc-text">目录介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#0-总结"><span class="toc-number">1.1.</span> <span class="toc-text">0.总结</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-对象数组"><span class="toc-number">1.2.</span> <span class="toc-text">1.对象数组</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-集合"><span class="toc-number">1.3.</span> <span class="toc-text">2.集合</span></a></li></ol></li></ol>
+          </div>
+      </div>
+    </div>
+
+  
+    
+
+  
+    
+  
+    
+  
+    
+
+  
+    
+  
+    <!--微信公众号二维码-->
+
+
+  
+</aside>
+
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-left">
+      &copy; 2014 - 2021 popc&nbsp;|&nbsp;
+      主题 <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
+    </div>
+     <div id="footer-right">
+      联系方式&nbsp;|&nbsp;cc5853235@gmail.com
+    </div>
+  </div>
+</footer>
+ <script src="/jquery/jquery.min.js"></script>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+</nav>
+    <img class="back-to-top-btn" src="/images/fly-to-top.png">
+<script>
+// Elevator script included on the page, already.
+window.onload = function() {
+  var elevator = new Elevator({
+    selector:'.back-to-top-btn',
+    element: document.querySelector('.back-to-top-btn'),
+    duration: 1000 // milliseconds
+  });
+}
+</script>
+      
+
+  
+
+  
+
+
+
+
+
+
+
+<!-- author:forvoid begin -->
+<!-- author:forvoid begin -->
+
+<!-- author:forvoid end -->
+
+<!-- author:forvoid end -->
+
+
+
+ <script src="/js/is.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/elevator.js"></script>
+  </div>
+</body>
+</html>
